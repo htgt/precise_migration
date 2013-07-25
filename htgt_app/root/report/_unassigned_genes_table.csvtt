@@ -1,0 +1,6 @@
+[% USE CSV -%]
+[% CSV.data( ["Source","MGP","Gene","Cell Line","ES Cell Count","EP plate"] ) %]
+[% FOR gene IN genes -%]
+[% CSV.data( [gene.source, gene.mgp,gene.name,gene.cell_line,gene.cell_count,gene.ep_plate] ) %]
+[% END -%]
+

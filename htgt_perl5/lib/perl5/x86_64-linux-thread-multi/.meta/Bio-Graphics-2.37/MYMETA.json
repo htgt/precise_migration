@@ -1,0 +1,487 @@
+{
+   "abstract" : "Generate GD images of Bio::Seq objects",
+   "author" : [
+      "Lincoln Stein <lincoln.stein@oicr.on.ca>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Build version 0.4005, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Bio-Graphics",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.38"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "GD::SVG" : "0.32",
+            "Text::ParseWords" : "3.26"
+         },
+         "requires" : {
+            "Bio::Root::Version" : "1.005009001",
+            "GD" : "2.3",
+            "Statistics::Descriptive" : "2.6"
+         }
+      }
+   },
+   "provides" : {
+      "Bio::Graphics" : {
+         "file" : "lib/Bio/Graphics.pm",
+         "version" : "2.37"
+      },
+      "Bio::Graphics::ConfiguratorI" : {
+         "file" : "lib/Bio/Graphics/ConfiguratorI.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::DrawTransmembrane" : {
+         "file" : "lib/Bio/Graphics/DrawTransmembrane.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Feature" : {
+         "file" : "lib/Bio/Graphics/Feature.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::FeatureBase" : {
+         "file" : "lib/Bio/Graphics/FeatureBase.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::FeatureDir" : {
+         "file" : "lib/Bio/Graphics/FeatureDir.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::FeatureFile" : {
+         "file" : "lib/Bio/Graphics/FeatureFile.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::FeatureFile::Iterator" : {
+         "file" : "lib/Bio/Graphics/FeatureFile/Iterator.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::FileSplitter" : {
+         "file" : "lib/Bio/Graphics/FeatureDir.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::GDWrapper" : {
+         "file" : "lib/Bio/Graphics/GDWrapper.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph" : {
+         "file" : "lib/Bio/Graphics/Glyph.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::Factory" : {
+         "file" : "lib/Bio/Graphics/Glyph/Factory.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::alignment" : {
+         "file" : "lib/Bio/Graphics/Glyph/alignment.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::allele_tower" : {
+         "file" : "lib/Bio/Graphics/Glyph/allele_tower.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::anchored_arrow" : {
+         "file" : "lib/Bio/Graphics/Glyph/anchored_arrow.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::arrow" : {
+         "file" : "lib/Bio/Graphics/Glyph/arrow.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::box" : {
+         "file" : "lib/Bio/Graphics/Glyph/box.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::broken_line" : {
+         "file" : "lib/Bio/Graphics/Glyph/broken_line.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::cds" : {
+         "file" : "lib/Bio/Graphics/Glyph/cds.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::christmas_arrow" : {
+         "file" : "lib/Bio/Graphics/Glyph/christmas_arrow.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::cross" : {
+         "file" : "lib/Bio/Graphics/Glyph/cross.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::crossbox" : {
+         "file" : "lib/Bio/Graphics/Glyph/crossbox.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::dashed_line" : {
+         "file" : "lib/Bio/Graphics/Glyph/dashed_line.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::decorated_gene" : {
+         "file" : "lib/Bio/Graphics/Glyph/decorated_gene.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::decorated_transcript" : {
+         "file" : "lib/Bio/Graphics/Glyph/decorated_transcript.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::diamond" : {
+         "file" : "lib/Bio/Graphics/Glyph/diamond.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::dna" : {
+         "file" : "lib/Bio/Graphics/Glyph/dna.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::dot" : {
+         "file" : "lib/Bio/Graphics/Glyph/dot.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::dumbbell" : {
+         "file" : "lib/Bio/Graphics/Glyph/dumbbell.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::ellipse" : {
+         "file" : "lib/Bio/Graphics/Glyph/ellipse.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::ex" : {
+         "file" : "lib/Bio/Graphics/Glyph/ex.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::extending_arrow" : {
+         "file" : "lib/Bio/Graphics/Glyph/extending_arrow.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::fb_shmiggle" : {
+         "file" : "lib/Bio/Graphics/Glyph/fb_shmiggle.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::fixedwidth" : {
+         "file" : "lib/Bio/Graphics/Glyph/fixedwidth.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::flag" : {
+         "file" : "lib/Bio/Graphics/Glyph/flag.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::gene" : {
+         "file" : "lib/Bio/Graphics/Glyph/gene.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::generic" : {
+         "file" : "lib/Bio/Graphics/Glyph/generic.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::graded_segments" : {
+         "file" : "lib/Bio/Graphics/Glyph/graded_segments.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::group" : {
+         "file" : "lib/Bio/Graphics/Glyph/group.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::hat" : {
+         "file" : "lib/Bio/Graphics/Glyph/hat.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::heat_map" : {
+         "file" : "lib/Bio/Graphics/Glyph/heat_map.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::heat_map_ideogram" : {
+         "file" : "lib/Bio/Graphics/Glyph/heat_map_ideogram.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::heterogeneous_segments" : {
+         "file" : "lib/Bio/Graphics/Glyph/heterogeneous_segments.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::hidden" : {
+         "file" : "lib/Bio/Graphics/Glyph/hidden.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::hybrid_plot" : {
+         "file" : "lib/Bio/Graphics/Glyph/hybrid_plot.pm",
+         "version" : "1.0"
+      },
+      "Bio::Graphics::Glyph::ideogram" : {
+         "file" : "lib/Bio/Graphics/Glyph/ideogram.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::image" : {
+         "file" : "lib/Bio/Graphics/Glyph/image.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::lightning" : {
+         "file" : "lib/Bio/Graphics/Glyph/lightning.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::line" : {
+         "file" : "lib/Bio/Graphics/Glyph/line.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::merge_parts" : {
+         "file" : "lib/Bio/Graphics/Glyph/merge_parts.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::merged_alignment" : {
+         "file" : "lib/Bio/Graphics/Glyph/merged_alignment.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::minmax" : {
+         "file" : "lib/Bio/Graphics/Glyph/minmax.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::operon" : {
+         "file" : "lib/Bio/Graphics/Glyph/operon.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::oval" : {
+         "file" : "lib/Bio/Graphics/Glyph/oval.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::pairplot" : {
+         "file" : "lib/Bio/Graphics/Glyph/pairplot.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::pentagram" : {
+         "file" : "lib/Bio/Graphics/Glyph/pentagram.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::phylo_align" : {
+         "file" : "lib/Bio/Graphics/Glyph/phylo_align.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::pinsertion" : {
+         "file" : "lib/Bio/Graphics/Glyph/pinsertion.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::point_glyph" : {
+         "file" : "lib/Bio/Graphics/Glyph/point_glyph.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::primers" : {
+         "file" : "lib/Bio/Graphics/Glyph/primers.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::processed_transcript" : {
+         "file" : "lib/Bio/Graphics/Glyph/processed_transcript.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::protein" : {
+         "file" : "lib/Bio/Graphics/Glyph/protein.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::ragged_ends" : {
+         "file" : "lib/Bio/Graphics/Glyph/ragged_ends.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::rainbow_gene" : {
+         "file" : "lib/Bio/Graphics/Glyph/rainbow_gene.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::read_pair" : {
+         "file" : "lib/Bio/Graphics/Glyph/read_pair.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::redgreen_box" : {
+         "file" : "lib/Bio/Graphics/Glyph/redgreen_box.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::redgreen_segment" : {
+         "file" : "lib/Bio/Graphics/Glyph/redgreen_segment.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::repeating_shape" : {
+         "file" : "lib/Bio/Graphics/Glyph/repeating_shape.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::rndrect" : {
+         "file" : "lib/Bio/Graphics/Glyph/rndrect.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::ruler_arrow" : {
+         "file" : "lib/Bio/Graphics/Glyph/ruler_arrow.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::saw_teeth" : {
+         "file" : "lib/Bio/Graphics/Glyph/saw_teeth.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::scale" : {
+         "file" : "lib/Bio/Graphics/Glyph/scale.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::segmented_keyglyph" : {
+         "file" : "lib/Bio/Graphics/Glyph/segmented_keyglyph.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::segments" : {
+         "file" : "lib/Bio/Graphics/Glyph/segments.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::smoothing" : {
+         "file" : "lib/Bio/Graphics/Glyph/smoothing.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::so_transcript" : {
+         "file" : "lib/Bio/Graphics/Glyph/so_transcript.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::span" : {
+         "file" : "lib/Bio/Graphics/Glyph/span.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::spectrogram" : {
+         "file" : "lib/Bio/Graphics/Glyph/spectrogram.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::splice_site" : {
+         "file" : "lib/Bio/Graphics/Glyph/splice_site.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::stackedplot" : {
+         "file" : "lib/Bio/Graphics/Glyph/stackedplot.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::ternary_plot" : {
+         "file" : "lib/Bio/Graphics/Glyph/ternary_plot.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::text_in_box" : {
+         "file" : "lib/Bio/Graphics/Glyph/text_in_box.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::three_letters" : {
+         "file" : "lib/Bio/Graphics/Glyph/three_letters.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::tic_tac_toe" : {
+         "file" : "lib/Bio/Graphics/Glyph/tic_tac_toe.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::toomany" : {
+         "file" : "lib/Bio/Graphics/Glyph/toomany.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::trace" : {
+         "file" : "lib/Bio/Graphics/Glyph/trace.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::track" : {
+         "file" : "lib/Bio/Graphics/Glyph/track.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::transcript" : {
+         "file" : "lib/Bio/Graphics/Glyph/transcript.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::transcript2" : {
+         "file" : "lib/Bio/Graphics/Glyph/transcript2.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::translation" : {
+         "file" : "lib/Bio/Graphics/Glyph/translation.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::triangle" : {
+         "file" : "lib/Bio/Graphics/Glyph/triangle.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::two_bolts" : {
+         "file" : "lib/Bio/Graphics/Glyph/two_bolts.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::vista_plot" : {
+         "file" : "lib/Bio/Graphics/Glyph/vista_plot.pm",
+         "version" : "1.0"
+      },
+      "Bio::Graphics::Glyph::wave" : {
+         "file" : "lib/Bio/Graphics/Glyph/wave.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::weighted_arrow" : {
+         "file" : "lib/Bio/Graphics/Glyph/weighted_arrow.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::whiskerplot" : {
+         "file" : "lib/Bio/Graphics/Glyph/whiskerplot.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::wiggle_box" : {
+         "file" : "lib/Bio/Graphics/Glyph/wiggle_box.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::wiggle_data" : {
+         "file" : "lib/Bio/Graphics/Glyph/wiggle_data.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::wiggle_density" : {
+         "file" : "lib/Bio/Graphics/Glyph/wiggle_density.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::wiggle_whiskers" : {
+         "file" : "lib/Bio/Graphics/Glyph/wiggle_whiskers.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::wiggle_xyplot" : {
+         "file" : "lib/Bio/Graphics/Glyph/wiggle_xyplot.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Glyph::xyplot" : {
+         "file" : "lib/Bio/Graphics/Glyph/xyplot.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Layout" : {
+         "file" : "lib/Bio/Graphics/Layout.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Layout::Contour" : {
+         "file" : "lib/Bio/Graphics/Layout.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Math" : {
+         "file" : "lib/Bio/Graphics/Layout.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Panel" : {
+         "file" : "lib/Bio/Graphics/Panel.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Pictogram" : {
+         "file" : "lib/Bio/Graphics/Pictogram.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::RendererI" : {
+         "file" : "lib/Bio/Graphics/RendererI.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Util" : {
+         "file" : "lib/Bio/Graphics/Util.pm",
+         "version" : "0"
+      },
+      "Bio::Graphics::Wiggle" : {
+         "file" : "lib/Bio/Graphics/Wiggle.pm",
+         "version" : "1.0"
+      },
+      "Bio::Graphics::Wiggle::Loader" : {
+         "file" : "lib/Bio/Graphics/Wiggle/Loader.pm",
+         "version" : "0"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "2.37"
+}

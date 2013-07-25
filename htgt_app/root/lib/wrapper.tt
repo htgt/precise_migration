@@ -1,0 +1,26 @@
+[% IF template.name.match('\.(css|js|txt)') %]
+    [% content %]
+[% ELSE %]
+    [% IF style == 'EUCOMM' %]
+        [% sanger_header %]
+        <h2>[% template.heading or template.title or site.title %]</h2>
+        [% content %]
+        [% sanger_footer %]
+    [% ELSIF sanger #using Sanger's SangerWeb utilities %]
+        [% PROCESS 'sanger/sidebar.tt' %]
+        [% PROCESS 'sanger/header.tt' %]
+        <div id="naked_content">
+            <h1 class="title">[% template.heading or template.title or site.title %]</h1>
+            [% content %]
+        </div>
+        [% sanger_footer %]
+    [% ELSE %]
+        [% PROCESS 'generic/header.tt' %]
+        [% PROCESS 'sanger/header.tt' %]
+        
+            <h1 class="title">[% template.heading or template.title or site.title %]</h1>
+            [% content %]
+        </div>
+        [% PROCESS 'generic/footer.tt' %]
+    [% END %]
+[% END %]

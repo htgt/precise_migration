@@ -1,0 +1,4 @@
+EnsEMBL ID, MGI Symbol,  < 50% Confidence,  50-79% Confidence,  >=80% Confidence
+[% FOR gene IN gene_traps.keys %]  
+[% gene %], [% gene_traps.${gene}.MARKER %], [% FOR well IN gene_traps.${gene}.LOW %] [% well %] [% END %] , [% FOR well IN gene_traps.${gene}.MEDIUM %] [% well %] [% END %] , [% FOR well IN gene_traps.${gene}.HIGH %] [% well %][% END %]
+[% END %]

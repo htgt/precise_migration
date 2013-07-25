@@ -1,0 +1,12 @@
+[% META title= 'Microinjections' %]
+<p>ES Cell Clones to be microinjected are first <em>assigned</em> to a mouse clinic at the EUCOMM repository and at WTSI.
+   These assignments (along with clones as yet unassigned) can be inspected <a href=[% c.uri_for('/report/assigned_genes_and_cells') %]>here</a>.
+</p>
+<p>ES Cell clones that have already been microinjected (ie microinjection in progress) can be inspected gene-by-gene from the
+martsearch page of the <a href="http://www.knockoutmouse.org/martsearch">IKMC portal</a>. You can also search the Kermits Biomart directly:
+<a href="http://www.i-dcc.org/biomart/martview?VIRTUALSCHEMANAME=default
+&ATTRIBUTES=kermits.default.attributes.sponsor|kermits.default.attributes.marker_symbol|kermits.default.attributes.status
+|kermits.default.attributes.escell_clone|kermits.default.attributes.allele_name|kermits.default.attributes.escell_line
+|kermits.default.attributes.mi_centre|kermits.default.attributes.mi_date
+&FILTERS=&VISIBLEPANEL=resultspanel">here is an example</a>.
+</p>

@@ -1,0 +1,33 @@
+<div style="margin-top:20px">
+<h1>Genes with bespoke MGP MI Plans but no issue in Redmine allele-tracking project</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>MGI Accession ID</th>
+      <th>Marker Symbol</th>
+      <th>Consortium</th>
+      <th>Production Centre</th>
+      <th>Sub Project</th>
+      <th>Status</th>
+      <th>Priority</th>
+      <th>Withdrawn</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH allele IN alleles -%]
+    <tr>
+      <td><a href="[% "http://www.informatics.jax.org/marker/${allele.mgi_accession_id}" %]">[% allele.mgi_accession_id %]</a></td>
+      <td>[% allele.marker_symbol %]</td>
+      <td>[% allele.consortium_name %]</td>
+      <td>[% allele.production_centre_name %]</td>
+      <td>[% allele.sub_project_name %]</td>
+      <td>[% allele.status_name %]</td>
+      <td>[% allele.priority_name %]</td>
+      <td>[% allele.withdrawn %]</td>
+      <td><a href="[% c.uri_for( "/bespokeallele/create_ticket/${allele.marker_symbol}-acc=${allele.mgi_accession_id}-pr=${allele.priority_name}-reqp=${allele.sub_project_name}" ) %]" class="button link">Create Ticket</a></td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+</div>

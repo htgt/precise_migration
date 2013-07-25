@@ -1,0 +1,322 @@
+/* @override 
+	http://gtrap1a.internal.sanger.ac.uk:8002/htgt/static/css/common.css
+	http://gtrap1a.internal.sanger.ac.uk:8002/static/css/common.css
+	http://dev.eucomm.org/htgt/static/css/common.css
+*/
+
+/*
+*
+*   Use this file for CSS rules shared 
+*	across Sanger and Eucomm
+*
+*/
+
+/* format sequence data in fixed width font */
+
+.seqstr {
+	font: 12px Monaco, Consolas, monospace, "Courier New", Courier;
+}
+
+pre.seqstr {
+	margin: 5px;
+	padding: 0;
+}
+
+/* Report Tables */
+
+table#report_table,
+table.report_table {
+	font-size: 90%;
+}
+
+table#report_table tbody tr:hover,
+table.report_table tbody tr:hover {
+  background-color: #fbf4b6;
+}
+
+/* BEGIN: Lists */
+
+ul.nobullet {
+	padding: 0;
+	margin: 0;
+}
+
+ul.nobullet li {
+	list-style-type: none;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	background: none !important;
+}
+
+/* END: Lists */
+
+/* BEGIN: Fieldsets and Toggleable Objects */
+
+legend {
+	background-color: #e7edf3;
+  	padding: 5px 5px 5px 0;
+	margin-left: 10px;
+}
+
+fieldset.toggleable legend {
+	font-weight: bold;
+}
+
+fieldset.toggleable {
+	border: 1px dotted #ccc;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	margin-bottom: 7px;
+	padding: 5px;
+}
+
+fieldset.toggleable div {
+	margin: 10px;
+}
+
+.option_hidden, .option_show {
+	text-decoration: none;
+  	cursor: pointer;
+	padding: 5px 10px 5px 25px;
+	border: 1px solid #8baac7;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.option_hidden  {
+  	background: #e7edf3 url('/icons/silk/arrow_down.png') no-repeat 5px center;
+}
+
+.option_show  {
+  	background: #e7edf3 url('/icons/silk/arrow_up.png') no-repeat 5px center;
+}
+
+.option_hidden:hover, .option_show:hover {
+	background-color: #c2d2e1;
+}
+
+/* END: Fieldsets and Toggleable Objects */
+
+/* BEGIN: Gene/Project Page */
+
+.page-section {
+	border: 1px solid #ccc;
+	margin: 10px 0;
+	display: table;
+	width: 100%;
+}
+
+.page-section .toggle-content {
+	padding: 10px;
+}
+
+.page-section h5.option_show, .page-section h3.option_show,
+.page-section h5.option_hidden, .page-section h3.option_hidden,
+.page-section h5.toggle-control, .page-section h3.toggle-control {
+	margin-top: 0;
+	border: none;
+	border-bottom: 1px solid #ccc;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+}
+
+.page-section h5.toggle-control, .page-section h3.toggle-control {
+	padding: 5px 5px 5px 5px;
+	background-color: #e7edf3;
+}
+
+table.noborder td {
+	border: none;
+}
+
+/* END: Gene/Project Page */
+
+/* BEGIN: Drawing Vector/Allele Map images */
+
+table.construct_image td,
+table.construct_image td img {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: #fff;
+    text-align: center;
+    vertical-align: top;
+}
+
+table.construct_image td {
+    /*border: 1px solid #999;*/
+}
+
+table.construct_image td a {
+	text-decoration: none;
+}
+
+table.construct_image tbody tr.images td,
+table.construct_image tbody td.within-homology-arm {
+    font-size: 10px;
+    background: #fff url('/htgt/static/images/gene_report/spacer.png') repeat-x center 28px;
+    margin: 0;
+    padding: 0;
+}
+
+table.construct_image tbody td.within-homology-arm {
+	padding-bottom: 15px;
+}
+
+table.construct_image tbody tr.labels td {
+    font-size: 10px;
+    vertical-align: top;
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-bottom: 10px;
+}
+
+table.construct_image td.vspacer {
+	background-image: url('/htgt/static/images/gene_report/vspacer.png');
+	background-repeat: repeat-y;
+}
+
+table.construct_image td.vspacer.left {
+	background-position: 2px;
+}
+
+table.construct_image td.vspacer.right {
+	background-position: 34px;
+}
+
+table.construct_image td.corner.top-left,
+table.construct_image td.corner.top-right,
+table.construct_image td.corner.bottom-left,
+table.construct_image td.corner.bottom-right {
+	background: #fff;
+}
+
+/* END: Drawing Vector/Allele Map images */
+
+/* BEGIN: Progress bar nonsense */
+
+table#pipeline_progress td {
+    background-repeat: no-repeat;
+    background-position: right center;
+    vertical-align: middle;
+    font-size: 0.9em;
+    font-weight: bold;
+    border: none;
+	padding: 5px 15px 5px 7px;
+	height: 35px;
+	text-align: center;
+}
+
+table#pipeline_progress td.incomp {
+    background-color: #ccc;
+	text-align: left;
+}
+
+table#pipeline_progress td.incomp a {
+	color: #999;
+	text-decoration: none;
+}
+
+table#pipeline_progress td.incomp a:hover {
+	color: #fff;
+}
+
+table#pipeline_progress td.normal {
+    background: none;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-color: #074987;
+}
+
+table#pipeline_progress td.error {
+    background-color: #c1272d;
+}
+
+table#pipeline_progress td.warn {
+	background: none;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-color: #f7931e;
+}
+
+table#pipeline_progress td.normal a,
+table#pipeline_progress td.error a,
+table#pipeline_progress td.warn a {
+	color: #fff;
+	text-decoration: none;
+}
+
+table#pipeline_progress td.normal a:hover,
+table#pipeline_progress td.error a:hover,
+table#pipeline_progress td.warn a:hover {
+	color: #999;
+}
+
+table#pipeline_progress td.normal_normal {
+    background-image: url('/htgt/static/images/progress-comp-comp.png');
+}
+
+table#pipeline_progress td.normal_incomp {
+    background-image: url('/htgt/static/images/progress-comp-incomp.png');
+}
+
+table#pipeline_progress td.normal_error {
+    background-image: url('/htgt/static/images/progress-comp-error.png');
+}
+
+table#pipeline_progress td.normal_warn {
+    background-image: url('/htgt/static/images/progress-comp-warn.png');
+}
+
+table#pipeline_progress td.incomp_incomp {
+    background-image: url('/htgt/static/images/progress-incomp-incomp.png');
+}
+
+table#pipeline_progress td.error_incomp {
+    background-image: url('/htgt/static/images/progress-error-incomp.png');
+}
+
+table#pipeline_progress td.warn_incomp {
+    background-image: url('/htgt/static/images/progress-warn-incomp.png');
+}
+
+table#pipeline_progress td.start_incomp {
+    background-image: url('/htgt/static/images/progress-start-incomp.png');
+    background-color: #fff;
+}
+
+table#pipeline_progress td.start_normal {
+    background-image: url('/htgt/static/images/progress-start-comp.png');
+	background-color: #fff;
+}
+
+table#pipeline_progress td.start_error {
+    background-image: url('/htgt/static/images/progress-start-error.png');
+	background-color: #fff;
+}
+
+table#pipeline_progress td.start_warn {
+    background-image: url('/htgt/static/images/progress-start-warn.png');
+	background-color: #fff;
+}
+
+table#pipeline_progress td.end_incomp {
+    background-image: url('/htgt/static/images/progress-end-incomp.png');
+}
+
+table#pipeline_progress td.end_normal {
+    background-image: url('/htgt/static/images/progress-end-comp.png');
+}
+
+table#pipeline_progress td.end_error {
+    background-image: url('/htgt/static/images/progress-end-error.png');
+}
+
+table#pipeline_progress td.end_warn {
+    background-image: url('/htgt/static/images/progress-end-warn.png');
+}
+
+/* END: Progress bar nonsense */

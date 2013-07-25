@@ -1,0 +1,19 @@
+[% META title = 'Pipeline Status Explanations' -%]
+
+<p>The following list defines the different statuses that we report on the constructs in our pipeline.</p>
+
+<dl id="pipeline_status_explanations">
+    [% FOR status IN statuses %]
+    <di>
+        <dt><a name="[% status.code %]"></a>[% status.name %] ([% status.code %])</dt>
+        <dd>
+            [% IF style == 'EUCOMM' %]
+            [% status.description.replace('EUCOMM/KOMP','EUCOMM') %]
+            [% ELSE %]
+            [% status.description %]
+            [% END %]
+            
+        </dd>
+    </di>
+    [% END %]
+</dl>

@@ -1,0 +1,63 @@
+[% IF result == 0 %]
+   <p><font color="red"><strong>Error:  [% error_message %] </strong></font></p>
+[% ELSE %]
+<table>
+    <tr>
+      <th>Target Exon</th>
+      <th>Target Size</th>
+      <th>Exon Rank</th>
+      [% IF type == "domain" %]
+        <th>Source</th>
+        <th>Domain</th>
+      [% END %]
+      [% IF !short %]
+      <th>Score</th>
+      [% END %]
+      <th>Select</th>
+    </tr>
+    [% FOREACH target IN targets %]
+        <tr id="[% target.start_end %]">
+           <td>[% target.exon %]</td>
+           <td>[% target.size %]</td>
+           <td>[% target.rank %]</td>
+           [% IF type == "domain" %]
+           <td>[% target.domain %]</td>
+           <td>[% target.displayed_domain_name %]</td>
+           [% END %]
+           [% IF !short %]
+           <td>[% target.score %]</td>
+           [% END %]
+           <td><input type="radio" id="choice_[% target.exon %]" name="target_choice" value="[% target.exon %]"
+               onchange="loadTarget_Param('[% target.start_end %]','[% target.exon %]',
+               '[% target.l_param.0 %]','[% target.l_param.1 %]','[% target.l_param.2 %]','[% target.r_param.0 %]','[% target.r_param.1 %]','[% target.r_param.2 %]')"></td>
+        </tr>
+    [% END %]   
+</table>
+[% END %]
+<script type="text/javascript" charset="utf-8">
+   function loadTarget_Param(target,exon,u5_size,offset_5p,min_flank_5p,d3_size,offset_3p,min_flank_3p) {
+        // get the target start and end, then populate the field
+        var start_end = target.split("-");
+        var start = start_end[0];
+        var end = start_end[1];
+        // maybe need consider the strand here 
+        $('target_start').value = start;
+        $('target_end').value = end;
+        
+        // get the exon name and populate the fields
+        var exons = exon.split("-");
+        var start_exon = 'start_' + exons[0];
+        var end_exon = 'end_' + exons[1];
+        $(start_exon).selected = true;
+        $(end_exon).selected = true;
+        
+        // get the params and populate the fields
+        $('u5_size').value = u5_size;
+        $('offset_5p').value = offset_5p;
+        $('min_flank_5p').value = min_flank_5p;
+        $('d3_size').value = d3_size;
+        $('offset_3p').value = offset_3p;
+        $('min_flank_3p').value = min_flank_3p;
+        
+   }
+</script>

@@ -1,0 +1,105 @@
+[% META title = 'Create plate from upload' -%]
+
+<form name="create_plate_from_upload" method="post" enctype="multipart/form-data">
+  <p>
+    Plate Name: <input type="text" name="plate_name" size="20" value="[% plate_name %]" />
+
+    Type:
+    <select name="plate_type">
+      [% FOR type = plate_types %]
+      <option value="[% type %]" [% IF type == plate_type %]selected="selected"[% END %]>[% type %]</option>
+      [% END %]
+    </select>
+  </p>
+  <p>  
+    File name: <input type="file" name="datafile" size="40" />
+  </p>
+  <p>
+    <input name="skip_header" value="skip_header" type="checkbox" [% IF skip_header %]checked=true[% END %] />skip CSV header
+  </p>
+  <p>
+    <input type="submit" name="create_plate" value="Create Plate(s)" />
+  </p>
+</form>
+
+<fieldset id="create_by_upload" class="toggleable">
+  <legend>How to use this upload facility</legend>
+  <div>
+    <p>
+      Enter the name and type of the plate to be created. The data file
+      specifies the parent wells, with one line per well,
+      and <strong>must</strong> contain the correct number of wells for
+      the type of plate you are creating (25 for an EP plate, 96 for all
+      other plate types). To create a plate with one or more empty wells,
+      specify the parent well as a single '-'.
+    </p>
+    <p>
+      The well names will be assigned dynamically, so
+      the first row of your data corresponds to well A01, and the last
+      well H12 (E05 on an EP plate).
+    </p>
+    <p>
+      The parent wells may be specified in any of the following ways:
+    </p>
+    <div>
+      <h3>PLATE_NAME,WELL_NAME</h3>
+      <p>A comma-separated list of plate name and well name; for example
+        (the quotes are optional):</p>
+      <pre>
+        "EP00085","EP00085_C03"
+        "EP00085","EP00085_B05"
+        "EP00085","EP00085_B05"
+        "EP00085","EP00085_C02"
+      </pre>
+    </div>
+    <div>
+      <h3>PLATE_NAME[WELL_NAME]</h3>
+      <p>The plate name followed immediately by the well name in square brackets; for example:</p>
+      <pre>
+        EP00085[EP00085_C03]
+        EP00085[EP00085_B05]
+        EP00085[EP00085_B05]
+        EP00085[EP00085_C02]
+      </pre>
+    </div>
+    <div>
+      <h3>CLONE_NAME</h3>
+      <p>A list of clone names; for example:</p>
+      <pre>
+        PG00004_A_A01_1
+        PG00004_A_A01_2
+        PG00004_A_A01_2
+        PG00004_A_A01_2
+      </pre>
+      <p>Note that this will not work for PC clone names as we do not have the
+        384-well PC plates in the HTGT system.</p>
+    </div>
+    <div>
+      <h3>Uploading multiple plates</h3>
+      <p>To upload multiple plates (<strong>of the same type</strong>)
+        from a file, leave the <i>Plate name</i> field empty
+        and include the plate and well name in the input data;
+        for example:</p>
+      <pre>
+        GRD90079_A,A01,PG00113_Z_4[A04]
+        GRD90079_A,A02,PG00113_Z_1[H11]
+        GRD90079_A,A03,PG00113_Z_2[H11]
+        ...
+        GRD90089_A,A01,PG00139_X_1[F07]
+        GRD90089_A,A02,PG00139_X_1[G05]
+        GRD90089_A,A03,PG00139_X_2[F07]
+      </pre>
+    </div>    
+    <p>
+      If your data file contains a CSV header line, you should check the <strong>skip CSV header</strong>
+      checkbox; for example, your data file might look like:</p>
+    <pre>
+      "PLATE_NAME","WELL_NAME"
+      "EP00085","EP00085_C03"
+      "EP00085","EP00085_B05"
+      "EP00085","EP00085_B05"
+      "EP00085","EP00085_C02"
+    </pre>
+  </div>
+</fieldset>
+

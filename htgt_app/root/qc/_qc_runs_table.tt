@@ -1,0 +1,75 @@
+<table class="report_table editable tksort" id="qcruns[% timestamp %]">
+    <thead>
+        <tr>
+            <th class="noedit">QC Run ID</th>
+            <th class="noedit">Stage</th>
+            <th class="noedit">Design Plate</th>
+            <th class="noedit">Construct Plate</th>
+            <th class="noedit">Run Date</th>
+            <th class="noedit">Program</th>
+            [% IF c.check_user_roles('edit') %]
+                <th id="is_public">Public</th>
+            [% END %]
+            <th class="noedit">Valid Constructs</th>
+            <th class="noedit">Valid Designs</th>
+        </tr>
+    </thead>
+    <tbody>
+        [% SET row = 0 -%]
+        [% FOR run IN qctest_runs %]
+            [% row = row + 1 -%]
+            
+            [%# Define what URL prefix to use... -%]
+            [% IF   c.model('ConstructQC').storage.dbh.Name == 'ttrap' 
+                 || c.model('ConstructQC').storage.dbh.Name == 'utlt' -%]
+                [% url = 'intwebdev' -%]
+            [% ELSIF run.is_public == '1' -%]
+                [% url = 'www' -%]
+            [% ELSE -%]
+                [% url = 'intweb' -%]
+            [% END%]
+            
+            <tr id="[% run.qctest_run_id %]">
+                <td>
+                    <a href="[% c.uri_for('/qc/construct_list') %]?qcrun_id=[% run.qctest_run_id %]">[% run.qctest_run_id %]</a> 
+                    [% IF c.check_user_roles("edit") -%]
+                        (<small><a href="[% c.uri_for('/qc/qctest_result_and_primer_list', {qctest_run_id => run.qctest_run_id, display_synvec => 1} ) %]">Synvec</a>,
+                        <a href="[% c.uri_for('/qc/results_list', {qctest_run_id => run.qctest_run_id, is_best_for_construct_in_run => 1, show_primers => 1} ) %]">with primers</a></small>)
+                    [% END -%]
+                </td>
+                <td>[% run.stage %]</td>
+                <td><a href="[% c.uri_for('/plate/view',{plate_name = run.design_plate}) %]">[% run.design_plate %]</a></td>
+                <td>[% run.clone_plate %]</td>
+                <td>[% run.run_date %]</td>
+                <td>[% run.program_version %]</td>
+                [% IF c.check_user_roles('edit') %]
+                    <td align="center" class="edit">
+                        [% IF run.is_public == '1' %]
+                            <img src="/icons/silk/accept.png" alt="public" />
+                        [% ELSE %]
+                            <img src="/icons/silk/stop.png" alt="not public" />
+                        [% END %]
+                    </td>
+                [% END %]
+                <td>[% run.valid_construct_count %] / [% run.total_construct_count %]</td>
+                <td>[% run.valid_design_count %] / [% run.total_design_count %]</td>
+            </tr>
+        [% END %]
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    var well_table = new TableKit('qcruns[% timestamp %]', {
+        [% IF c.check_user_roles("edit") %]
+        editAjaxURI: '[% c.uri_for('/qc/update/_qctest_run_is_public_update/') %]'
+        [% ELSE %]
+        editable: false
+        [% END %]
+    });
+    
+    /* 'is_public' selection choice */
+    TableKit.Editable.selectInput('is_public', {}, [
+        ['yes','1'],
+        ['no','0']
+    ]);
+</script>

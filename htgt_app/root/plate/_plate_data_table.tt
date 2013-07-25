@@ -1,0 +1,86 @@
+[% IF plate.plate_data.size > 0 %]
+    <table class="resizable editable tksort" id="data[% timestamp %]">
+        <thead>
+            <tr>
+                <th id='data_type' class='sortfirstasc [% UNLESS c.check_user_roles("edit") %]noedit[% END %]'>Data Type</th>
+                <th id='data_value' [% UNLESS c.check_user_roles("edit") %]class='noedit'[% END %]>Value</th>
+                <th class='noedit nosort nocol'></th>
+            </tr>
+        </thead>
+        <tbody>
+            [% FOR data_entry IN plate.plate_data %]
+                [% IF new_data_id && (new_data_id == data_entry.plate_data_id) %]
+                    [% SET rowclass = 'new' %]
+                [% ELSE %]
+                    [% SET rowclass = '' %]
+                [% END %]
+                <tr class="[% rowclass %]" id="[% data_entry.plate_data_id %]">
+                    <td [% IF c.check_user_roles("edit") %]class="edit"[% END %]>[% data_entry.data_type %]</td>
+                    <td [% IF c.check_user_roles("edit") %]class="edit"[% END %]>[% data_entry.data_value %]</td>
+                    <td class="nocol">
+                        [% IF c.check_user_roles("edit") %]
+                            <a class="delete" onclick="deleteData([% data_entry.plate_data_id %]); return false">delete</a>
+                        [% END %]
+                    </td>
+                </tr>
+            [% END %]
+        </tbody>
+    </table>
+[% ELSE %]
+    <p class="no_data">No Data Entries</p>
+[% END %]
+[% IF c.check_user_roles("edit") %]
+    <a class="add" onClick="addData([% plate.plate_id %]); return false;">add more information for this plate</a>
+[% END %]
+
+<script type="text/javascript" charset="utf-8">
+    [% IF plate.plate_data %]
+    var data_table = new TableKit( 'data[% timestamp %]', {
+        [% IF c.check_user_roles("edit") %]
+        editAjaxURI: '[% c.uri_for('/plate/update/_plate_data_update/') %]?plate_id=[% plate.plate_id %]'
+        [% ELSE %]
+        editable: false
+        [% END %]
+    });
+    [% END %]
+    
+    [% IF c.check_user_roles("edit") %]
+    // Function to add a plate_data entry to the table and refresh the table
+    function addData(plate_id) {
+        var timestamp = new Date().getTime();
+        var new_table = 'data' + timestamp;
+        var url = '[% c.uri_for('/plate/update/_plate_data_new/') %]?plate_id=' + plate_id + '&timestamp=' + timestamp;
+        new Ajax.Updater( 'data_div', url, { 
+            asynchronous: true,
+            onComplete: function() {
+                new TableKit( new_table, {
+                    editAjaxURI: '[% c.uri_for('/plate/update/_plate_data_update/') %]?plate_id=[% plate.plate_id %]'
+                })
+            }
+        });
+    }
+
+    // Function to delete a comment from the table and refresh the table
+    function deleteData(data_id) {
+        var timestamp = new Date().getTime();
+        var new_table = 'data' + timestamp;
+        var url = '[% c.uri_for('/plate/update/_plate_data_delete/') %]?plate_data_id=' + data_id + '&timestamp=' + timestamp;
+        var answer = confirm('Are you sure you want to delete this data line?');
+        if (answer) {
+            new Ajax.Updater( 'data_div', url, { 
+                asynchronous: true,
+                onComplete: function() {
+                    new TableKit( new_table, {
+                        editAjaxURI: '[% c.uri_for('/plate/update/_plate_data_update/') %]?plate_id=[% plate.plate_id %]'
+                    })
+                }
+            });
+
+            $('alerts').update('<div class="message">Data Entry Deleted</div>');
+            $('alerts').innerHTML;
+
+            return false;
+        }
+    }
+    [% END %]
+</script>

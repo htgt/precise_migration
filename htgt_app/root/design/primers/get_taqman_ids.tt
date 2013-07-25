@@ -1,0 +1,79 @@
+
+[% META title = 'Find TaqMan IDs for Gene or Design' -%]
+
+<form name="get_taqman_ids" method="post" >
+  <p>
+    Design IDs or Gene Marker Symbols
+  </p>
+  <p>
+    <textarea name="input_data" rows="20" cols="55">[% input_data %]</textarea>
+  </p>
+  <p>
+    <input type="submit" name="get_taqman_ids" value="Get TaqMan IDs" />
+    <input type="submit" name="get_taqman_ids_csv" value="Downoad CSV" />
+  </p>
+</form>
+
+[% IF report.data %]
+[%- SET columns = report.columns -%]
+
+<table id="taqman_ids" class="report_table tksort">
+    <thead>
+        <tr>
+        [% FOR name IN columns -%]
+          <th>[% name %]</th>
+        [% END %]
+        </tr> 
+    </thead>
+
+    <tbody>
+        [% FOR taqman IN report.data -%]
+          <tr>
+          [%- FOR name IN columns %]
+            <td class="[% name %]">
+                [% IF name == 'well' %]
+                 <a href="[% c.uri_for('/design/primers/view_taqman_assay_plate',{ plate_name = taqman.plate }) %]"> [% taqman.well %] </a>
+                [% ELSE %]
+                    [% taqman.$name %]
+                [% END %]
+            </td>
+          [% END %]
+          </tr>
+        [% END %]
+    </tbody>
+</table>
+<br>
+<br>
+[% END %]
+
+<fieldset id="find_taqman_ids" class="toggleable">
+  <legend>How to use this TaqMan ID search form</legend>
+  <div>
+    <p>
+        This form is used to search for TaqMan Assay Information linked to designs in our system<br>
+    </p>
+
+    <div>
+    <h2>INPUT FORMAT</h2>
+        The form accepts comma, space or newline seperated design ids or gene marker symbols.<br>
+        When gene marker symbols are used all the designs associated with that gene will be shown.<br>
+        <br>
+        Example:
+        <pre>
+            33693 356
+            Cbx1,Serpine1
+        </pre>
+    <h2>OUTPUT FORMAT</h2>
+        The output will be a table listing all the TaqMan ID's for each design as well as <br>
+        the Plate and well location of the Taqman Assay.<br>
+        Where a design does not have a TaqMan ID a blank cell will be displayed.
+    <h3>Note</h3>
+        An error message will appear if any invalid design id or marker symbols are entered.<br>
+    <br>
+    </div>
+  </div>
+</fieldset>
+
+<script type="text/javascript" charset="utf-8">
+new TableKit('taqman_ids',  {editable: false } );
+</script>

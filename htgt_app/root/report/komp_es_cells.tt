@@ -1,0 +1,44 @@
+[% META title = 'KOMP ES Cells'-%]
+
+<p>View report as a CSV file: <a href="?view=csv" class="button csv">CSV</a></p>
+
+<table id="komp_es_cells" class="report_table">
+    <thead>
+        <tr>
+            <th>Row</th>
+            <th>EPD Well</th>
+            <th>ES Cell Line</th>
+            <th>Symbol</th>
+            <th>MGI ID</th>
+            <th>Ensembl</th>
+            <th>Otter</th>
+            <th>Target Exon</th>
+            <th>Design ID</th>
+            <th>BAC</th>
+            <th>Allele Map</th>
+            <th>Cassette</th>
+            <th>Backbone</th>
+        </tr>
+    </thead>
+    <tbody>
+        [% SET row = 0 -%]
+        [% FOR key IN es_cell_keys %]
+            [% row = row + 1 -%]
+            <tr class="[% IF row % 2 %]rowodd[% ELSE %]roweven[% END %]">
+                <td>[% row %]</td>
+                <td>[% key %]</td>
+                <td>[% es_cells.${key}.es_cell_line %]</td>
+                <td>[% es_cells.${key}.symbol %]</td>
+                <td>[% es_cells.${key}.mgi_id %]</td>
+                <td>[% es_cells.${key}.ensembl %]</td>
+                <td>[% es_cells.${key}.otter %]</td>
+                <td>[% es_cells.${key}.target %]</td>
+                <td>[% es_cells.${key}.design %]</td>
+                <td>[% es_cells.${key}.bac %]</td>
+                <td>[% es_cells.${key}.allele %]</td>
+                <td>[% es_cells.${key}.cassette %]</td>
+                <td>[% es_cells.${key}.backbone %]</td>
+            </tr>
+        [% END %]
+    </tbody>
+</table>

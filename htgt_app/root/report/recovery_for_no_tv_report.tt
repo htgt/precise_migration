@@ -1,0 +1,5 @@
+Marker Symbol,Ensembl Gene,Vega Gene,Program,Priority count,Design Plate,Design Well, Phase, SP, TM, MGI_GT_Count,IGTC_GT_Count,Intvec Plate, Intvec Well, Rec Result, PC QC Result, Clone Selection
+[% FOR row IN rows %]
+[% row.MARKER_SYMBOL %],[% row.ENSEMBL_GENE_ID %],[% row.VEGA_GENE_ID %],[% row.PROGRAM %],[% row.PRIORITY_COUNT %],[% row.DESIGN_PLATE_NAME %],[% row.DESIGN_WELL_NAME %],[% row.PHASE %],[% row.SP %],[% row.TM %],[% row.MGI_GT_COUNT %],[% row.IGTC_GT_COUNT %],[% row.PCS_PLATE_NAME %],[% row.PCS_WELL_NAME %],[% row.REC_RESULT %],[% row.PC_QC_RESULT %],[% row.CLONE_SELECTION %]
+[% END %]                                                                                                                                                                                                                                                                                                                                                                  
+

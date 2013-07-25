@@ -1,0 +1,24 @@
+[% META title => "Show Alignment" -%]
+
+[% MACRO strand_name(strand) IF strand == 1; THEN; "forward strand"; ELSE; "reverse strand"; END %]
+
+<p>
+  Target: [% target %] (bases [% alignment.target_start %] to [% alignment.target_end %], [% strand_name( alignment.target_strand ) %]) <br />
+  Query:  [% query %] (bases [% alignment.query_start %] to [% alignment.query_end %], [% strand_name( alignment.query_strand ) %]) <br />
+  <a href="[% c.uri_for( "/newqc/view_result/${test_result.qc_run_id}/${test_result.plate_name}/${test_result.well_name}" ) %]">
+    Back to test result</a>
+</p>
+
+<pre>
+[% alignment_str %]
+</pre>
+
+[% FOR r IN alignment.align_regions -%]
+<h2>[% r.name %]</h2>
+<p>
+  Matched [% r.match_count %] of [% r.length %] bases.
+</p>
+<pre>
+[% r.format_alignment(72,18) %]
+</pre>
+[% END -%]

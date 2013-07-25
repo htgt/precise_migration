@@ -1,0 +1,357 @@
+[% IF fail %]
+  <p>Sorry, your search for [% user_text %] returned no results.</p>
+[% ELSE %]
+  [% IF warn %]
+    <p class="error">Warning: Conflicting annotation of sequence tags. Manual analysis required.</p>
+[% END %]
+
+    [% FOR gene_trap_well IN traps %]
+        [% IF style == 'EUCOMM' %]
+            <h2>
+        [% ELSE %]
+            <h4>
+        [% END %]
+        Gene Trap Well: [% gene_trap_well.gene_trap_well_name %] 
+        [% IF style == 'EUCOMM' %]
+            </h2>
+        [% ELSE %]
+            </h4>
+        [% END %]
+        
+        <br> <strong> ES Cell Strain: [% gene_trap_well.es_cell_line %] </strong>
+
+        [%# Changed this block so that traps without projects can be reported on %]
+        [% IF gene_trap_well.project_links %]
+            [% FOR project_link IN gene_trap_well.project_links %]
+                [% IF gene_trap_well.is_paired == 1 %]
+                    [% PROCESS pairedSplinkHits %]
+                    [% PROCESS pairedSplinkSequnces %]
+                [% ELSE %]
+                    [% splink = project_link.splink_orientation %]
+                    [% PROCESS singleSplinkHit %]
+                [% END %]
+            [% END %]
+        [% ELSE %]
+            [% IF gene_trap_well.is_paired == 1 %]
+                [% PROCESS pairedSplinkHits %]
+                [% PROCESS pairedSplinkSequnces %]
+            [% END %]
+        [% END %]
+    [% END %]
+
+
+  [% FOR trap IN traps %]
+    [% FOR splink IN splinks %]
+      [% IF splink == 5 %] [% s = 'five' %]
+      [% ELSE %]           [% s = 'three' %]
+      [% END %]
+      
+      <div class="page-section toggleable default-open">
+        [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">[%splink%]' Tag Alignment</h3>
+        [% ELSE -%]<h5 class="toggle-control">[%splink%]' Tag Alignment</h5>
+        [% END -%]
+        
+        <div class="toggle-content">
+          <h6>Tag Information</h6>
+          [% splink_seq = s _ '_prime_seq' %]
+          [% IF ! trap.${splink_seq} %]
+            <p class="warn">Sorry, there is no information for this sequence tag.</p>
+          [% ELSE %]
+            [% chr   = s _ '_prime_chr' %]
+            [% aln   = s _ '_prime_align_quality' %]
+            [% start = s _ '_prime_start' %]
+            [% end   = s _ '_prime_end' %]
+            <table class="report_table">
+                <tr>
+                    [% IF trap.${chr} %] <th>Chromosome</th><td>[% trap.${chr}  %]</td>
+                    [% ELSE %]           <th>Chromosome</th><td>Not Annotated</td>
+                    [% END %]
+                    
+                    [% IF trap.${aln} %] <th>Alignment Quality</th><td>[% trap.${aln} %]</td>
+                    [% ELSE %]           <th>Alignment Quality</th><td>Not Aligned</td>
+                    [% END %]
+                </tr>
+                <tr>
+                    [% IF trap.${start} %] <th>SPK Start</th><td> [% trap.${start}%]</td>
+                    [% ELSE %]             <th>SPK Start</th><td>Not Annotated</td>
+                    [% END %]
+
+                    [% IF trap.${end} %] <th>SPK End</th><td>[% trap.${end}%]</td>
+                    [% ELSE %]           <th>SPK End</th><td>Not Annotated</td>
+                    [% END %]
+                </tr>
+            </table>
+
+            <table class="report_table">
+                <tr><th>Tag Sequence</th><td>[% PROCESS seqSplit seq=trap.${splink_seq} %]</td></tr>
+            </table>
+            <a class="link" onclick="$('[% splink %]UCSC_BLAT').submit('Lucky'); return false;">View UCSC BLAT</a>
+            [% PROCESS singleBlatMeBaby %]
+          [% END %]
+        </div>
+      </div>
+    [% END %]
+  [% END %]
+
+  [% PROCESS frtSummary %]
+
+[% END %]
+
+[% BLOCK pairedBlatMeBaby %]
+    <form id="UCSC_BLAT" enctype="multipart/form-data" method="post" action="http://genome.ucsc.edu/cgi-bin/hgBlat" name="UCSC_BLAT" target="_blank">
+        <input type="hidden" name="org" value="Mouse" />
+        <input type="hidden" name="db" value="mm9" />
+        <input type="hidden" name="type" value="DNA" />
+        <input type="hidden" name="sort" value="query,score" />
+        <input type="hidden" name="output" value="hyperlink" />
+        <input type="hidden" name="userSeq" value="[% gene_trap_well.five_prime_seq %][% gene_trap_well.three_prime_seq %]"/>
+        <input type="hidden" name="Lucky" value="I'm feeling lucky" />
+    </form>
+[% END %]
+
+[% BLOCK singleSplink %]
+  <table class='report_table'>
+    <tr>
+      <th>Tag Sequence</th>
+      <td>[% PROCESS seqSplit seq=splinkSeq %]</td>
+    </tr>
+  </table>
+[% END %]
+
+[% BLOCK singleBlatMeBaby %]
+  <form id="[%splink%]UCSC_BLAT" enctype="multipart/form-data" method="post" action="http://genome.ucsc.edu/cgi-bin/hgBlat" name="UCSC_BLAT" target="_blank">
+      <input type="hidden" name="org" value="Mouse" />
+      <input type="hidden" name="db" value="mm9" />
+      <input type="hidden" name="type" value="DNA" />
+      <input type="hidden" name="sort" value="query,score" />
+      <input type="hidden" name="output" value="hyperlink" />
+      [% IF splink == 5 %]
+          <input type="hidden" name="userSeq" value="[% gene_trap_well.five_prime_seq %]"/>
+      [% ELSE %]
+          <input type="hidden" name="userSeq" value="[% gene_trap_well.three_prime_seq %]"/>
+      [% END %]
+      <input type="hidden" name="Lucky" value="I'm feeling lucky" />
+  </form>
+[% END %]
+
+[% BLOCK singleSplinkHit %]
+
+  <div class="page-section toggleable default-open">
+    [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">[% splink %]' Tag Alignment</h3>
+    [% ELSE -%]<h5 class="toggle-control">[% splink %]' Tag Alignment</h5>
+    [% END -%]
+    
+    <div class="toggle-content">
+      <h6>Tag Information</h6>
+
+      [% IF splink == 5 %]
+        <table class='report_table'>
+          <tr>
+            <th>Chromosome</th><td>[% gene_trap_well.five_prime_chr %]</td>
+            <th>Alignment Quality</th><td>[% gene_trap_well.five_prime_align_quality %]</td>
+          </tr>
+          <tr>
+            <th>SPK Start</th><td>[% gene_trap_well.five_prime_start %]</td>
+            <th>SPK End</th><td>[% gene_trap_well.five_prime_end %]</td>
+          </tr>
+        </table>
+
+        [% IF splink == 5 %] [% PROCESS singleSplink splinkSeq=gene_trap_well.five_prime_seq %]
+        [% ELSE %]           [% PROCESS singleSplink splinkSeq=gene_trap_well.three_prime_seq %]
+        [% END %]
+
+        <a class="link" onclick="$('[% splink %]UCSC_BLAT').submit('Lucky'); return false;">View UCSC BLAT</a>
+
+        [% PROCESS singleBlatMeBaby %]
+
+      [% ELSE %]
+        <table class='report_table'>
+          <tr>
+            <th>Chromosome</th><td>[% gene_trap_well.three_prime_chr %]</td>
+            <th>Alignment Quality</th><td>[% gene_trap_well.three_prime_align_quality %]</td>
+          </tr>
+          <tr>
+            <th>SPK Start</th><td>[% gene_trap_well.three_prime_start %]</td>
+            <th>SPK End</th><td>[% gene_trap_well.three_prime_end %]</td>
+          </tr>
+        </table>
+
+        [% IF splink == 5 %] [% PROCESS singleSplink splinkSeq=gene_trap_well.five_prime_seq %]
+        [% ELSE %]           [% PROCESS singleSplink splinkSeq=gene_trap_well.three_prime_seq %]    
+        [% END %]
+
+        <a class="link" onclick="$('[% splink %]UCSC_BLAT').submit('Lucky'); return false;">View UCSC BLAT</a>
+
+        [% PROCESS singleBlatMeBaby %]
+
+      [% END %]
+
+      <!-- THIS IS A NASTY BLOCK TO GET AT THE GENE -->
+      [% FOR project IN project_link.project %]
+        [% IF project.is_trap %]
+          [% PROCESS geneDump mgi_gene=project.mgi_gene %]
+        [% END %]
+      [% END %]
+    </div>
+  </div>
+
+[% END %]
+
+[% BLOCK pairedSplinkSequnces %]
+
+  <div class="page-section toggleable default-open">
+    [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">Sequence Tags</h3>
+    [% ELSE -%]<h5 class="toggle-control">Sequence Tags</h5>
+    [% END -%]
+    
+    <div class="toggle-content">
+      <table class='report_table'>
+        <tr>
+          <th>5' Sequence</th>
+          <td>[% PROCESS seqSplit seq = gene_trap_well.five_prime_seq %]</td>
+          <td class='nocol'></td>
+          <th>3' Sequence</th>
+          <td>[% PROCESS seqSplit seq = gene_trap_well.three_prime_seq %]</td>
+        </tr>
+      </table>
+
+      <a class="link" onclick="$('UCSC_BLAT').submit('Lucky'); return false;">View UCSC BLAT</a>
+
+      [% PROCESS pairedBlatMeBaby %]
+
+    </div>
+  </div>
+
+[% END %]
+
+[% BLOCK pairedSplinkHits %]
+
+  <div class="page-section toggleable default-open">
+    [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">Tag Alignment</h3>
+    [% ELSE -%]<h5 class="toggle-control">Tag Alignment</h5>
+    [% END -%]
+
+    <div class="toggle-content">
+      <h6>Tag Information</h6>
+      <table class='report_table '>
+        <tr>
+          <th>Alignment Confidence</th>
+          <td>[% gene_trap_well.three_prime_align_quality %]</td>
+          <th>Chromosome</th>
+          <td>[% gene_trap_well.five_prime_chr %]</td>
+        </tr>
+        <tr>
+          <th>5' SPK Start</th>
+          <td>[% gene_trap_well.five_prime_start %]</td>
+          <th>5' SPK End  </th>
+          <td>[% gene_trap_well.five_prime_end %]</td>
+        </tr>
+        <tr>
+          <th>3' SPK Start</th>
+          <td>[% gene_trap_well.three_prime_start %]</td>
+          <th>3' SPK End  </th>
+          <td>[% gene_trap_well.three_prime_end %]</td>
+        </tr>
+      </table>
+
+      <!-- THIS IS A NASTY BLOCK TO GET AT THE GENE -->
+      [% FOR project IN project_link.project %]
+        [% IF project.is_trap %]
+            [% PROCESS geneDump mgi_gene=project.mgi_gene %]
+        [% END %]
+      [% END %]
+    </div>
+  </div>
+
+[% END %]
+
+[% BLOCK frtSummary %]
+
+  [% IF gene_trap_well.frt_found %]
+    <div class="page-section toggleable default-open">
+      [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">FRT Summary</h3>
+      [% ELSE -%]<h5 class="toggle-control">FRT Summary</h5>
+      [% END -%]
+
+      <div class="toggle-content">
+        <table class='report_table'>
+          [% IF gene_trap_well.frt_lengths %]
+            <tr>
+              <th>FRT Lengths</th> 
+              <td>[% gene_trap_well.frt_lengths %]</td>
+            </tr>
+          [% END %]
+
+          [% IF gene_trap_well.frtp_seq %]
+            <tr>
+              <th>FRT Sequence</th>
+              <td>[% PROCESS seqSplit seq=gene_trap_well.frtp_seq %]</td>
+            </tr>
+          [% END %]
+        </table>
+      </div>
+    </div>
+  [% END %]
+
+[% END %]
+
+
+[% BLOCK seqSplit %]
+	[% i = 0 %]
+    <pre>[% WHILE i < seq.length() -%][% seq.substr( i , 60 ) _ "\n" %][% i = i + 60 %][% END -%]</pre>
+[% END %]
+
+[% BLOCK geneDump %]
+
+  <h6>Trapped Gene</h6>
+  <table class='report_table'>
+    <tr>
+      <th>Chromosome</th>
+      <td>[% mgi_gene.ensembl_gene_chromosome %]</td>
+      <th>Strand</th>
+      <td>[% mgi_gene.ensembl_gene_strand %]</td>
+    <tr>
+    </tr>
+      <th>Start Position</th>
+      <td>[% mgi_gene.ensembl_gene_start %]</td>
+      <th>End Position</th>
+      <td>[% mgi_gene.ensembl_gene_end %]</td>
+    </tr>
+  </table>
+
+  <table class="report_table">
+    <tr>
+      <th>Allele Name</th>
+      <td>[% mgi_gene.marker_symbol %]<sup>[% gene_trap_well.allele_superscript %]</sup></td>
+    </tr>
+    <tr>
+      <th>Gene Name</th>
+      <td>[% mgi_gene.marker_symbol %]</td>
+    </tr>
+    <tr>
+      <th>Gene Description</th>
+      <td>[% mgi_gene.marker_name %]</td>
+    </tr>
+    <tr>
+      <th>EnsEMBL ID</th>
+      <td>[% mgi_gene.ensembl_gene_id %]</td>
+    </tr>
+    [% IF mgi_gene.vega_gene_id %]
+      <tr>
+        <th>Vega ID</th>
+        <td>[% mgi_gene.vega_gene_id %]</td>
+      </tr>
+    [% END %]
+  </table>
+
+[% END %]
+
+
+<script type="text/javascript" charset="utf-8">
+  // Popup window code
+  function newPopup(url) {
+    popupWindow = window.open(
+      url,'popUpWindow','height=700,width=800,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+  }
+</script>
+

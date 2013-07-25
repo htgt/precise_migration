@@ -1,0 +1,1 @@
+{"provides":{"DBD::Oracle::GetInfo":{"version":"1.64","file":"DBD/Oracle/GetInfo.pm"},"DBD::Oracle::Object":{"version":"1.64","file":"DBD/Oracle/Object.pm"},"DBD::Oracle":{"version":"1.64","file":"DBD/Oracle.pm"}},"target":"DBD::Oracle","version":"1.64","name":"DBD::Oracle","dist":"DBD-Oracle-1.64","pathname":"P/PY/PYTHIAN/DBD-Oracle-1.64.tar.gz"}

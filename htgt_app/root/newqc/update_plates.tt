@@ -1,0 +1,21 @@
+[% META title = "Update QC Results on Existing Plates" -%]
+
+<form method="POST">
+  <fieldset>
+    <legend>Update plates for QC run [% qc_run.qc_run_id %]</legend>
+    <p>
+      Plates are normally named identically to the sequencing
+      project. If you wish to override this (for example, if the
+      sequencing project was incorrectly named), please enter the
+      desired plate names below.
+    </p>
+  [% FOR plate IN qc_run.plates -%]
+    [% SET rename_plate = "rename_plate_${plate}" -%]
+    [% SET rename_to = c.request.param( rename_plate ) -%]
+    <label for="[% rename_plate %]">Update plate [% plate %] as</label>
+    <input name="[% rename_plate %]" id="[% rename_plate %]" type="text" value="[% rename_to.length ? rename_to : plate %]" />
+     <br />
+  [% END -%]
+     <input name="update_plates" id="update_plates" type="submit" value="Update Plates" />
+  </fieldset>  
+</form>

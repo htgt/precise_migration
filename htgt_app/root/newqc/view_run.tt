@@ -1,0 +1,80 @@
+[% MACRO yes_no(bool) IF bool == 1; "yes"; ELSE; "no"; END; -%]
+[% MACRO pass_fail(bool) IF bool == 1; "pass"; ELSE; "fail"; END; -%]
+
+[%- IF fasta_files.size %]
+<script type="text/javascript" src="[% c.uri_for( "/static/javascript/tooltips.js" ) %]"></script>
+<script type="text/javascript"> 
+    //load tooltips for all last stage links
+    document.observe('dom:loaded', function() { 
+        new Tooltip($("fasta_file"), {mouseFollow: false});
+    }); 
+</script>
+[% END %]
+
+<h1>View QC Run [% qc_run.qc_run_id %]</h1>
+
+<p>
+  Sequencing project: [% qc_run.sequencing_project %]<br />
+  Template plate: <a href="[% c.uri_for( "/plate/view", { plate_id => qc_run.template_plate_id } ) %]">[% qc_run.template_plate.name %]</a><br />
+  Profile: [% qc_run.profile %]<br />
+  Date: [% qc_run.qc_run_date %]
+</p>
+<p>
+  <a href="[% c.uri_for( "/newqc/view_run/${qc_run.qc_run_id}", { view => "csvdl" } ) %]" class="button excel">Download Full Results</a>
+  <a href="[% c.uri_for( "/newqc/view_run_summary/${qc_run.qc_run_id}", { view => "csvdl" } ) %]" class="button excel">Download Summary Results</a>
+  <a href="[% c.uri_for( "/newqc/create_plates/${qc_run.qc_run_id}" ) %]" class="button link">Create Plates and Load QC</a>
+  <a href="[% c.uri_for( "/newqc/update_plates/${qc_run.qc_run_id}" ) %]" class="button link">Update Plates</a>
+  [%- IF fasta_exists %]
+    [%- IF fasta_files.size %]
+    [%# we only get the fasta_files array if its an es cell run and need to show many files. %]
+      <a href="#" id="fasta_file" class="button link" onclick="return false;" title="
+      [%- FOR f IN fasta_files -%]
+        <a href='[% c.uri_for( "/newqc/get_fasta_reads/${qc_run.qc_run_id}/${f}" ) %]'>Reads for [% f %]</a><br/>
+      [%- END -%]
+      ">Get Fasta Files</a>
+    [%- ELSE %]
+      <a href="[% c.uri_for( "/newqc/get_fasta_reads/${qc_run.qc_run_id}" ) %]" class="button link">Get Fasta File</a>
+    [%- END %]
+  [%- END %]
+</p>
+
+<table>
+  <thead class="fixedHeader">
+    <tr>
+        <th>Plate Name</th>
+        <th>Well Name</th>
+        <th>384 Well Name</th>
+        <th>Design Id</th>
+        <th>Expected Design Id</th>
+        <th>Marker Symbol</th>
+        <th>Pass?</th>
+        <th>Raw Score</th>
+        <th>Number of Primer Reads</th>
+        <th>Number of Valid Primers</th>
+        <th>Valid Primer Score</th>
+        <th>Valid Primers</th>
+        <th></th>
+    </tr>
+  </thead>
+  <tbody class="scrollContent">
+    [% FOR r IN results -%]
+    <tr>
+        <td>[% r.plate_name %]</td>
+        <td>[% r.well_name %]</td>
+        <td>[% r.well_name_384 %]</td>
+        <td>[% r.design_id %]</td>
+        <td>[% r.expected_design_id %]</td>
+        <td>[% r.marker_symbol %]</td>
+        <td>[% pass_fail( r.pass ) %]</td>
+        <td>[% r.score %]</td>
+        <td>[% r.num_reads %]</td>
+        <td>[% r.valid_primers.size %]</td>
+        <td>[% r.valid_primers_score %]</td>
+        <td>[% r.valid_primers.join( "," ) %]</td>
+        <td>
+           <a href="[% c.uri_for( "/newqc/view_result/${qc_run.qc_run_id}/${r.plate_name}/${r.well_name}" ) %]">Details</a>
+        </td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>

@@ -1,0 +1,58 @@
+<h1>QC Results List </h1>
+
+[% primer_names = {};
+  FOR result IN results;
+    FOR key IN result.primers.keys;
+      primer_names.$key = 1;
+    END;
+  END;
+  primer_names = primer_names.keys.sort;
+-%]
+
+<table>
+<thead>
+<tr>
+<td rowspan=2>QC test result id</td>
+<td rowspan=2>Pass status</td>
+<td rowspan=2>Construct Clone</td>
+<td rowspan=2>Engineered Seq Name</td>
+
+[% FOR primer_name IN primer_names -%]
+<td colspan="4">
+  [% primer_name %]
+</td>
+[% END %]
+</tr>
+
+<tr>
+[% FOR primer_name IN primer_names -%]
+<td>Primer status</td>
+<td>Read Length</td>
+<td>Align Length</td>
+<td>Loc status</td>
+[% END %]
+</tr>
+</thead>
+
+<tbody>
+
+[% FOR result IN results %]
+
+<tr>
+<td>[% result.qctest_result_id %]</td>
+<td><a href=[% c.uri_for('/qc/qctest_result_view',{'qctest_result_id'= result.qctest_result_id}) %]>[% result.pass_status %]</a></td>
+<td>[% result.construct_clone %]</td>
+<td>[% result.synthetic_vector %]</td>
+[% FOR primer_name IN primer_names;
+  this_primer = result.primers.$primer_name;
+-%]
+   <td>[% this_primer.primer_status %]</td>
+   <td>[% this_primer.read_length %]</td>
+   <td>[% this_primer.align_length %]</td>
+   <td>[% this_primer.loc_status %]</td>
+[% END %]
+</tr>
+[% END -%]
+</tbody>
+</table>
+

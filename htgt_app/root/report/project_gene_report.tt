@@ -1,0 +1,743 @@
+[% IF (c.check_user_roles('edit') || c.check_user_roles('design')) %]
+  <a href="[% c.uri_for('/gene/update/duplicate_project', { project_id = project_id }) %]" style="float:right;" class="button cog_go">Duplicate Project</a>
+[% END %]
+
+
+[% IF project %]
+    <p>
+        Program:
+        <span id="program" class="highlight">
+            [% 
+                SET sponsors = [];
+                IF project.is_eucomm; sponsors.push('EUCOMM'); END;
+                IF project.is_komp_csd; sponsors.push('KOMP'); END;
+                IF project.is_komp_regeneron; sponsors.push('KOMP:Regeneron'); END;
+                IF project.is_norcomm; sponsors.push('NorCOMM'); END;
+                IF project.is_mgp; sponsors.push('MGP'); END;
+                IF project.is_eutracc; sponsors.push('EUTRACC'); END;
+                IF project.is_eucomm_tools; sponsors.push('EUCOMM-Tools'); END;
+                IF project.is_eucomm_tools_cre; sponsors.push('EUCOMM-Tools-Cre'); END;
+                IF project.is_switch; sponsors.push('SWITCH'); END;
+                IF project.is_tpp; sponsors.push('TPP'); END;
+                IF project.is_mgp_bespoke; sponsors.push('MGP-Bespoke'); END;
+                sponsors.join(' / ');
+            %]
+        </span>
+        
+        [% UNLESS project.is_komp_regeneron %]
+            &nbsp;&nbsp;Pipeline Progress: <span id="project_status" class="highlight">[% project.status.name %]</span>
+        [% END %]
+        [% IF c.check_user_roles( 'edit' ) %]
+            &nbsp;&nbsp;Publicly Reported: <span id="publicly_reported" class="highlight">[% project.publicly_reported.description %]</span>
+        [% END %]
+    </p>
+    [% IF c.check_user_roles( 'edit' ) && show_redesign_toggle %]
+    <p>
+      <a href="[% c.uri_for('/gene/redesign/reset_status_redesign_requested', { project_id = project_id }) %]" style="float:right;" class="button cog_go">Reset gene to redesign</a>
+    </p>
+    [% END %]
+    
+    [% IF c.check_user_roles("design") || c.check_user_roles("edit") %]
+        <script type="text/javascript">
+            new Ajax.InPlaceCollectionEditor(
+               'project_status', 
+               '[% c.uri_for('/gene/update/update_project_status') %]', 
+                {
+                    loadCollectionURL: '[% c.uri_for('/gene/get_project_status_list') %]?project_id=[% project.project_id %]',
+                    ajaxOptions: { method: 'post' },
+                    callback: function(form, value) { return 'project_id=[% project.project_id %]&name='+encodeURIComponent(value) }
+                }
+            );
+            
+            new Ajax.InPlaceCollectionEditor(
+              'program',
+              '[% c.uri_for('/gene/update/update_program') %]',
+              {
+                  loadCollectionURL: '[% c.uri_for('/gene/get_program_list') %]',
+                  ajaxOptions: { method: 'post' },
+                  callback: function(form, value) { return 'project_id=[% project.project_id %]&name='+encodeURIComponent(value) }
+              }
+            );
+            
+            new Ajax.InPlaceCollectionEditor(
+              'publicly_reported',
+              '[% c.uri_for('/gene/update/update_project_publicly_reported') %]',
+              {
+                  loadCollectionURL: '[% c.uri_for('/gene/get_publicly_reported_list') %]',
+                  ajaxOptions: { method: 'post' },
+                  callback: function(form, value) { return 'project_id=[% project.project_id %]&name='+encodeURIComponent(value) }
+              }
+            );
+        </script>
+        
+    [% END %]
+    
+    [% IF ! project.is_komp_regeneron %]
+        
+        [%
+            SET progress = {};
+
+            ## Pre-project checks...
+
+            IF project.status.order_by > stage_upper_threshold.pre;
+                progress.pre = 'normal';
+            ELSE;
+                progress.pre = project.status.status_type;
+            END;
+
+            ## Design/Vector/Cell/Mouse checks...
+
+            FOR i IN [ 'designs', 'vectors', 'cells', 'mice' ];
+                IF project.status.order_by > stage_upper_threshold.${i};
+                    progress.${i} = 'normal';
+                ELSE;
+                    IF project.status.order_by >= stage_lower_threshold.${i};
+                        progress.${i} = project.status.status_type;
+                    ELSE;
+                        progress.${i} = 'incomp';
+                    END;
+                END;
+            END;
+        %]
+
+        <table id="pipeline_progress">
+            <tr class="nocol">
+                <td><strong>Pipeline Stage:</strong></td>
+                <td>Pre-pipeline</td>
+                <td>Designs</td>
+                <td>Vectors</td>
+                <td>ES Cells</td>
+                <td>Mice</td>
+            </tr>
+            <tr>
+                [% SET pipeline_stages = [ 'pre', 'designs', 'vectors', 'cells', 'mice' ] %]
+                <td class="start_[% progress.${ pipeline_stages.0 } %]"></td>
+                [% FOR i IN [ 0 .. pipeline_stages.max ] %]
+                    [% IF i == pipeline_stages.max %]
+                        <td class="end_[% progress.${pipeline_stages.${i}} %] [% progress.${pipeline_stages.${i}} %]" width="[% 100 / ( pipeline_stages.max + 1 ) %]%">
+                            [% IF project.status.stage == pipeline_stages.${i} %]
+                                <a href="[% c.uri_for('/report/pipeline_status_explanations') %]#[% project.status.code %]">[% project.status.name %]</a>
+                            [% END %]
+                        </td>
+                    [% ELSE %]
+                        [% SET j = i + 1 %]
+                        <td class="[% progress.${pipeline_stages.${i}} %] [% progress.${pipeline_stages.${i}} %]_[% progress.${pipeline_stages.${j}} %]" width="[% 100 / ( pipeline_stages.max + 1 ) %]%">
+                            [% IF project.status.stage == pipeline_stages.${i} %]
+                                <a href="[% c.uri_for('/report/pipeline_status_explanations') %]#[% project.status.code %]">[% project.status.name %]</a>
+                            [% END %]
+                        </td>
+                    [% END %]
+                [% END %]
+            </tr>
+        </table>
+        
+    [% END %]
+    
+[% END %]
+
+<div class="clearbig"></div>
+
+<!--
+  //
+  // Gene Recovery History
+  //
+-->
+[%- IF recovery_history %]
+    <div class="page-section toggleable [%- IF recovery_history.first.state != 'none' %] default-open[% END %]">
+    [%- IF style == 'EUCOMM' -%]
+      <h3 class="toggle-control">Recovery</h3>
+    [%- ELSE %]
+      <h5 class="toggle-control">Recovery</h5>
+    [%- END %]        
+        <div class="toggle-content">
+          <p>
+            <em>Note that the recovery status is for the <strong>gene</strong>, not necessarily for this project.</em>
+          </p>
+          <table id="recovery_history">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+            [%- FOR h IN recovery_history %]
+              [%- UNLESS h.state == 'acr-c' %]
+              <tr>
+                <td>[% h.updated.ymd %]</td>
+                <td>[% h.desc %]</td>
+                <td>[% h.note %]</td>
+              </tr>
+              [%- END %]
+            [%- END %]
+            </tbody>
+          </table>
+        </div>
+    </div>
+[% END %]
+
+<!--
+  //
+  // Design Tools
+  //
+-->
+
+[% IF ( (c.check_user_roles("design")) OR (c.check_user_roles("edit")) )  %]
+    <div class="page-section toggleable">
+        [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">Design Tools</h3>
+        [% ELSE -%]<h5 class="toggle-control">Design Tools</h5>
+        [% END -%]
+        
+        <div class="toggle-content">
+            <fieldset class='toggleable'>
+                <legend>Gene Priority</legend>
+                <div id="priority_div">
+                    [% INCLUDE 'gene/_gene_priority_table.tt' %]
+                </div>
+            </fieldset>
+            <fieldset class='toggleable'>
+                <legend>Gene Comment</legend>
+                <div id="comment_div">
+                    [% INCLUDE 'gene/_gene_comment_table.tt' %]
+                </div>
+            </fieldset>
+            <div class="clearbig"></div>
+            <fieldset class='toggleable'>
+                <legend>Designs</legend>
+                <div id="design_div">
+                    [% INCLUDE 'gene/_design_table.tt' %]
+                </div>
+            </fieldset>
+        </div>
+    </div>
+[% END %]
+
+<!--
+    //
+    // Mice
+    //
+-->
+
+[% IF project.status.id == 81 %]
+<div class="page-section toggleable default-open">
+    
+    [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">Mice</h3>
+    [% ELSE -%]<h5 class="toggle-control">Mice</h5>
+    [% END -%]
+    
+    <div class="toggle-content">
+        [% IF project.status.id == 81 %]
+            [% IF project.is_eucomm %]
+                <a class="button report_go" href="http://www.emmanet.org/mutant_types.php?keyword=[%mgi_gene.marker_symbol%]">Register interest in a mouse</a>
+            [% ELSIF project.is_komp_csd %]
+                <a class="button report_go" href="mailto:mouseinterest@sanger.ac.uk?subject=Interest in Mouse for [%mgi_gene.marker_symbol%]">Register interest in a mouse</a>
+            [% END %]
+            <br />
+            <br />
+        [% END %]  
+        
+        [% IF alleles.size > 0 %]
+    
+            [% SET es_cell = alleles.first %]
+            <table id="mouse_cell_clones">
+                <tr>
+                    <th>Gene</th>
+                    <th>Genbank File</th>
+                </tr>
+                <tr>
+                    <td>[% mgi_gene.marker_symbol FILTER link_mgi() %]</td>
+                    <td style="text-align:center;"><a href="[% c.uri_for('/qc/seq_view_file', { design_id=es_cell.design_instance.design_id, cassette=es_cell.cassette }) %]" target="_blank" class="report">view</a></td>
+                </tr>
+            </table>
+        [% ELSE %]
+            <p><span class="no_data">None Available</span></p>
+        [% END %]
+          
+    </div>
+    
+</div>
+[% END %]
+
+<!--
+    //
+    // ES Cells
+    //
+-->
+
+<div class="page-section toggleable default-open">
+    [% SET stage = 'es cells' %]
+
+    [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">ES Cell Clones</h3>
+    [% ELSE -%]<h5 class="toggle-control">ES Cell Clones</h5>
+    [% END -%]
+
+    
+    
+    <div class="toggle-content">
+
+        [% IF alleles.size > 0 %]
+    
+            [% SET es_cell = alleles.first %]
+            <table id="es_cell_clones">
+                <tr>
+                    <th>Order</th>
+                    <th>Gene</th>
+                    [% IF es_cell.pgdgr_plate_name AND es_cell.pgdgr_well_name %]
+                    <th>Targeting Vector</th>
+                    [% END %]
+
+                    <th># Colonies Screened</th>
+                    [% IF conditional_allele_count > 0 %]<th># Knockout First Clones</th>[% END %]
+                    [% IF targeted_trap_count > 0 %]<th># Targeted Non-conditional Clones</th>[% END %]
+                    [% IF deletion_allele_count > 0 %]<th># Deletion Clones</th>[% END %]
+                    [% IF ( hzm_date OR csd_date ) AND c.check_user_roles("edit") %]
+                        <th>Ship Date</th>
+                    [% END %]
+                    
+                </tr>
+                <tr>
+                    [% PROCESS order_button plate_well = undef %]
+                    <td>[% mgi_gene.marker_symbol FILTER link_mgi() %]</td>
+                    [% IF es_cell.pgdgr_plate_name AND es_cell.pgdgr_well_name %]
+                        [% SET link_url = c.uri_for( '/plate/view', { plate_name=es_cell.pgdgr_plate_name } ) %]
+                        [% IF style == 'EUCOMM' %]
+                            [% link_url = 'http://www.sanger.ac.uk/htgt/plate/view?plate_name=' _ es_cell.pgdgr_plate_name %]
+                        [% END %]
+                        <td><a href="[% link_url %]" >[% es_cell.pgdgr_plate_name %]_[% es_cell.pgdgr_well_name %]</a></td>
+                    [% END %]
+
+                    <td>[% epd_count %]</td>
+                    [% IF conditional_allele_count > 0 %]<td>[% conditional_allele_count %]     <a href="[% c.uri_for('/qc/seq_view_file', { design_id=es_cell.design_instance.design_id, cassette=es_cell.cassette }) %]" target="_blank" class="report">GenBank File</a></td>[% END %]
+                    [% IF targeted_trap_count > 0 %]<td>[% targeted_trap_count %]   <a href="[% c.uri_for('/qc/seq_view_file', { design_id=es_cell.design_instance.design_id, cassette=es_cell.cassette, targeted_trap=1 }) %]" target="_blank" class="report">GenBank File</a></td>[% END %]
+                    [% IF deletion_allele_count > 0 %]<td>[% deletion_allele_count %]   <a href="[% c.uri_for('/qc/seq_view_file', { design_id=es_cell.design_instance.design_id, cassette=es_cell.cassette, targeted_trap=1 }) %]" target="_blank" class="report">GenBank File</a></td>[% END %]                    
+                    [% IF ( hzm_date OR csd_date ) AND c.check_user_roles("edit") %]
+                    <td>
+                        [% IF hzm_date %][% hzm_date %]&nbsp;(hzm)[% END %]
+                        [% IF csd_date %][% csd_date %]&nbsp;(csd)[% END %]
+                    </td>
+                    [% END %]
+                    
+                </tr>
+            </table>
+
+            [% IF conditional_allele_count > 0 %]
+            <fieldset class="toggleable">
+              [% IF project.is_eutracc %]
+                <legend>ES Cell Clones</legend>
+              [% ELSE %]
+                <legend>ES Cell Clones With Conditional Potential</legend>
+              [% END %]
+                <div id="es_cell_div">
+                    [% INCLUDE 'gene/_es_cell_table.tt' %]
+                </div>
+            </fieldset>
+              [% UNLESS project.is_eutracc or project.cassette.match('FFL') %]
+                [% SET draw_allele_map = 'true' %]
+                [% PROCESS 'report/_construct_image.tt' image_seq_features= vector_seq_features %]
+              [% END %]
+            [% END %]
+
+            [% IF targeted_trap_count > 0 %]
+            <fieldset class="toggleable">
+                <legend>ES Cell Clones Without Conditional Potential</legend>
+                <div id="es_cell_div">
+                    [% INCLUDE 'gene/_targeted_trap_es_cell_table.tt' %]
+                </div>
+            </fieldset>
+              [% UNLESS project.is_eutracc or project.cassette.match('FFL') %]
+                [% SET draw_allele_map = 'true' %]
+                [% SET draw_targeted_trap = 'true' %]
+                [% PROCESS 'report/_construct_image.tt' image_seq_features=targeted_trap_vector_seq_features %]   
+                <p>
+                  <strong>Note:</strong> Mutations of type &quot;Targeted Non-conditional&quot; are correctly targeted 
+                  clones that have lost the 3' loxP site. These mutations cannot be converted into conditional alleles.
+                </p>
+                [% SET draw_targeted_trap = undef %]
+              [% END %]
+            [% END %]
+            
+            [% IF deletion_allele_count > 0 %]
+            <fieldset class="toggleable">
+                <legend>ES Cell Clones for Deletion alleles</legend>
+                <div id="es_cell_div">
+                    [% INCLUDE 'gene/_deletion_es_cell_table.tt' %]
+                </div>
+            </fieldset>
+              [% UNLESS project.is_eutracc or project.cassette.match('FFL') %]
+                [% SET draw_allele_map = 'true' %]
+                [% SET draw_targeted_trap = 'true' %]
+                [% PROCESS 'report/_construct_image.tt' image_seq_features=targeted_trap_vector_seq_features %]  
+                [% SET draw_targeted_trap = undef %]
+              [% END %]
+            [% END %]
+            
+            <div class="clearbig"></div>
+
+            <div class="clearbig"></div>
+
+            <h5>LR PCR Genotyping Primers</h5>
+            <table>
+                [% IF feature_hash.GF1 %]<tr><th>5' Gene Specific (GF1)</th><td class="seqstr">[% feature_hash.GF1.seq.seq %]</td></tr>[% END %]
+                [% IF feature_hash.GF2 %]<tr><th>5' Gene Specific (GF2)</th><td class="seqstr">[% feature_hash.GF2.seq.seq %]</td></tr>[% END %]
+                [% IF feature_hash.GF3 %]<tr><th>5' Gene Specific (GF3)</th><td class="seqstr">[% feature_hash.GF3.seq.seq %]</td></tr>[% END %]
+                [% IF feature_hash.GF4 %]<tr><th>5' Gene Specific (GF4)</th><td class="seqstr">[% feature_hash.GF4.seq.seq %]</td></tr>[% END %]
+                [% IF feature_hash.LAR3 %]<tr><th>5' Universal (LAR3)</th><td class="seqstr">[% feature_hash.LAR3.seq.seq %]</td></tr>[% END %]
+                [% IF feature_hash.RAF5 %]<tr><th>3' Universal (RAF5)</th><td class="seqstr">[% feature_hash.RAF5.seq.seq %]</td></tr>[% END %]
+                [% IF feature_hash.PNF %]<tr><th>3' Universal (PNF)</th><td class="seqstr">[% feature_hash.PNF.seq.seq %]</td></tr>[% END %]
+                <!--
+                  TODO: Remove the hard-coded hack below and get the R2R primer seq annotated onto the GenBank file...
+                [% IF feature_hash.R2R %]<tr><th>3' Universal (R2R)</th><td class="seqstr">[% feature_hash.R2R.seq.seq %]</td></tr>[% END %]
+                -->
+                <tr><th>3' Universal (R2R)</th><td class="seqstr">TCTATAGTCGCAGTAGGCGG</td></tr>
+                [% IF feature_hash.GR1 %]<tr><th>3' Gene Specific (GR1)</th><td class="seqstr">[% feature_hash.GR1.seq.seq %]</td></tr>[% END %]
+                [% IF feature_hash.GR2 %]<tr><th>3' Gene Specific (GR2)</th><td class="seqstr">[% feature_hash.GR2.seq.seq %]</td></tr>[% END %]
+                [% IF feature_hash.GR3 %]<tr><th>3' Gene Specific (GR3)</th><td class="seqstr">[% feature_hash.GR3.seq.seq %]</td></tr>[% END %]
+                [% IF feature_hash.GR4 %]<tr><th>3' Gene Specific (GR4)</th><td class="seqstr">[% feature_hash.GR4.seq.seq %]</td></tr>[% END %]
+            </table>
+        [% ELSE %]
+            <p><span class="no_data">None Available</span></p>
+        [% END %]
+
+    </div>
+</div>
+
+[% UNLESS project.is_eucomm and project.esc_only %]
+<!--
+    //
+    // Targeting Vectors
+    //
+-->
+
+<div class="page-section toggleable default-open">
+    [% SET stage = 'targeting vectors' %]
+    [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">Targeting Vector</h3>
+    [% ELSE -%]<h5 class="toggle-control">Targeting Vector</h5>
+    [% END -%]
+
+    <div class="toggle-content">
+
+        [% IF 
+                (project.targeting_vector_id AND project.targvec_distribute == 'yes')
+            OR  ( project.targeting_vector_id AND ( project.epd_distribute AND project.epd_distribute > 0 ) )
+        %]
+            <table id="targeting_vectors">
+                <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Gene</th>
+                            <th>Design ID</th>
+                            <th>Vector Type</th>
+                           <th>After Flp/Cre</th>
+                            <th>Targeting Vector</th>
+                            <th>Vector Strain</th>
+                            <th>Floxed Exon</th>
+                            <th>Cassette</th>
+                            <th>Backbone</th>
+                            <th>Genbank File</th>
+                        </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        [% PROCESS order_button plate_well = project.targvec_plate_name _ '_' _ project.targvec_well_name %]
+                        <td>[% mgi_gene.marker_symbol FILTER link_mgi() %]</td>
+                        <td><a href="[% c.uri_for('/design/designedit/refresh_design',{ design_id = project.design_id }) %]">[% project.design_id %]</a>&nbsp;([% project.design_plate_name %]_[% project.design_well_name %])</td>
+                    <td>[% PROCESS design_type %]</td>
+                    <td>[% PROCESS design_subtype %]</td>
+                        <td>
+                            [% SET link_url = c.uri_for( '/plate/view', { plate_name=project.targvec_plate_name } ) %]
+                            [% IF style == 'EUCOMM' %][% link_url = 'http://www.sanger.ac.uk/htgt/plate/view?plate_name=' _ project.targvec_plate_name %][% END %]
+                            <a href="[% link_url %]" >[% project.targvec_plate_name %]_[% project.targvec_well_name %]</a>
+                        </td>
+                        <td>
+                            [% IF project.bac.match('129') %]129S7[% ELSE %]C57Bl/6J[% END %]
+                        </td>
+                        <td>
+                            [% IF design_start_exon == design_end_exon %]
+                                <a target="_blank" href="http://www.ensembl.org/Mus_musculus/contigview?l=[% design_chr_name %]:[% design_start_pos %]-[% design_end_pos %]&bottom=%7Cmanaged_das_KO_vectors%3Aon">[% design_start_exon %]</a>
+                            [% ELSE %]
+                                <a target="_blank" href="http://www.ensembl.org/Mus_musculus/contigview?l=[% design_chr_name %]:[% design_start_pos %]-[% design_end_pos %]&bottom=%7Cmanaged_das_KO_vectors%3Aon">[% design_start_exon %]-[% design_end_exon %]</a>
+                            [% END %]
+                        </td>
+                        <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]">[% project.cassette %]</a></td>
+                        <td><a href="[% c.uri_for('/backbones') %]#[% project.backbone %]">[% project.backbone %]</a></td>
+                        <td style="text-align:center;"><a href="[% c.uri_for('/qc/seq_view_file', { design_id=project.design_id, cassette=project.cassette, backbone=project.backbone }) %]" target="_blank" class="report">view</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="clearbig"></div>
+            
+            [% UNLESS project.is_eutracc or project.cassette.match('FFL') %]
+              [% IF vector_seq_features %]
+                [% SET draw_allele_map = '' %]
+                [% PROCESS 'report/_construct_image.tt' image_seq_features=vector_seq_features %]
+              [% END %]
+            [% END %]
+        [% ELSE %]
+            <p><span class="no_data">None Available</span></p>
+        [% END %]
+
+    </div>
+</div>
+
+<!--
+    //
+    // Intermediate Vectors
+    //
+-->
+
+<div class="page-section toggleable default-open">
+    [% SET stage = 'intermediate vectors' %]
+    [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">Intermediate Vector</h3>
+    [% ELSE -%]<h5 class="toggle-control">Intermediate Vector</h5>
+    [% END -%]
+    
+    <div class="toggle-content">
+        
+        [% IF 
+             ( project.intermediate_vector_id AND project.intvec_distribute == 'yes' ) 
+          OR ( project.targeting_vector_id AND project.targvec_distribute == 'yes' )
+          OR ( project.intermediate_vector_id AND ( project.epd_distribute AND project.epd_distribute > 0 ) )
+        %]
+            <table id="intermediate_vectors">
+                <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Gene</th>
+                            <th>Design ID</th>
+                            <th>Vector Type</th>
+                            <th>Intermediate Vector</th>
+                            <th>Vector Strain</th>
+                            <th>Floxed Exon</th>
+                            <th>Genbank File</th>
+                        </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        [% PROCESS order_button plate_well = project.intvec_plate_name _ '_' _ project.intvec_well_name %]
+                        <td>[% mgi_gene.marker_symbol FILTER link_mgi() %]</td>
+                        <td><a href="[% c.uri_for('/design/designedit/refresh_design',{ design_id = project.design_id }) %]">[% project.design_id %]</a>&nbsp;([% project.design_plate_name %]_[% project.design_well_name %])</td>
+                        <td>
+                            [% PROCESS design_type %]
+                        </td>
+                        <td>
+                            [% SET link_url = c.uri_for( '/plate/view', { plate_name=project.intvec_plate_name } ) %]
+                            [% IF style == 'EUCOMM' %][% link_url = 'http://www.sanger.ac.uk/htgt/plate/view?plate_name=' _ project.intvec_plate_name %][% END %]
+                            <a href="[% link_url %]" >[% project.intvec_plate_name %]_[% project.intvec_well_name %]</a>
+                        </td>
+                        <td>
+                            [% IF project.bac.match('129') %]129S7[% ELSE %]C57Bl/6J[% END %]
+                        </td>
+                        <td>
+                            [% IF design_start_exon == design_end_exon %]
+                                <a target="_blank" href="http://www.ensembl.org/Mus_musculus/contigview?l=[% design_chr_name %]:[% design_start_pos %]-[% design_end_pos %]&bottom=%7Cmanaged_das_KO_vectors%3Aon">[% design_start_exon %]</a>
+                            [% ELSE %]
+                                <a target="_blank" href="http://www.ensembl.org/Mus_musculus/contigview?l=[% design_chr_name %]:[% design_start_pos %]-[% design_end_pos %]&bottom=%7Cmanaged_das_KO_vectors%3Aon">[% design_start_exon %]-[% design_end_exon %]</a>
+                            [% END %]
+                        </td>
+                        <td style="text-align:center;"><a href="[% c.uri_for('/qc/seq_view_file', { design_id=project.design_id,backbone='R3R4_pBR_amp' }) %]" target="_blank" class="report">view</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        [% ELSE %]
+            <p><span class="no_data">None Available</span></p>
+        [% END %]
+        
+    </div>
+</div>
+[% END %]
+
+<!--
+    //
+    // Design Information
+    //
+-->
+
+[% IF 
+    project.targvec_distribute != 'yes' AND project.is_komp_regeneron != 1 
+    AND ! ( project.targeting_vector_id AND ( project.epd_distribute AND project.epd_distribute > 0 ) )
+%]
+    
+    <div class="page-section toggleable default-open">
+        [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">Design</h3>
+        [% ELSE -%]<h5 class="toggle-control">Design</h5>
+        [% END -%]
+        
+        <div class="toggle-content">
+            [% IF project.design_id %]    
+                <table id="designs">
+                    <thead>
+                            <tr>
+                                <th>Gene</th>
+                                <th>Design ID</th>
+                                <th>Design Type</th>
+                                <th>Vector Strain</th>
+                                <th>Floxed Exon</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>[% mgi_gene.marker_symbol FILTER link_mgi() %]</td>
+                            <td><a href="[% c.uri_for('/design/designedit/refresh_design',{ design_id = project.design_id }) %]">[% project.design_id %]</a>&nbsp;([% project.design_plate_name %]_[% project.design_well_name %])</td>
+                            <td>
+                                [% PROCESS design_type %]
+                            </td>
+                            <td>
+                                [% IF design_bac %]
+                                    [% IF design_bac.match('129') %]129S7[% ELSE %]C57Bl/6J[% END %]
+                                [% ELSE %]
+                                    [% IF project.bac.match('129') %]129S7[% ELSE %]C57Bl/6J[% END %]
+                                [% END %]
+                            </td>
+                            <td>
+                                [% IF design_chr_name AND design_start_pos AND design_end_pos %]
+                                    [% IF design_start_exon == design_end_exon %]
+                                        <a target="_blank" href="http://www.ensembl.org/Mus_musculus/contigview?l=[% design_chr_name %]:[% design_start_pos %]-[% design_end_pos %]&bottom=%7Cmanaged_das_KO_vectors%3Aon">[% design_start_exon %]</a>
+                                    [% ELSE %]
+                                        <a target="_blank" href="http://www.ensembl.org/Mus_musculus/contigview?l=[% design_chr_name %]:[% design_start_pos %]-[% design_end_pos %]&bottom=%7Cmanaged_das_KO_vectors%3Aon">[% design_start_exon %]-[% design_end_exon %]</a>
+                                    [% END %]
+                                [% ELSE %]
+                                    [% IF design_start_exon == design_end_exon %]
+                                        <a target="_blank" href="http://www.ensembl.org/Mus_musculus/contigview?exon=[% design_start_exon %]&bottom=%7Cmanaged_das_KO_vectors%3Aon">[% design_start_exon %]</a>
+                                    [% ELSE %]
+                                        <a target="_blank" href="http://www.ensembl.org/Mus_musculus/contigview?exon=[% design_start_exon %]&bottom=%7Cmanaged_das_KO_vectors%3Aon">[% design_start_exon %]</a>-
+                                        <a target="_blank" href="http://www.ensembl.org/Mus_musculus/contigview?exon=[% design_end_exon %]&bottom=%7Cmanaged_das_KO_vectors%3Aon">[% design_end_exon %]</a>
+                                    [% END %]
+                                [% END %]
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            [% ELSE %]
+                <p><span class="no_data">None Available</span></p>
+            [% END %]
+        </div>
+    </div>
+[% END %]
+
+<!--
+   //
+   // Tool Box
+   //
+-->
+[% IF c.check_user_roles('edit') %]
+<div class="page-section toggleable default-open">
+  [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">Toolbox</h3>
+  [% ELSE -%]<h5 class="toggle-control">Toolbox</h5>
+  [% END -%]
+  
+  <div class="toggle-content">
+    <fieldset class="toggleable">
+      <legend>Short Range Primer Tool</legend>
+      <div id="short_range_primer_div">
+        [% INCLUDE 'design/_short_range_primer_table.tt' %]
+      </div>
+    </fieldset>
+    
+  </div>
+</div>
+[% END %]
+<!--
+  //
+  // Useful Information
+  //
+-->
+
+<div class="page-section toggleable default-open">
+  [% IF style == 'EUCOMM' -%]<h3 class="toggle-control">Useful Information</h3>
+  [% ELSE -%]<h5 class="toggle-control">Useful Information</h5>
+  [% END -%]
+  
+  <div class="toggle-content">
+    <table id="project_useful_information" class="noborder">
+      <tr class="nocol">
+        <td>
+
+            <ul class="nobullet">
+              <li><strong>Links:</strong></li>
+              <li>
+                <ul class="nobullet">
+                  [% IF project.is_eucomm %]
+                    [% IF style == 'EUCOMM' -%]
+                        <li><a class="link" href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=[% project.project_id %]">High Throughput Gene Targeting (Sanger)</a></li>
+                    [% ELSE -%]
+                        <li><a class="link" href="http://www.eucomm.org/htgt/report/gene_report?project_id=[% project.project_id %]">EUCOMM</a></li>
+                    [% END -%]
+                    <li><a class="link" href="http://www.eummcr.org/order.php">EUCOMM repository</a></li>
+                  [% END %]
+                  [% IF project.is_komp_csd OR project.is_komp_regeneron %]
+                    <li><a class="link" href="http://www.knockoutmouse.org/genedetails/[% project.mgi_gene.mgi_accession_id %]">KOMP project</a></li>
+                    <li><a class="link" href="http://www.komp.org">KOMP repository</a></li>
+                  [% END %]
+                  [% IF project.is_norcomm %]
+                    <li><a class="link" href="http://norcomm.phenogenomics.ca/">NorCOMM</a></li>
+                  [% END %]
+                  [% IF project.is_mgp %]
+                    <li><a class="link" href="http://www.sanger.ac.uk/MGPStatusViewer/view_main.do">WTSI MGP status viewer</a></li>
+                  [% END %]
+                  <li><a class="link" href="http://www.sanger.ac.uk/mouseportal/search/[% mgi_gene.mgi_accession_id %]">WTSI Mouse Resources Portal</a></li>
+                </ul>
+              </li>
+            </ul>
+
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!--
+    //
+    // Support Functions
+    //
+-->
+
+<script type="text/javascript" charset="utf-8">
+    //<![CDATA[
+        loadToggleable();
+    //]]>
+</script>
+
+[% BLOCK order_button %]
+    [% SET email = 'htgt@sanger.ac.uk' %]
+    [% IF project.is_eucomm %]
+        [% url = 'http://www.eummcr.org/order.php' %]
+        [% email = 'eucomm.distributor@helmholtz-muenchen.de' %]
+    [% ELSIF project.is_komp_csd %]
+      [% IF stage == 'es cells' %]
+        [% email = 'orders@komp.org' %]
+        [% url = 'http://www.komp.org/geneinfo.php?project=CSD' _ project.project_id %] 
+      [% ELSE %]
+        [% email = 'komporders@chori.org' %]
+      [% END %]
+    [% END %]
+    [% SET subject = 'Order request: ' _ stage _ ' for ' _ mgi_gene.marker_symbol %]
+    [% IF plate_well %][% subject = subject _ ' (' _ plate_well _ ')' %][% END %]
+    [% IF ( project.is_komp_csd && stage == 'es cells' ) || project.is_eucomm %]
+      <td align="center" class="standout"><a href="[% url %]" target="_blank"><img src="/icons/silk/basket_go.png" alt="order" /></a></td>
+    [% ELSE %]
+      <td align="center" class="standout"><a href="mailto:[% email %]?subject=[% subject %]"><img src="/icons/silk/basket_go.png" alt="order" /></a></td>
+    [% END %]
+[% END %]
+
+[% BLOCK design_type %]
+    [% IF project.design.design_type.search('Del') %]
+        Deletion
+    [% ELSIF project.design.design_type.search('Ins') %]
+        Insertion
+    [% ELSE %]
+        [% # Assume a frameshift knockout %]
+        [% IF project.design.subtype == 'domain' %] Knockout First
+        [% ELSE %] Knockout First
+        [% END %]
+    [% END %]
+[% END %]
+
+[% BLOCK design_subtype %]
+    [% # Assume a frameshift knockout %]
+    [% IF project.design.subtype == 'domain' %] Domain Disruption
+    [% ELSE %] Frameshift
+    [% END %]
+[% END %]

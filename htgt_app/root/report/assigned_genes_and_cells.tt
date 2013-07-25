@@ -1,0 +1,139 @@
+[% META title = 'ES Cells, Assignments and Distribution Centres' %]
+
+<p>
+    This report will generate a list of all genes already assigned to distribution centers
+    along with details of their specific assigned clones.
+</p>
+
+<table>
+    <tr class='nocol'>
+    <td><a class='button load' onclick='fetchUnassigned()'>Get Unassigned Genes</a></td>
+    <td><a class='button csv' href="[% c.uri_for('/report/_unassigned_genes_table') %]?view=csvdl&file=unassigned_gene_list.csv">Get Unassigned Genes - CSV Export</a></td>
+    </tr>
+    [% IF c.check_user_roles("eucomm") || c.check_user_roles("eucomm_edit") || c.check_user_roles("edit") %]
+        <tr class='nocol'>
+            <td valign='middle' class='nocol' >
+                <a class='button load' onclick='generateReport(0)'>Get Assigned genes & clones</a>
+            </td>
+            <td>Must Include Sanger <input type='checkbox' id='at_least_sanger' /></td>
+            <td>Must Include Non-Sanger <input type='checkbox' id='at_least_others' /></td>
+            <!-- <td valign='middle' class='nocol'>
+                <a class="button csv" href='[% c.uri_for("/report/_assigned_genes_and_cells_table") %]?view=csvdl&file=assigned_es_cell_report.csv'>Export to CSV</a>
+            </td>-->
+        </tr >
+    [% END %]
+    <tr class='nocol'>
+        <td><a class='button load' onclick='fetchClonesByGeneInTextbox()'>Get Clones for Gene</a></td><td colspan=2><input type='text' id='symbol' /></td>
+    </tr>
+    [% IF c.check_user_roles("eucomm") || c.check_user_roles("eucomm_edit") || c.check_user_roles("edit") %]
+        <tr class='nocol'>
+            <td><a class='button load' onclick='fetchClonesByEPD()'>Get Clones for EPD</a></td><td><input type='text' id='epd_well_name' /></td>
+        </tr>
+        <tr class='nocol'> <td colspan=5><a class='button load' onclick='fetchConflict()'>Fetch Genes, Cells in conflict</a></td> </tr>
+    [% END %]
+</table>
+
+<div id='clone_table'>
+    
+</div>
+
+<div id='assigned_cells'>
+    
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    function fetchUnassigned( output_spreadsheet ) {
+        var as_spread = output_spreadsheet;
+        $('assigned_cells').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        new Ajax.Updater('assigned_cells', '[% c.uri_for('/report/_unassigned_genes_table') %]',
+            {
+                method: 'get',
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({
+                    output_spreadsheet: as_spread
+                })
+            }
+        );
+    }
+    
+    function fetchConflict( output_spreadsheet ) {
+        var as_spread = output_spreadsheet;
+        $('assigned_cells').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        new Ajax.Updater('assigned_cells', '[% c.uri_for('/report/_genes_or_cells_in_conflict_table') %]',
+            {
+                method: 'get',
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({
+                    output_spreadsheet: as_spread
+                })
+            }
+        );
+    }
+    
+    function generateReport( output_spreadsheet ) {
+        var as_spread = output_spreadsheet;
+        $('assigned_cells').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        new Ajax.Updater('assigned_cells', '[% c.uri_for('/report/_assigned_genes_and_cells_table') %]',
+            {
+                method: 'get',
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({
+                    at_least_sanger:    $F('at_least_sanger'),
+                    at_least_others:    $F('at_least_others'),
+                    output_spreadsheet: as_spread
+                })
+            }
+        );
+    }
+    
+    function fetchClonesByGene( symbol ){
+        $('clone_table').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        new Ajax.Updater(
+            'clone_table',
+            '[% c.uri_for('/report/_clones_by_gene') %]',
+            {
+                method: 'get',
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({
+                    gene_symbol:    symbol
+                })
+            }
+        );
+    }
+    
+    function fetchClonesByGeneInTextbox(){
+        $('clone_table').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        new Ajax.Updater(
+            'clone_table',
+            '[% c.uri_for('/report/_clones_by_gene') %]',
+            {
+                method: 'get',
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({
+                    gene_symbol: $F('symbol')
+                })
+            }
+        );
+    }
+    
+    function fetchClonesByEPD(){
+        $('clone_table').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        new Ajax.Updater(
+            'clone_table',
+            '[% c.uri_for('/report/_clones_by_epd') %]',
+            {
+                method: 'get',
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({
+                    epd_well_name:    $F('epd_well_name')
+                })
+            }
+        );
+    }
+</script>

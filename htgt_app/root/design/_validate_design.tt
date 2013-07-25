@@ -1,0 +1,33 @@
+<table class="editable" id="validation">
+
+   <thead>
+     <tr >
+       <th [% IF c.check_user_roles("design") %] class="edit" [% ELSE %] class = "noedit" [% END %] id="validate">Valid After Annotation</th>
+     </tr>
+   </thead>
+   <tbody>
+      <tr id="[% design_info.design_id %]">
+        <td>[% design_info.validated_by_annotation %]</td>
+      </tr>
+   </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+
+   var validate_table = new TableKit( 'validation', {
+        [% IF c.check_user_roles("design") %]
+            editAjaxURI: '[% c.uri_for('/design/validatedesign/update_validation/') %]'
+        [% ELSE %]
+            editable: false
+        [% END %]
+    });
+ 
+    TableKit.Editable.selectInput('validate', {}, [
+        ['yes','yes'],
+        ['maybe','maybe'],
+        ['no','no'],
+        ['not done','no done']
+    ]);
+
+</script>
+

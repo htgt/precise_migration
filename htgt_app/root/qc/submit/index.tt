@@ -1,0 +1,114 @@
+[% META title = "Submit QC Jobs" %]
+
+<p>
+  Please fill in the trace (sequencing) project and HTGT plate name
+  for each QC job you wish to submit. Alternatively you may use the <i>File
+  Upload</i> for larger batches.
+</p>
+
+<form id="submit_qc_form" name="submit_qc_form" method="post"  action="[% c.uri_for('/qc/submit/submit_form') %]" accept-charset="utf-8">
+  <table>
+    [% FOR i IN [1 .. 10] %]
+      <tr>
+        <td>Trace Project:</td>
+        <td>
+            <input type="text" name="project[% i %]" id="project[% i %]" autocomplete="off" value="[% projects.$i %]"/>
+        </td>
+        <div class="auto_complete" id="project_suggestions[% i %]"></div>
+    
+        <td>Plate:</td>
+        <td>
+            <input type="text" name="plate[% i %]" id="plate[% i %]" autocomplete="off" value="[% plates.$i %]"/>
+        </td>
+        <div class="auto_complete" id="plate_suggestions[% i %]"></div>
+      </tr>
+    [% END %]
+   
+
+    <tr class="nocol">
+
+    </tr>
+     
+    <tr class="nocol">
+      <td colspan="4">
+        <input type="submit" value="Run QC" name="submit_qc_job" id="submit_qc_job" />
+        <input type="reset" value="Clear Form" name="clear_form" id="clear_form" />
+        &nbsp;
+        Apply Cre: <input type="checkbox" name="apply_cre_form" id="apply_cre_form" value="1"/>
+        &nbsp;
+        Force Rerun: <input type="checkbox" name="force_rerun_form" id="force_rerun_form" value="1"/>
+        &nbsp;
+        Ignore Previous QC Runs: <input type="checkbox" name="ignore_previous_qc_run_form" id="ignore_previous_qc_run_file" value="1"/>
+        <span id="qc_job_submit_indic" style="display:none;"><img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /></span>
+      </td>
+    </tr>
+
+
+
+  </table>
+</form>
+
+<h2>File Upload</h2>
+
+<fieldset id="file_upload_help" class="toggleable">
+  <legend>Batch upload for large QC runs</legend>
+  <div>
+    <p>
+      If you have a large number of QC jobs to submit, you may upload
+      a file listing each trace project and associated plate (one per
+      line). The trace project and plate should be separated by a
+      comma or whitespace character. For example:
+      <pre>
+        EPD00538_1_B,EPD0538_1
+        EPD00538_2_B,EPD0538_2
+        EPD00538_3_B,EPD0538_3
+        EPD00538_4_B,EPD0538_4 
+      </pre>
+    </p>
+    <p>
+      If the list contains a project/plate combination that has
+      already completed a QC run, you must check the box <i>Do not
+      check for previous QC runs</i>.      
+    </p>
+  </div>
+</fieldset>
+
+<form id="load_file" name="load_file" method="post" action="[% c.uri_for('/qc/submit/submit_file') %]" enctype="multipart/form-data" accept-charset="utf-8">
+  <table>
+     <tr><td>File Name: <input type="file" name="datafile"
+     id="datafile" size=40 /></td></tr>
+     <tr><td><input type="checkbox" name="ignore_previous_qc_run_file"/>Ignore previous QC runs</td>
+     <tr><td><input type="checkbox" name="apply_cre_file" id="apply_cre_file" value="1"/>Apply Cre</td></tr>
+     <tr><td><input type="checkbox" name="force_rerun_file" id="force_rerun_file" value="1"/>Force Rerun</td></tr>
+     <tr class="nocol">
+     <td>
+        <input type="submit" value="Run QC From File" name="submit_qc_job" id="submit_qc_job" />
+     </td>
+     </tr>
+  </table>
+</form>
+
+<h2><a href="[% c.uri_for( '/qc/listjobs' ) %]">List Recent QC Jobs</a></h2>
+
+<script type="text/javascript" charset="utf-8">
+  Event.observe(window, 'load', function() {
+    [% FOR i IN [1 .. 10] %]
+      new Ajax.Autocompleter(
+        "project[% i %]",
+        "project_suggestions[% i %]",
+        "[% c.uri_for('/qc/submit/_suggest_trace_projects') %]",
+        { indicator: "qc_job_submit_indic" }
+      );
+
+      new Ajax.Autocompleter(
+        "plate[% i %]",
+        "plate_suggestions[% i %]",
+        "[% c.uri_for('/qc/submit/_suggest_plates') %]",
+        { indicator: "qc_job_submit_indic" }
+      );
+    [% END %]
+    
+  });
+</script>
+
+

@@ -1,0 +1,52 @@
+<h1>Mutagenesis Prediction Reports For Plated Designs</h1>
+
+<table>
+  <col width="230"/>
+  <thead>
+    <tr>
+      <th>Report</th>
+      <th>No. of Genes</th>
+      <th>No. of Transcripts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Full mutagenesis prediction report</td>
+      <td>[% full_gc %]</td>
+      <td>[% full_tc %]</td>
+      <td><a href="http://www.sanger.ac.uk/htgt/static/misc/plated-designs-mp-report.csv" class="button excel">Download CSV Report</a></td>
+    </tr>
+  </tbody>
+</table>
+<br/>
+The sub-reports below only include projects with the following statuses: 'ES Cells - Targeting Confirmed', 'Mice - Microinjection in progress', 'Mice - Germline transmission', 'Mice - Genotype Confirmed'
+<table>
+  <col width="230"/>
+  <thead>
+    <tr>
+      <th>Sub-Report</th>
+      <th>No. of Genes</th>
+      <th>No. of Transcripts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Failed main transcripts</td>
+      <td>[% main_fail_gc %]</td>
+      <td>[% main_fail_tc %]</td>
+      <td><a href="http://www.sanger.ac.uk/htgt/static/misc/plated-designs-main-transcript-fails.csv" class="button excel">Download CSV Report</a></td>
+    </tr>
+    <tr>
+      <td>Failed protein coding transcripts   </td>
+      <td>[% pc_fail_gc %]</td>
+      <td>[% pc_fail_tc %]</td> 
+      <td><a href="http://www.sanger.ac.uk/htgt/static/misc/plated-designs-protein-coding-fails.csv" class="button excel">Download CSV Report</a></td>
+    </tr>
+    <tr>
+      <td>All failed transcripts</td>
+      <td>[% all_fail_gc %]</td>
+      <td>[% all_fail_tc %]</td>
+      <td><a href="http://www.sanger.ac.uk/htgt/static/misc/plated-designs-transcript-fails.csv" class="button excel">Download CSV Report</a></td>
+    </tr>
+  </tbody>
+</table>

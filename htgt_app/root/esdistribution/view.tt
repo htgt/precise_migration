@@ -1,0 +1,175 @@
+<div style="margin-top:20px">
+<h1>ES Distribution Requests</h1>
+
+<h2>BaSH</h2><a href="[% c.uri_for( "/esdistribution/pick_list/BaSH" ) %]" class="button link">BaSH Pick List</a>
+<table>
+  <thead>
+    <tr align="center">
+      <th rowspan=2>Production<br>Centre</th>
+      <th rowspan=2>All</th>
+      <th colspan=5>QC Not Started</th>
+      <th colspan=7>QC Started</th>
+      <th rowspan=2>QC Failed</th>
+      <th rowspan=2>QC Complete</th>
+      <th rowspan=2>Inactive</th>
+      <th rowspan=2>On Hold</th>
+      <th rowspan=2>MI Production</th>    
+    </tr>
+    <tr align="center">
+      <th>No Clones</th>
+      <th>No Valid Clones</th>
+      <th>Clones not at WTSI</th>
+      <th>Clones Available</th>
+      <th>mirKO</th>
+      <th>No Clones Picked</th>
+      <th>1 Clone Picked</th>
+      <th>2 Clones Picked</th>
+      <th>3 Clones Picked</th>
+      <th>4 Clones Picked</th>
+      <th>5 Clones Picked</th>
+      <th>>5 Clones Picked</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH pc IN bash_report -%]
+    <tr>
+      <td>[% pc.group %]</td>
+      <td>[% pc.all %]</td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/no_clones___BaSH___${pc.group}" ) %]">[% pc.no_clones %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/invalid_clones/BaSH___${pc.group}" ) %]">[% pc.no_valid_clones %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_available/clones_elsewhere___BaSH___${pc.group}" ) %]">[% pc.clones_elsewhere %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_available/clones_available___BaSH___${pc.group}" ) %]">[% pc.clones_available %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_available/mirKO_clones___BaSH___${pc.group}" ) %]">[% pc.mirKO_clones %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/qc_started_0___BaSH___${pc.group}" ) %]">[% pc.qc_started_0 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_1___BaSH___${pc.group}" ) %]">[% pc.qc_started_1 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_2___BaSH___${pc.group}" ) %]">[% pc.qc_started_2 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_3___BaSH___${pc.group}" ) %]">[% pc.qc_started_3 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_4___BaSH___${pc.group}" ) %]">[% pc.qc_started_4 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_5___BaSH___${pc.group}" ) %]">[% pc.qc_started_5 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_more_than_5___BaSH___${pc.group}" ) %]">[% pc.qc_started_more_than_5 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/qc_failed___BaSH___${pc.group}" ) %]">[% pc.qc_failed %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/qc_complete___BaSH___${pc.group}" ) %]">[% pc.qc_complete %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/inactive___BaSH___${pc.group}" ) %]">[% pc.inactive %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/on_hold___BaSH___${pc.group}" ) %]">[% pc.on_hold %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/has_mi_attempt___BaSH___${pc.group}" ) %]">[% pc.has_mi_attempt %]</a></td>
+    </tr>
+    [% END -%]    
+  </tbody>
+</table>
+
+<h2>MGP</h2><a href="[% c.uri_for( "/esdistribution/pick_list/MGP" ) %]" class="button link">MGP Pick List</a>
+<table>
+  <thead>
+    <tr align="center">
+      <th rowspan=2>Sub-group</th>
+      <th rowspan=2>All</th>
+      <th colspan=6>QC Not Started</th>
+      <th colspan=7>QC Started</th>
+      <th rowspan=2>QC Failed</th>
+      <th rowspan=2>QC Complete</th>
+      <th rowspan=2>Inactive</th>
+      <th rowspan=2>On Hold</th>
+      <th rowspan=2>MI Production</th>    
+    </tr>
+    <tr align="center">
+      <th>No Clones</th>
+      <th>No Valid Clones</th>
+      <th>All Clones JM8A1.N3</th>
+      <th>Clones not at WTSI</th>
+      <th>Clones Available</th>
+      <th>mirKO</th>
+      <th>No Clones Picked</th>
+      <th>1 Clone Picked</th>
+      <th>2 Clones Picked</th>
+      <th>3 Clones Picked</th>
+      <th>4 Clones Picked</th>
+      <th>5 Clones Picked</th>
+      <th>>5 Clones Picked</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH subp IN mgp_report -%]
+    <tr>
+      <td>[% subp.group %]</td>
+      <td>[% subp.all %]</td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/no_clones___MGP___${subp.group}" ) %]">[% subp.no_clones %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/invalid_clones/MGP___${subp.group}" ) %]">[% subp.no_valid_clones %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_available/all_JM8A1_N3_clones___MGP___${subp.group}" ) %]">[% subp.all_JM8A1_N3_clones %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_available/clones_elsewhere___MGP___${subp.group}" ) %]">[% subp.clones_elsewhere %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_available/clones_available___MGP___${subp.group}" ) %]">[% subp.clones_available %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_available/mirKO_clones___MGP___${subp.group}" ) %]">[% subp.mirKO_clones %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/qc_started_0___MGP___${subp.group}" ) %]">[% subp.qc_started_0 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_1___MGP___${subp.group}" ) %]">[% subp.qc_started_1 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_2___MGP___${subp.group}" ) %]">[% subp.qc_started_2 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_3___MGP___${subp.group}" ) %]">[% subp.qc_started_3 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_4___MGP___${subp.group}" ) %]">[% subp.qc_started_4 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_5___MGP___${subp.group}" ) %]">[% subp.qc_started_5 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_more_than_5___MGP___${subp.group}" ) %]">[% subp.qc_started_more_than_5 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/qc_failed___MGP___${subp.group}" ) %]">[% subp.qc_failed %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/qc_complete___MGP___${subp.group}" ) %]">[% subp.qc_complete %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/inactive___MGP___${subp.group}" ) %]">[% subp.inactive %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/on_hold___MGP___${subp.group}" ) %]">[% subp.on_hold %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/has_mi_attempt___MGP___${subp.group}" ) %]">[% subp.has_mi_attempt %]</a></td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+
+<h2>MRC</h2><a href="[% c.uri_for( "/esdistribution/pick_list/MRC" ) %]" class="button link">MRC Pick List</a>
+<table>
+  <thead>
+    <tr align="center">
+      <th rowspan=2>Production<br>Centre</th>
+      <th rowspan=2>All</th>
+      <th colspan=5>QC Not Started</th>
+      <th colspan=7>QC Started</th>
+      <th rowspan=2>QC Failed</th>
+      <th rowspan=2>QC Complete</th>
+      <th rowspan=2>Inactive</th>
+      <th rowspan=2>On Hold</th>
+      <th rowspan=2>MI Production</th>    
+    </tr>
+    <tr align="center">
+      <th>No Clones</th>
+      <th>No Valid Clones</th>
+      <th>Clones not at WTSI</th>
+      <th>Clones Available</th>
+      <th>mirKO</th>
+      <th>No Clones Picked</th>
+      <th>1 Clone Picked</th>
+      <th>2 Clones Picked</th>
+      <th>3 Clones Picked</th>
+      <th>4 Clones Picked</th>
+      <th>5 Clones Picked</th>
+      <th>>5 Clones Picked</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH pc IN mrc_report -%]
+    <tr>
+      <td>[% pc.group %]</td>
+      <td>[% pc.all %]</td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/no_clones___MRC___${pc.group}" ) %]">[% pc.no_clones %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/invalid_clones/MRC___${pc.group}" ) %]">[% pc.no_valid_clones %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_available/clones_elsewhere___MRC___${pc.group}" ) %]">[% pc.clones_elsewhere %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_available/clones_available___MRC___${pc.group}" ) %]">[% pc.clones_available %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_available/mirKO_clones___MRC___${pc.group}" ) %]">[% pc.mirKO_clones %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/qc_started_0___MRC___${pc.group}" ) %]">[% pc.qc_started_0 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_1___MRC___${pc.group}" ) %]">[% pc.qc_started_1 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_2___MRC___${pc.group}" ) %]">[% pc.qc_started_2 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_3___MRC___${pc.group}" ) %]">[% pc.qc_started_3 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_4___MRC___${pc.group}" ) %]">[% pc.qc_started_4 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_5___MRC___${pc.group}" ) %]">[% pc.qc_started_5 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/clones_picked/qc_started_more_than_5___MRC___${pc.group}" ) %]">[% pc.qc_started_more_than_5 %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/qc_failed___MRC___${pc.group}" ) %]">[% pc.qc_failed %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/qc_complete___MRC___${pc.group}" ) %]">[% pc.qc_complete %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/inactive___MRC___${pc.group}" ) %]">[% pc.inactive %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/on_hold___MRC___${pc.group}" ) %]">[% pc.on_hold %]</a></td>
+      <td><a href="[% c.uri_for( "/esdistribution/basic/has_mi_attempt___MRC___${pc.group}" ) %]">[% pc.has_mi_attempt %]</a></td>
+    </tr>
+    [% END -%]    
+  </tbody>
+</table>
+
+
+</div>

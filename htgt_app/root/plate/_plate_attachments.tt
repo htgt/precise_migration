@@ -1,0 +1,66 @@
+<div id="plate_blob_table">
+    [% INCLUDE 'plate/_plate_attachments_table.tt' %]
+</div>
+
+[% IF c.check_user_roles("edit") %]
+    <a class="add" onClick="showAttachmentForm(this); return false;">attach a new file to this plate</a>
+[% END %]
+
+<div id="plate_blob_form" style="display:none;">
+    <form action="[% c.uri_for('/plate/update/plate_blob_new') %]" name="add_plate_blob"
+          id="add_plate_blob" method="post" enctype="multipart/form-data">
+        <table>
+            <tr class="nocol">
+                <td style="text-align:right;">File</td>
+                <td><input type="file" name="file" id="plate_blob_file" class="required"/></td>
+            </tr>
+            <tr class="nocol">
+                <td style="text-align:right;">Description</td>
+                <td><input id="plate_blob_description" name="description" type="text" /></td>
+            </tr>
+            <tr class="nocol">
+                <td style="text-align:right;">Make Public?</td>
+                <td><input type="checkbox" name="is_public" id="plate_blob_is_public" /></td>
+            </tr>
+            <tr class="nocol">
+                <td></td>
+                <td>
+                    <input type="hidden" id="plate_blob_plate_id" name="plate_id" value="[% plate.plate_id %]" />
+                    <input type="reset" class="button clean" value="Reset" onclick="resetForm(); return false" />
+                    <input type="submit" class="button save" id="plate_blob_submit" value="Save">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    // Function to display the upload form
+    function showAttachmentForm (link) {
+        if( $('plate_blob_form').style.display == 'none' ) {
+            new Effect.BlindDown('plate_blob_form', { duration: .3 });
+            $(link).update('hide the file attachment form');
+        } else {
+            new Effect.BlindUp('plate_blob_form', { duration: .3 });
+            $(link).update('attach a new file to this plate');
+        }
+    }
+    
+    // Add validations to the form.
+    var valid = new Validation( 'add_plate_blob', { immediate: true, focusOnError: true } );
+    
+    // Function to reset the form and the validations
+    function resetForm() {
+        valid.reset();
+        $('add_plate_blob').reset();
+    }
+</script>
+
+<style type="text/css" media="screen">
+    form#add_plate_blob {
+        border: 1px solid #999;
+        margin-top: 10px;
+        padding-left: 5px;
+        width: 400px;
+    }
+</style>

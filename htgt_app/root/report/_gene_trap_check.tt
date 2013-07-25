@@ -1,0 +1,34 @@
+[%
+  ##
+  ## Use this logic to exclude EUCJ gene trap entries...
+  ##
+  
+  SET tmp_projects_stash = [];
+  FOR project IN projects;
+    SET show_me = 1;
+    SET trap_names = [];
+
+    IF project.gene_trap_links;
+      FOR link IN project.gene_trap_links;
+        FOR trap_well IN link.gene_trap_well;
+          IF trap_well.gene_trap_well_name.match('EUCJ');
+            trap_names.push('EUCJ');
+          ELSE;
+            trap_names.push(trap_well.gene_trap_well_name);
+          END;
+        END;
+      END;
+    END;
+
+    SET uniq_trap_names = trap_names.unique;
+    IF ( uniq_trap_names.size == 1 ) && ( uniq_trap_names.0.match('EUCJ') );
+      show_me = 0;
+    END;
+
+    IF show_me == 1;
+      tmp_projects_stash.push(project);
+    END;
+  END;
+  
+  SET projects = tmp_projects_stash;
+%]

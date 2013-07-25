@@ -1,0 +1,1 @@
+{"provides":{"Text::CSV_PP":{"version":"1.31","file":"Text/CSV_PP.pm"},"Text::CSV":{"version":"1.32","file":"Text/CSV.pm"},"Text::CSV::ErrorDiag":{"file":"Text/CSV_PP.pm"}},"target":"Text::CSV","version":"1.32","name":"Text::CSV","dist":"Text-CSV-1.32","pathname":"M/MA/MAKAMAKA/Text-CSV-1.32.tar.gz"}

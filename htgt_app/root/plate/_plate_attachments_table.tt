@@ -1,0 +1,132 @@
+[% 
+    SET blobs_to_display = [];
+    FOR blob IN plate_blobs;
+        IF blob.is_public == '1';
+            blobs_to_display.push( blob );
+        ELSE;
+            IF c.check_user_roles("edit");
+                blobs_to_display.push( blob );
+            END;
+        END;
+    END;
+%]
+
+[% IF blobs_to_display.size > 0 %]
+    <table id="file_attachments[% timestamp %]" class="resizable tksort editable">
+        <thead>
+            <tr>
+                <th id="binary_data" class="noedit">File</th>
+                <th id="file_name" class="noedit">File Name</th>
+                <th id="file_size" class="noedit">File Size</th>
+                <th id="description" [% UNLESS c.check_user_roles("edit") %]class="noedit"[% END %]>Description</th>
+                <th id="edit_user" class="noedit">User</th>
+                <th id="edit_date" class="sortfirstasc noedit date-oracle">Date</th>
+                [% IF c.check_user_roles("edit") %]
+                <th id="is_public">Public</th>
+                <th class="nocol nosort noedit"></th>
+                [% END %]
+            </tr>
+        </thead>
+        <tbody>
+            [% FOR blob IN blobs_to_display %]
+                <tr id="plateblob[% blob.plate_blob_id %]">
+                    <td style="text-align:center;">
+                        [% IF blob.binary_data_type.match('image') %]
+                            <a href="[% c.uri_for('/plate/get_plate_blob', { plate_blob_id=blob.plate_blob_id }) %]" target="_blank" title="click to see full size image">
+                                <img src="[% c.uri_for('/plate/get_plate_blob', { plate_blob_id=blob.plate_blob_id, thumbnail=1 }) %]" alt="click to see full size image"/>
+                            </a>
+                        [% ELSE %]
+                            [% 
+                                SET file_class = 'document';
+                                IF blob.file_name.match('\.doc');     file_class = 'word';
+                                ELSIF blob.file_name.match('\.pdf');  file_class = 'pdf';
+                                ELSIF blob.file_name.match('\.xls');  file_class = 'excel';
+                                ELSIF blob.file_name.match('\.txt');  file_class = 'text';
+                                ELSIF blob.file_name.match('\.ppt');  file_class = 'powerpoint';
+                                END; 
+                            %]
+                            <a  href="[% c.uri_for('/plate/get_plate_blob', { plate_blob_id=blob.plate_blob_id }) %]" 
+                                target="_blank" 
+                                title="click to download file"
+                                class="[% file_class %]">
+                                download
+                            </a>
+                        [% END %]
+                    </td>
+                    <td>[% blob.file_name %]</td>
+                    <td>[% INCLUDE pretty_file_size size=blob.file_size %]</td>
+                    <td [% IF c.check_user_roles("edit") %]class="edit"[% END %]>[% blob.description %]</td>
+                    <td>[% blob.edit_user %]</td>
+                    <td>[% blob.edit_date %]</td>
+                    [% IF c.check_user_roles("edit") %]
+                    <td class="edit" style="text-align:center;">
+                        [% IF blob.is_public == '1' %] <img src="/icons/silk/accept.png" alt="public" />
+                        [% ELSE %]                     <img src="/icons/silk/stop.png" alt="not public" />
+                        [% END %]
+                    </td>
+                    <td class="nocol">
+                        <a class="delete" onclick="deletePlateBlob([% blob.plate_blob_id %]); return false">delete</a>
+                    </td>
+                    [% END %]
+                </tr>
+            [% END %]
+        </tbody>
+    </table>
+[% ELSE %]
+    <p class="no_data">No Attachments</p>
+[% END %]
+
+[% BLOCK pretty_file_size %]
+    [% SET mb = 1024*1024 %]
+    [% IF size > mb %]          [% FILTER format('%01.2f') %][% size / mb %][% END %] MB
+    [% ELSIF size >= 1024 %]    [% FILTER format('%01.2f') %][% size / 1024 %][% END %] Kb
+    [% ELSE %]                  [% size %] bytes
+    [% END %]
+[% END %]
+
+<script type="text/javascript" charset="utf-8">
+    [% IF blobs_to_display.size > 0 %]
+    var comments_table = new TableKit( 'file_attachments[% timestamp %]', {
+        [% IF c.check_user_roles("edit") %]
+        editAjaxURI: '[% c.uri_for('/plate/update/_plate_blob_update/') %]'
+        [% ELSE %]
+        editable: false
+        [% END %]
+    });
+    
+    // Set the 'yes/no' option for 'is_public'
+    TableKit.Editable.selectInput('is_public', {}, [
+        ['yes','1'],
+        ['no','0']
+    ]);
+    [% END %]
+    
+    // Function to delete PlateBlob entries
+    function deletePlateBlob (plate_blob_id) {
+        var timestamp = new Date().getTime();
+        var new_table = 'file_attachments' + timestamp;
+        var url = '[% c.uri_for('/plate/update/_plate_blob_delete/') %]?plate_blob_id=' + plate_blob_id + '&timestamp=' + timestamp;
+        var answer = confirm('Are you sure you want to delete this attachment?');
+        if (answer) {
+            new Ajax.Updater( 'plate_blob_table', url, { 
+                asynchronous: true,
+                onComplete: function() {
+                    new TableKit( new_table, {
+                        editAjaxURI: '[% c.uri_for('/plate/update/_plate_blob_update/') %]'
+                    })
+                }
+            });
+
+            $('alerts').update('<div class="message">File attachment deleted</div>');
+            $('alerts').innerHTML;
+
+            return false;
+        }
+    }
+</script>
+
+<style type="text/css" media="screen">
+    #file_attachments[% timestamp %] th, #file_attachments[% timestamp %] td {
+        vertical-align: middle;
+    }
+</style>

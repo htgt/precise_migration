@@ -1,0 +1,117 @@
+[% META title = 'Designs Requiring Validation by Annotation' -%]
+
+<script type="text/javascript" charset="utf-8">
+   function load_designs () {
+      document.select_project.action = "[% c.uri_for('list_designs') %]";
+      document.select_project.submit;
+   }
+</script>
+
+<form name="select_project" method="post">
+  <table>
+    <tr>
+      <td>Program:</td>
+      <td>
+        <select name="program" id="program">
+          <option [% IF program == "EUCOMM" %]selected[% END %]>EUCOMM</option>
+          <option [% IF program == "EUCOMM-Tools" %]selected[% END %]>EUCOMM-Tools</option>
+          <option [% IF program == "EUCOMM-Tools-Cre" %]selected[% END %]>EUCOMM-Tools-Cre</option>          
+          <option [% IF program == "KOMP" %]selected[% END %]>KOMP</option>
+          <option [% IF program == "SWITCH" %]selected[% END %]>SWITCH</option>
+          <option [% IF program == "TPP" %]selected[% END %]>TPP</option>
+          <option [% IF program == "MGP-Bespoke" %]selected[% END %]>MGP-Bespoke</option>
+          <option [% IF program == "All" %]selected[% END %]>All</option>
+        </select>
+      </td>
+      <td>Priority:</td>
+      <td>
+        <select name="priority" id="priority">
+	  <option [% IF priority == "Material ordered" %]selected[% END %]>Material ordered</option>
+	  <option [% IF priority == "User request" %]selected[% END %]>User request</option>
+	  <option [% IF priority == "Don't care" %]selected[% END %]>Don't care</option>
+	</select>
+      </td>
+      <td>Status:</td>
+      <td>
+        <select name="status" id="status" multiple="multiple" size="8">
+	<option [% IF status.exists("All") %]selected[% END %]>All</option>
+         [% FOREACH s IN status_list %]
+	 <option [% IF status.exists(s) %]selected[% END %]>[% s %]</option>
+	 [% END %]
+	</select>
+      </td>
+      <tr>
+      <td>Chromosome:</td>
+      <td>
+        <select name="chromosome" id="chromosome">
+	  <option [% IF chromosome == "All" %]selected[% END %]>All</option>
+	  [% FOREACH num IN [1..19] %]
+	  <option [% IF chromosome == num %]selected[% END %]>[% num %]</option>
+	  [% END %]
+	  <option [% IF chromosome == "X" %]selected[% END %]>X</option>
+	</select>
+      </td>
+      <td>Plate:</td>
+      <td>
+        <select name="plate" id="plate">
+	  <option [% IF plate == "All" %]selected[% END %]>All</option>
+	  [% FOREACH p IN design_plates_list %]
+	  <option [% IF plate == p %]selected[% END %]>[% p %]</option>
+	  [% END %]
+	</select>
+      </td>
+      <td><input type=submit value="Load Designs" onClick="load_designs()" /></td>
+    </tr>
+  </table>
+</form>
+[% IF program != "" %]
+<table id="design_list" class="tksort resizable">
+  <thead>
+    <tr>
+       <td>Total number of records: </td><td>[% number_of_rows %]</td>
+    </tr>
+    <tr>
+       <th >Design ID</th>
+       <th >Program</th>
+       <th>Gene Symbol</th>
+       <th>Priority count</th>
+       [% IF priority == "Don't care" %]
+       <th>Priority type</th>
+       [% END %]
+       <th>EnsEMBL ID</th>
+       <th>MGI ID</th>
+       <th>Target Exons</th>
+       <th>Chromosome</th>
+       <th>Start Coordinate</th>
+       <th>Design Type</th>
+       <th>Latest Status</th>
+       <th >Plate</th>
+    </tr>
+  </thead>
+  <tbody>
+      [% FOR design IN designs.values %]
+      <tr id="[% design.DESIGN_ID %]"> 
+          <td><a href="[% c.uri_for('/design/designedit/refresh_design')%]?design_id=[% design.DESIGN_ID %]" target="_blank">[% design.DESIGN_ID %]</a></td>
+          <td>[% design.PROGRAM %]</td>
+          <td><a href="[% c.uri_for('/report/gene_report')%]?project_id=[% design.PROJECT_ID %]" target="_blank">[% design.MARKER_SYMBOL %]</a></td>
+          <td>[% design.PRIORITY_COUNT %]</td>
+	  [% IF priority == "Don't care" %]
+	  <td>[% design.PRIORITY_TYPE %]</td>
+	  [% END %]
+	  <td> <a target="_blank" href="http://www.ensembl.org/Mus_musculus/contigview?gene=[% design.ENSEMBL_GENE_ID %]&bottom=%7Cmanaged_das_KO_vectors%3Aon">[% design.ENSEMBL_GENE_ID %]</td>
+	  <td><a href="http://www.informatics.jax.org/searches/accession_report.cgi?id=[% design.MGI_ACCESSION_ID %]">[% design.MGI_ACCESSION_ID %]</a></td>
+	  <td>[% design.TARGET_EXONS %]</td>
+	  <td>[% design.ENSEMBL_GENE_CHROMOSOME %]</td>
+	  <td>[% design.COORDINATE_START %]</td>
+          <td>[% design.DESIGN_TYPE %]</td>
+          <td>[% design.STATUS %]</td>
+	  <td><a href="[% c.uri_for('/plate/view')%]?plate_name=[% design.TARGVEC_PLATE_NAME %]" target="_blank">[% design.TARGVEC_PLATE_NAME %]</a></td>
+      </tr>
+      [% END %]
+   </tbody>
+</table>
+<script type="text/javascript" charset="utf-8">
+
+new TableKit('design_list',  {editable: false } );
+</script>
+[% END %]

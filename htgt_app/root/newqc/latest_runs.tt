@@ -1,0 +1,69 @@
+<script type="text/javascript" src="[% c.uri_for( "/static/javascript/tooltips.js" ) %]"></script>
+<script type="text/javascript"> 
+    //load tooltips for all last stage links
+    document.observe('dom:loaded', function() { 
+        $$("a.laststage").each( function(link) {
+            new Tooltip(link, {mouseFollow: false});
+        });
+    }); 
+
+</script>
+
+<div style="margin-top:20px">
+<h1>Error report for QC run [% l.qc_run_id %]</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>QC Run ID</th>
+      <th>Run Inititated</th>
+      <th>Profile</th>
+      <th>Sequencing Projects</th>
+      <th>Template Plate</th>
+      <th>Last Stage</th>
+      <th>Last Stage Executed</th>
+      <th>Kill Unfinished Processes</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH l IN latest -%]
+    [% url_params = ( prescreen.defined ) ? { prescreen => 1 } : {} %]
+    <tr style="background-color:#[% IF l.ended and not l.failed %]80FF80[% ELSIF l.failed %]FF8080[% END %]">
+      <td>
+        <a href="[% c.uri_for( "/newqc/view_run_files/${l.qc_run_id}", url_params ) %]">[% l.qc_run_id %]</a>
+      </td>
+      <td>[% l.created %]</td>
+      <td>[% l.profile %]</td>
+      <td>[% l.seq_projects %]</td>
+      <td>[% l.template_plate %]</td>
+      <td>
+          [%# the code below stores text in the title attribute of each link,
+              to create the tooltips on the page. (I'm sorry) %]
+          <a 
+            href="[%c.uri_for( "/newqc/qc_farm_error_rpt/${l.qc_run_id}___${l.last_stage}", url_params ) %]" 
+            class="laststage" 
+            title='
+            [% IF l.previous_stages && l.previous_stages.size %]
+              [% FOREACH stage IN l.previous_stages -%]
+                <a href="[%c.uri_for( "/newqc/qc_farm_error_rpt/${l.qc_run_id}___${stage}", url_params ) %]">[% stage %]</a><br/>
+              [% END -%]
+            [% ELSE %]
+              No previous stages.
+            [% END %]
+            '
+          >[% l.last_stage %]</a><br/>
+      </td>
+      <td>[% l.last_stage_time %]</td>
+      <td align="center">
+        [% IF l.ended %]
+          Finished
+        [% ELSE %]
+          <a href="[%c.uri_for( "/newqc/kill_farm_jobs/${l.qc_run_id}", url_params ) %]" class="button link">Kill Farm Jobs</a>
+        [% END %]
+      </td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+
+</div> 

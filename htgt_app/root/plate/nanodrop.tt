@@ -1,0 +1,93 @@
+[% META title = 'Nanodrop Upload' -%]
+
+<p>Please use this form to upload nanodrop information for a given plate.</p>
+<p>To use this form, select the nanodrop file from your PC as well as the plate that the nanodrop information is for, then click submit.</p>
+
+<form action="[% c.uri_for('/plate/update/nanodrop_process') %]"
+      name="nanodrop_upload"
+      id="nanodrop_upload"
+      method="post"
+      enctype="multipart/form-data">
+
+    <table border="0" cellspacing="5" cellpadding="5">
+        <tr class="nocol">
+            <td>Nanodrop File:</td>
+            <td><input type="file" name="file" id="ndu_file" class="required"/></td>
+        </tr>
+        <tr class="nocol">
+            <td>Plate Name:</td>
+            <td>
+                <input autocomplete="off" id="ndu_plate_name" name="plate_name" type="text" class="required"/>
+                <input type="hidden" id="ndu_plate_id" name="plate_id" value="" />
+                <div class="auto_complete" id="ndu_plate_name_auto_complete"></div>
+                <span id="ndu_indicator1" style="display: none">
+                    <img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." />
+                </span>
+            </td>
+        </tr>
+        <tr class="nocol">
+            <td>Plate Type:</td>
+            <td>
+                <select name="plate_type" id="ndu_plate_type">
+                    <option value="PGG" selected="yes">PGG</option>
+                    <option value="PGD">PGS</option>
+                    <option value="GRD">GRD</option>
+                    <option value="PGR">PGR</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="nocol">
+            <td colspan="2">
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" onclick="resetForm(); return false" />
+            </td>
+        </tr>
+    </table>
+</form>
+<p>&nbsp;</p>
+
+
+<script type="text/javascript">
+    // Add an autocompletion function to the plate name field.
+    new Ajax.Autocompleter(
+        'ndu_plate_name',
+        'ndu_plate_name_auto_complete',
+        '[% c.uri_for('/utils/_suggest_plate_names') %]',
+        {
+            indicator: $('ndu_indicator1'),
+            afterUpdateElement : getSelectionId
+        }
+    );
+
+    // When the plate name is chosen, this function automatically fills
+    // out the plate_id textfield (hidden) with the correct plate id
+    // returned via the autocompleter (as the li element id).
+    // and the plate_type field
+    function getSelectionId(text, li) {
+        $('ndu_plate_id').value = li.id;
+        $('ndu_plate_type').value = $(li).select('span.plate_type').first().innerHTML;
+    }
+    
+    // Add an observer to the 'plate_name' field - if this is clicked, 
+    // clear the plate_id field (could save erroneous entries)
+    Event.observe('ndu_plate_name', 'click',
+        function() {
+            $('ndu_plate_id').value = '';
+        }
+    );
+    
+    // Add validations to the form.
+    var valid = new Validation('nanodrop_upload', {
+        immediate: true,
+        focusOnError: true
+    });
+    
+    // Function to reset the form and the validations
+    function resetForm() {
+        valid.reset();
+        reset($('ndu_file'));
+        reset($('ndu_plate_name'));
+        reset($('ndu_plate_id'));
+        reset($('ndu_plate_type'));
+    }
+</script>

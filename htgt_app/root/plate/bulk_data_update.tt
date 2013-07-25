@@ -1,0 +1,8 @@
+[% META title = 'Bulk Data Update Links' -%]
+<p>
+<a href="[% c.uri_for('/plate/shipping/insert_plate_shipping_dates') %]">Plate Shipping Dates</a>
+<br>
+<a href="[% c.uri_for('/plate/archive/load_archive_plate_labels') %]">Plate Archive Labels</a>
+<br>
+<a href="[% c.uri_for('/plate/upload') %]">Create Plate from CSV</a>
+</p>

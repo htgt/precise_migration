@@ -1,0 +1,63 @@
+<a class="button sort" id="wellscolsort">Sort by column</a>
+
+<table class="resizable tksort" id="[% table %]">
+  <thead>
+    <tr>
+      <th id="well_name" class="sortfirstasc noedit">Well Name</th>
+      [% FOR data_type IN well_data_types %]
+        <th id="[% data_type %]">
+          [% data_type FILTER replace('_',' ') FILTER upper %]
+        </th>
+      [% END %]
+      <th class="nocol"></th>
+    </tr>
+  </thead>
+  <tbody>
+    [% IF plate.wells %]
+      
+      [% FOR well IN plate.wells %]
+        <tr id="[% well.well_id %]">
+          <td>[% well.well_name %]</td>
+          
+          [% FOR data_type IN well_data_types %]
+            
+            [% IF well_data.${well.well_name}.${data_type} %]
+            
+                [% IF data_type == 'project' %]
+                    <td>[% well_data.${well.well_name}.${data_type}.join(', ') %]</td>
+                [% ELSE %]
+                    <td>[% well_data.${well.well_name}.${data_type} %]</td>
+                [% END %]
+            
+            [% ELSE %]
+              <td>-</td>
+            
+          [% END %]
+            
+        [% END %]
+          
+          <td class="nocol"> <a href="#" title="Add [% well.well_name %] to new plate" onClick="addSingleToPlate('[% plate.name %]','[% plate.plate_id %]','[% well.well_name %]','[% well.well_id %]'); return false"><img src="/icons/silk/add.png" alt="add" /></a> </td>
+          <td class="nocol"> <a href="#" title="Add [% well.well_name %] to new plate" onClick="addColumnToPlate('[% plate.name %]','[% plate.plate_id %]','[% well.well_name %]','[% well.well_id %]'); return false"><img src="/icons/silk/table_add.png" alt="add" /></a> </td>
+
+        </tr>
+
+      [% END %]
+
+    [% ELSE %]
+      <tr>
+        <td class="nocol">No Well Data</td>
+      </tr>
+    [% END %]
+
+  </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+  /* Add the TableKit actions to '[% table %]' */
+  var well_table = new TableKit('[% table %]', {
+    editable: false
+  });
+
+  /* Add an observer on the 'sort by column' button */
+  $('wellscolsort').observe('click',function(){sortByCol("[% table %]",0)});
+</script>

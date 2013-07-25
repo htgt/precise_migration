@@ -1,0 +1,37 @@
+[% USE CSV -%]
+[%
+   column_names =  well_data_types;
+   column_names.unshift( 'Well' );
+   column_names.push( 'COL' );
+   CALL CSV.set_columns( column_names );
+-%]
+[% CSV.header %]
+[% FOR well IN wells -%]
+[%
+   well.Well = well.well_name;
+   well.child_wells = well.child_wells.size
+   well.COMMENTS = well.COMMENTS.remove( '^\s+' );
+   well.COMMENTS = well.COMMENTS.remove( '\s+$' );
+   well.COMMENTS = well.COMMENTS.replace( '\s+', ' ' );
+   IF well.already_electroporated;
+     ae = [];
+     FOR well_hash IN well.already_electroporated;
+       ae.push( well_hash.well_name );
+     END;
+     well.already_electroporated = ae.join(',');
+   END;
+   IF well.taqman_assays;
+    taqman = [];
+    FOR taqman_hash IN well.taqman_assays;
+      taqman.push( "${taqman_hash.assay_id} - ${taqman_hash.plate_name}_${taqman_hash.well_name}" );
+    END;
+    well.taqman_assays = taqman.join(' : ');
+   END;
+   IF ( matches = well.well_name.match('.*(\w)(\d\d)$') );
+     well.COL = matches.reverse.join( '' );
+   ELSE;
+     well.COL = 'nope';
+   END;
+-%]
+[% CSV.data( well ) %]
+[% END -%]

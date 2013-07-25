@@ -1,0 +1,66 @@
+[% IF called_elsewhere %]
+    [%# do nothing !%]
+[% ELSE %]
+    [% IF style == 'EUCOMM' %]
+        <h1>Pipeline Summary by Project</h1>
+    [% ELSE %]
+        <h3>Pipeline Summary by Project</h3>
+    [% END %]
+[% END %]
+
+<p id="summary_text">Targeted conditional knockout constructs by pipeline stage / project:</p>
+
+<table id="summary_table">
+    <thead>
+        <tr>
+            <th>Stage</th>
+            [% IF style == 'EUCOMM' || source == 'EUCOMM' %]
+                <th>EUCOMM</th>
+            [% ELSIF style == 'KOMP' || source == 'KOMP' %]
+                <th>KOMP</th>
+                <th>Regeneron</th>
+            [% ELSE %]
+                <th>EUCOMM</th>
+                <th>KOMP</th>
+                [% IF c.check_user_roles("edit") %]
+                <th>MGP</th>
+                [% END %]
+                <th>NorCOMM</th>
+                <th>EuTRACC</th>
+                <th>Regeneron</th>
+            [% END %]
+        </tr>
+    </thead>
+    <tbody>
+        [% SET row = 0 -%]
+        [% FOR status_obj IN status_list %]
+            [% row = row + 1 -%]
+            <tr class="[% IF row % 2 %]rowodd[% ELSE %]roweven[% END %]">
+                <td>[% status_obj.name %]</td>
+                [% IF style == 'EUCOMM' || source == 'EUCOMM' %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_eucomm='yes', status=status_obj.name, generate_report='true' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.EUCOMM %]</a></td>
+                [% ELSIF style == 'KOMP' || source == 'KOMP' %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_komp_csd='yes', status=status_obj.name, generate_report='true' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.KOMP %]</a></td>
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_komp_regeneron='yes', status=status_obj.name, generate_report='true' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.REGENERON %]</a></td>
+                [% ELSE %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_eucomm='yes', status=status_obj.name, generate_report='true' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.EUCOMM %]</a></td>
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_komp_csd='yes', status=status_obj.name, generate_report='true' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.KOMP %]</a></td>
+                    [% IF c.check_user_roles("edit") %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_mgp='yes', status=status_obj.name, generate_report='true' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.MGP %]</a></td>
+                    [% END %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_norcomm='yes', status=status_obj.name, generate_report='true' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.NORCOMM %]</a></td>
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_eutracc='yes', status=status_obj.name, generate_report='true' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.EUTRACC %]</a></td>
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_komp_regeneron='yes', status=status_obj.name, generate_report='true' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.REGENERON %]</a></td>
+                [% END %]
+            </tr>
+        [% END %]
+    </tbody>
+</table>
+
+[% BLOCK show_number %]
+    [% IF ! count %]
+        0
+    [% ELSE %]
+        [% count %]
+    [% END %]
+[% END %]

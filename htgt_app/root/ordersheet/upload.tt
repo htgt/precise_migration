@@ -1,0 +1,61 @@
+<SCRIPT language="JavaScript">
+function uploadOligos(){
+  document.upload_ordersheet_form.action = "[% c.uri_for('read_order_sheet') %]";
+  document.upload_ordersheet_form.submit;
+}
+
+function insertOligos(){
+  document.upload_ordersheet_form.action = "[% c.uri_for('insert_order_sheet') %]";
+  document.upload_ordersheet_form.submit;
+}
+</SCRIPT>
+
+[% META title = 'Upload LR Oligo Order Sheets' -%]
+<h1>HTGT: Upload Order Sheets</h1>
+
+<form 
+  name="upload_ordersheet_form" enctype="multipart/form-data" 
+  method="post" action='[% c.uri_for('/ordersheet/readordersheet/read_order_sheet') %]'
+>
+<input type="hidden" name="form_submit" value="yes">
+<table>
+  <tr><td>gf1:</td><td><input type="file" name="gf1" size="50"></td></tr>
+  <tr><td>gf2:</td><td><input type="file" name="gf2" size="50"></td></tr>
+  <tr><td>ex5:</td><td><input type="file" name="ex5" size="50"></td></tr>
+  <tr><td>ex3:</td><td><input type="file" name="ex3" size="50"></td></tr>
+  <tr><td>gr1:</td><td><input type="file" name="gr1" size="50"></td></tr>
+  <tr><td>gr2:</td><td><input type="file" name="gr2" size="50"></td></tr>
+</table>
+<input type="submit" value="Upload" onClick='uploadOligos()'>
+<input type="submit" value="Insert" onClick='insertOligos()'>
+
+<table border=1 rules=all cellspacing=10>
+<tr>
+<th>DesignID</th>
+<th>Plate</th>
+<th>Well</th>
+<th>gf1</th>
+<th>gf2</th>
+<th>ex5</th>
+<th>ex3</th>
+<th>gr1</th>
+<th>gr2</th>
+</tr>
+[% FOREACH design IN designs %]
+  <tr>
+    <td>[% design.DESIGN_ID %]</td>
+    <td>[% design.PLATE %]</td>
+    <td>[% design.WELL %]</td>
+    <td>[% design.GF1 %]</td>
+    <td>[% design.GF2 %]</td>
+    <td>[% design.EX3 %]</td>
+    <td>[% design.EX5 %] </td>
+    <td>[% design.GR1 %] </td>
+    <td>[% design.GR2 %]</td>
+  </tr>
+[% END %]
+</table>
+
+
+
+</form>

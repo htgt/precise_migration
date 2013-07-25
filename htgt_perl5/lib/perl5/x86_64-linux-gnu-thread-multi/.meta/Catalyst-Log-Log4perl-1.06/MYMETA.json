@@ -1,0 +1,54 @@
+{
+   "abstract" : "DEPRECATED (see Log::Log4perl::Catalyst)",
+   "author" : [
+      "Adam Jacob, C<adam@stalecoffee.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Install version 1.06, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Catalyst-Log-Log4perl",
+   "no_index" : {
+      "directory" : [
+         "inc",
+         "t"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.36",
+            "Test::More" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.36"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Catalyst" : "5.60",
+            "Data::Dump" : "0",
+            "Log::Log4perl" : "1.04",
+            "MRO::Compat" : "0",
+            "Params::Validate" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "url" : "http://dev.catalyst.perl.org/repos/Catalyst/trunk/historical/Catalyst-Log-Log4perl"
+      }
+   },
+   "version" : "1.06"
+}

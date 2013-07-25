@@ -1,0 +1,10 @@
+<style type="text/css" media="screen, projector">
+  /*<![CDATA[*/
+    @import "http://gtrap1a.internal.sanger.ac.uk:8000/htgt/static/css/common.css";
+    @import "http://gtrap1a.internal.sanger.ac.uk:8000/htgt/static/css/htgt.css";
+  /*]]>*/
+</style>
+        
+[% IF vector_seq_features %]
+    [% PROCESS 'report/_construct_image.tt' %]
+[% END %]

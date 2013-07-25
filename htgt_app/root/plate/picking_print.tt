@@ -1,0 +1,53 @@
+<style type="text/css">
+    table {
+       border-collapse: collapse;
+       border: 2px solid #000;
+    }
+    th {
+        background-color: #000;
+        color: #FFF;
+        border: 1px solid #000;
+        border-bottom: 2px solid #000;
+    }
+    td {
+       border: 1px solid #000;
+    }
+    tr.rowodd td {
+        background: silver;
+    }
+</style>
+
+<h2>[% plate.name %]</h2>
+
+<table id="picking_print" class="report_table"  border="0" cellspacing="0" cellpadding="3">
+    <thead>
+        <tr>
+            <th>Plate</th>
+            <th>Well</th>
+            <th>Clone Name</th>
+            <th>384 Well</th>
+            <th>SP</th>
+            <th>TM</th>
+            <th>Phase</th>
+            <th>Backbone</th>
+            <th>Targeting Cassette</th>
+        </tr>
+    </thead>
+    <tbody>
+        [% SET row = 0 -%]
+        [% FOR well IN wells %]
+        [% row = row + 1 -%]
+        <tr class="[% IF row % 2 %]rowodd[% ELSE %]roweven[% END %]">
+            <td>[% well_data.${well}.plate %]</td>
+            <td>[% well %]</td>
+            <td>[% well_data.${well}.clone_name %]</td>
+            <td>[% well_data.${well}.three_eight_four_well %]</td>
+            <td>[% well_data.${well}.sp %]</td>
+            <td>[% well_data.${well}.tm %]</td>
+            <td>[% well_data.${well}.phase %]</td>
+            <td>[% well_data.${well}.backbone %]</td>
+            <td>[% well_data.${well}.cassette %]</td>
+        </tr>
+        [% END %]
+    </tbody>
+</table>

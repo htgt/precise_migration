@@ -1,0 +1,112 @@
+<!-- 
+* Now deprecated template (07-May-2009), remove in a few weeks after we
+* know its really not needed.
+-->
+
+[% META title = 'Plate Lists' -%]
+
+<script type="text/javascript" src="[% c.uri_for('/static/javascript/accordion.js') %]"></script>
+
+<style type="text/css" media="screen">
+    .accordion_toggle {
+    	display: block;
+    	height: 30px;
+    	width: auto;
+    	background-color: #e7edf3;
+    	padding: 0 10px 0 10px;
+    	line-height: 30px;
+    	text-decoration: none;
+    	outline: none;
+    	font-size: 12px;
+    	border: 1px solid #c2d2e1;
+    	cursor: pointer;
+    	margin: 0 0 5px 0;
+	}
+
+	.accordion_toggle:hover,
+	.accordion_toggle_active {
+		background-color: #c2d2e1;
+	}
+
+	.accordion_content {
+		overflow: hidden;
+	}
+
+    .accordion_content h2 {
+    	margin: 15px 0 5px 10px;
+    }
+
+    .accordion_content p {
+    	line-height: 150%;
+    	padding: 5px 10px 15px 10px;
+    }
+</style>
+
+<p>Click on a plate type to view a list of plates.</p>
+
+<div id="accordion_container">
+  [% FOR plate_type IN plate_types %]
+    <h2 class="accordion_toggle">[% IF plate_type == 'PGD' %]PGS[% ELSE %][% plate_type %][% END %]</h2>
+    <div class="accordion_content">
+        <table id="[% plate_type _ 'table' %]" class="sortable zebra">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    [% IF plate_type == 'FP' %]
+                        <th>Parent Plate(s)</th>
+                    [% END %]
+                    <th>Source</th>
+                    <th>Background</th>
+                    <th>Latest QC</th>
+                    <th>Desc</th>
+                    <th>Last Comment</th>
+                    <th>Created Date</th>
+                    <th>Created By</th>
+                </tr>
+            </thead>
+            <tbody>
+                [% FOR plate IN plates_by_type.${plate_type} %]
+                    <tr>
+                        <td>[% IF plate.type == 'PGD' %]PGS[% ELSE %][% plate.type %][% END %]</td>
+                        <td><a href="[% c.uri_for('/plate/view')%]?plate_id=[% plate.plate_id %]">[% plate.name %]</a></td>
+                        [% IF plate_type == 'FP' %]
+                            <td>
+                            [% FOR parent_plate IN plate.plate_obj.parent_plates %]
+                                <a href="[% c.uri_for('/plate/view')%]?plate_id=[% parent_plate.plate_id %]">[% parent_plate.name %]</a>[% UNLESS parent_plate == plate.parent_plates.last %]<br />[% END %]
+                            [% END %]
+                            </td>
+                        [% END %]
+                        <td>[% plate.sources %]</td>
+                        <td>[% plate.bacs %]</td>
+                        <td>[% plate.latest_qc %]</td>
+                        <td>[% plate.description %]</td>
+                        <td>[% plate.last_comment %]</td>
+                        <td>[% plate.created_date %]</td>
+                        <td>[% plate.created_user %]</td>
+                    </tr>
+                [% END %]
+            </tbody>
+        </table>
+    </div>
+  [% END %]
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    // Let's create an accordion effect...
+    Event.observe(window, "load", function() { loadAccordion(); }, true);
+
+    function loadAccordion() {
+        var verticalAccordion = new accordion('accordion_container',{
+            resizeSpeed : 8,
+            classNames: {
+                toggle : 'accordion_toggle',
+                toggleActive : 'accordion_toggle_active',
+                content : 'accordion_content'
+            }
+        });
+        
+        // Open first one
+        //verticalAccordion.activate($$('#accordion_container .accordion_toggle')[0]);
+    }
+</script>

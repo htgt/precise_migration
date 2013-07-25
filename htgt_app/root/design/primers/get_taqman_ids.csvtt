@@ -1,0 +1,7 @@
+[% USE CSV -%]
+[%- SET columns = report.columns -%]
+[% CSV.set_columns( columns ) -%]
+[% CSV.header %]
+[% FOR row IN report.data -%]
+[% CSV.data( row ) %]
+[% END -%]

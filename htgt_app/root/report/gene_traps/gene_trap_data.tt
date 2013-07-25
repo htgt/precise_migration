@@ -1,0 +1,33 @@
+<h1>Gene Trap Summary</h1>
+
+<table>
+    <tr>
+        <th>EnsEMBL ID</th>
+        <th>MGI Symbol</th>
+        <th>&lt;50% Confidence</th> 
+        <th>50-79% Confidence</th>
+        <th>&gt;=80% Confidence</th>
+    </tr>   
+    [% FOR gene IN gene_traps.keys %]  
+    <tr>    
+        <td>[% gene %]</td>
+        <td>[% gene_traps.${gene}.MARKER %]</td>
+        <td>
+            [% FOR well IN gene_traps.${gene}.LOW %]
+            <a href="[% c.uri_for('/report/gene_trap_well_page')%]?gene_trap_well=[%well%]">[% well %]</a> <br />
+            [% END %]
+        </td>
+        <td>
+            [% FOR well IN gene_traps.${gene}.MEDIUM %]
+            <a href="[% c.uri_for('/report/gene_trap_well_page')%]?gene_trap_well=[%well%]">[% well %]</a> <br />                
+            [% END %]
+            
+        </td>
+        <td>
+            [% FOR well IN gene_traps.${gene}.HIGH %]
+            <a href="[% c.uri_for('/report/gene_trap_well_page')%]?gene_trap_well=[%well%]">[% well %]</a> <br />                
+            [% END %]            
+        </td>
+    </tr>
+    [% END %]
+</table>

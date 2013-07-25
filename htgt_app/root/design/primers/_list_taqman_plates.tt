@@ -1,0 +1,22 @@
+<p>There are [% plate_count %] TaqMan Assay Plates.</p>
+[% IF page_info.last_page AND page_info.last_page > 1 %]
+    <div class="paginatecontainer">
+        <div class="paginatetitle">
+            Showing page [% page_info.current_page %] of [% page_info.last_page %]. ([% page_info.entries_per_page %] TaqMan plates per page)
+        </div>
+        <div class="paginate">
+            <ul>
+                <li><a onClick="generateReport([% page_info.first_page %]); return false;">&lt;&lt; First</a></li>
+                <li><a onClick="generateReport([% page_info.previous_page %]); return false;">&lt; Previous</a></li>
+                [% FOR page IN page_info.pages_in_set %]
+                    <li [% IF page == page_info.current_page %]class="current_page"[% END %]><a onClick="generateReport([% page %]); return false;">[% page %]</a></li>
+                [% END %]
+                <li><a onClick="generateReport([% page_info.next_page %]); return false;">Next &gt;</a></li>
+                <li><a onClick="generateReport([% page_info.last_page %]); return false;">Last &gt;&gt;</a></li>
+            </ul>
+        </div>
+    </div>
+[% END %]
+
+[% PROCESS 'design/primers/_taqman_plate_table.tt'%]
+

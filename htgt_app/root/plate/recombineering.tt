@@ -1,0 +1,24 @@
+[% META title="Recombineering Report" %]
+
+[% PROCESS recomb_plate_search %]
+
+[% BLOCK recomb_plate_search %]
+    <form name="recomb_plate_search" method="get" action="[% c.uri_for('/plate/view') %]">
+        <input class="default-value" autocomplete="off" type="text" id="recomb_plate_name" name="plate_name" size="14" title="recomb_plate search" /><input type='submit' value='Submit' />
+        <span id="recomb_plate_search_indic" style="display:none;"><img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /></span>
+        <input type="hidden" id="recomb_plate_id" name="plate_id" />
+        <input type="hidden" id="recombineering"  name="recombineering" value="true" />
+        <div class="auto_complete" id="recomb_plate_suggestions"></div>
+    </form>
+    <script type='text/javascript'>
+        new Ajax.Autocompleter(
+            "recomb_plate_name",
+            "recomb_plate_suggestions",
+            "[% c.uri_for('/utils/_suggest_plate_names') %]",
+            {
+                indicator: "recomb_plate_search_indic",
+                afterUpdateElement: function (text, li) { $('recomb_plate_id').value = li.id; }
+            }
+        );
+    </script>
+[% END %]

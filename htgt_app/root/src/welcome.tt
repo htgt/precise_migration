@@ -1,0 +1,130 @@
+<style type="text/css" media="screen">
+    h3, #htgt_search, 
+    #summary_text, #htgt_links { text-align: center; }
+    #htgt_search { padding-top: 10px; padding-bottom: 10px; }
+    #htgt_links { padding-bottom: 10px; }
+    #summary_table { margin: 0 auto; }
+    a.link {
+        margin-right: 30px;
+        padding-left: 16px;
+        padding-bottom: 0;
+        padding-top: 2px;
+    }
+    .reset {
+        background: transparent url([% c.uri_for('/static/images/reset.png')%]) no-repeat scroll center;
+        height: 13px;
+        width: 13px;
+        right: 0px;
+        top: 3px;
+        opacity: 0.3;
+    }
+    .reset:hover {
+        opacity: 1;
+        cursor: pointer;
+    }
+</style>
+
+
+<h3>High Throughput Gene Targeting</h3>
+[% IF c.check_user_roles("edit") %]
+    <div id="htgt_search">
+        <form id="gene_search_main" method="get" action="[% c.uri_for('/report/gene_search') %]">
+            <input class="default-value" autocomplete="off" type="text" id="gene_name_main" name="query" size="80" title="Search for a gene by Marker Symbol, MGI ID, Ensembl ID, Vega ID, Keyword or EPD clone" />
+            <span title="reset" id="gene_search_main_reset" class="reset">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <img id="main_spinner" src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." style="display:none;" /><br />
+            <span style="font-size:0.8em;margin-top:5px;">
+                e.g. <strong>Cbx1</strong>, <strong>MGI:105369</strong>, <strong>ENSMUSG00000018666</strong>, <strong>OTTMUSG00000001636</strong>, <strong>zinc finger</strong> or <strong>EPD0027_1_F05</strong>
+            </span>
+        </form>
+    </div>
+    <div class="clearbig"></div>
+<div id="htgt_links">
+    <a class="link" href="[% c.uri_for('/biomart') %]">BioMart (Advanced Query Interface)</a>
+    <a class="link" href="[% c.uri_for('/design/designlist/list_designs') %]">Browse for Designs</a>
+</div>
+[% ELSE %]
+<div id="userMsgs">
+<p>
+The High Throughput Gene Targeting group at the Wellcome Trust Sanger Institute provides informatic
+support in the production of Mutant ES Cells at WTSI.
+</p>
+<p>
+All of our reported data can be searched and viewed via the IKMC site:<br>
+<a href="http://www.knockoutmouse.org">http://www.knockoutmouse.org</a>
+<br><br>and the Sanger Mouse Portal<br>
+<a href="http://www.sanger.ac.uk/mouseportal">http://www.sanger.ac.uk/mouseportal</a>
+</p>
+<p>
+As of Monday 13th June 2011 we have restricted access to <em>this</em> site's project and report page to
+authorised users with edit rights only.<br>
+If you have used these pages in the past and need information not available at the websites above,
+please contact us at <a href="mailto:htgt@sanger.ac.uk">htgt@sanger.ac.uk</a>
+</p>
+</div>
+[% END %]
+
+
+
+<div class="clearbig"></div>
+
+<div id="search_results"></div>
+
+<h3 id="summary_heading">Pipeline Summary</h3>
+<div id="summary_table">
+    [% PROCESS 'report/summary_by_gene.tt' %]
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+    [% UNLESS c.user -%]
+    Event.observe(window, 'load', function () { sidebar_off(); });
+    [% END -%]
+    
+    Event.observe('gene_search_main_reset', 'click', function() { resetMainGeneSearch(); });
+    
+    function resetMainGeneSearch() {
+        Element.hide('main_spinner');
+        Element.show('summary_heading');
+        Element.show('summary_table');
+        $('search_results').update('');
+        $('gene_search_main').reset();
+    }
+    
+    function runMainGeneSearch( page_num, search ) {
+        Element.show('main_spinner');
+        new Ajax.Updater(
+            'search_results',
+            '[% c.uri_for('/report/gene_search') %]',
+            {
+                asynchronous:true,
+                evalScripts:true,
+                onSuccess: function(request){
+                    Element.hide('main_spinner');
+                    Element.hide('summary_heading');
+                    Element.hide('summary_table');
+                }, 
+                parameters: $H({
+                    query: search,
+                    centre: 1,
+                    called_elswhere: 1,
+                    page: page_num
+                })
+            }
+        );
+    }
+    
+    new Form.Element.Observer(
+        'gene_name_main',
+        2,
+        function(element, value) {
+            if ( value == '' || value == 'Search for a gene by Marker Symbol, MGI ID, Ensembl ID, Vega ID, Keyword or EPD clone' ) {
+                Element.hide('main_spinner');
+                Element.show('summary_heading');
+                Element.show('summary_table');
+                $('search_results').update('');
+            } else {
+                runMainGeneSearch( 1, value );
+            }
+        }
+    );
+</script>

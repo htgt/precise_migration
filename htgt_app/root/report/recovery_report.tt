@@ -1,0 +1,69 @@
+
+
+<table id="distribute_counts_by_design_plate" class="report_table tksort">
+    <a class='button csv' href="[% csv_uri %]" title="Export the table as a CSV file">Export to CSV</a>
+    <thead>
+        <tr>
+          <td>Total number of unique genes:</td>
+          <td>[% unique_gene_count %]</td>
+        </tr>
+        <tr>
+             
+            <th id='plate' class="noedit">Marker Symbol</th>
+            <th id='plate' class="noedit">Ensembl Gene</th>
+            <th id='plate' class="noedit">Vega Gene</th>
+            <th id='plate' class="noedit">Program</th>
+            <th id='plate' class="noedit">Priority count</th>
+            <th id='plate' class="noedit">Design Plate</th>
+            <th id='plate' class="noedit">Design Well</th>
+            <th id='plate' class="noedit">Phase</th>
+            <th id='plate' class="noedit">SP</th>
+            <th id='plate' class="noedit">TM</th>
+            <th id='plate' class="noedit">MGI GT Count</th>
+            <th id='plate' class="noedit">IGTC TG Count</th>
+            <th id='plate' class="noedit">Intvec Plate</th>
+            <th id='plate' class="noedit">Intvec Well</th>
+            <th id='plate' class="noedit">Rec-Result</th>
+            <th id='plate' class="noedit">PC QC Result</th>
+            <th id='plate' class="noedit">Clone Selection</th>
+            [% IF gateway_recovery == 1 %]
+            <th id='plate' class="noedit">Gateway recovery Plate</th>
+            [% END %]
+        </tr>
+    </thead>
+    <tbody>
+          [% FOR value IN rows %] 
+          <tr>
+            <td>[% value.MARKER_SYMBOL %]</a></td>
+            <td>[% value.ENSEMBL_GENE_ID %]</a></td>
+            <td>[% value.VEGA_GENE_ID %]</a></td>
+            <td>[% value.PROGRAM %]</a></td>
+            <td>[% value.PRIORITY_COUNT %]</a></td>
+            <td>[% value.DESIGN_PLATE_NAME %]</a></td>
+            <td>[% value.DESIGN_WELL_NAME %]</a></td>
+            <td>[% value.PHASE %]</a></td>
+            <td>[% value.SP %]</a></td>
+            <td>[% value.TM %]</a></td>
+            <td>[% value.MGI_GT_COUNT %]</a></td>
+            <td>[% value.IGTC_GT_COUNT %]</a></td>
+            <td>[% value.PCS_PLATE_NAME %]</a></td>
+            <td>[% value.PCS_WELL_NAME %]</a></td>
+            <td>[% value.REC_RESULT %]</a></td>
+            <td>[% value.PC_QC_RESULT %]</a></td>
+            <td>[% value.CLONE_SELECTION %]</a></td>
+            [% IF gateway_recovery == 1 %]
+            <td>[% value.GATEWAY_RECOVERY_PLATE %]</a></td>
+            [% END %]
+          </tr>
+          [% END %]
+        
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    var well_table =
+        new TableKit(
+            'distribute_counts_by_design_plate',
+            { editable: false, }
+        );
+</script>

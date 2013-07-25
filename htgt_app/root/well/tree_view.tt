@@ -1,0 +1,31 @@
+[% META title = 'View Well Hierarchy';
+   SET plate_name = c.req.param('plate_name');
+   SET well_name  = c.req.param('well_name');
+   FOR key IN c.req.param('data');
+     data_selected.$key = 1;
+   END;
+-%]
+
+<form name="well_tree_search">
+  Plate: <input class="default-value" type="text" id="plate_name" name="plate_name" size="14" title="Plate name" 
+  [% IF plate_name %]value="[% plate_name %]" [% END %]/>
+  Well: <input class="default-value" type="text" id="well_name" name="well_name" size="14" title="Well name" 
+  [% IF well_name %]value="[% well_name %]" [% END %]/>
+  <input type="submit" name="go" value="go" />
+  <input type="submit" name="clear" value="clear" />
+[% IF data_types %]
+  <br />
+  Display data:
+  <br />(select multiple values)
+  <select style="vertical-align:top;" name="data" multiple="multiple" size="6">
+  [% FOR data_type IN data_types -%]
+    <option [% IF data_selected.$data_type %]selected="selected" [% END %]value="[% data_type %]">[% data_type %]</option>
+  [% END %]
+  </select>
+[% END %]
+</form>
+
+[% IF tree -%]
+[% USE v = Tree.Simple.View.HTML( tree ) -%]
+[% v.expandAll() -%]
+[% END -%]

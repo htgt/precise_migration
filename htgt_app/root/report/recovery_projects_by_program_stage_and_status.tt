@@ -1,0 +1,17 @@
+<table id="summary_table">
+    <thead>
+        [% FOREACH column IN columns %]
+            <th>[% column %]</th>
+        [% END %]
+    </thead>
+
+    <tbody>
+        [% FOREACH row IN rows %]
+            <tr>
+                [% FOREACH data IN row %]
+                <td> [% data %] </td>
+                [% END %]
+            </tr>
+        [% END %]
+    </tbody>
+</table>

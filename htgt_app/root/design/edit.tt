@@ -1,0 +1,1045 @@
+[% META title = 'High Throughput Gene Targeting: Create Design' -%]
+
+<script type="text/javascript" charset="utf-8">
+    //<![CDATA[
+    function flushGeneBuildGene(){
+        document.edit_design_form.selected_gene_build_gene.value = "";
+        document.edit_design_form.start_exon.selectedIndex=0;
+        document.edit_design_form.end_exon.selectedIndex=0;
+        document.edit_design_form.target_start.value = "";
+        document.edit_design_form.target_end.value = "";
+    }
+
+    function loadTargetStart(){
+        var selected_exon_start_end = $F('start_exon');
+        var exon_and_limits = selected_exon_start_end.split(":");
+        limits = exon_and_limits[1];
+        var start_end = limits.split("-");
+        var start = start_end[0];
+        $('target_start').value = start;
+    }
+
+    function loadTargetStartforNegStrand(){
+        var selected_exon_start_end = $F('start_exon');
+        var exon_and_limits = selected_exon_start_end.split(":");
+        limits = exon_and_limits[1];
+        var start_end = limits.split("-");
+        var start = start_end[1];
+        $('target_start').value = start;
+    }
+    
+    function loadTargetEnd(){
+        var selected_exon_start_end = $F('end_exon');
+        var exon_and_limits = selected_exon_start_end.split(":");
+        limits = exon_and_limits[1];
+        var start_end = limits.split("-");
+        var end = start_end[1];
+        $('target_end').value = end;
+    }
+
+    function loadTargetEndforNegStrand(){
+        var selected_exon_start_end = $F('end_exon');
+        var exon_and_limits = selected_exon_start_end.split(":");
+        limits = exon_and_limits[1];
+        var start_end = limits.split("-");
+        var end = start_end[0];
+        $('target_end').value = end;
+    }
+    
+    function loadTargetStartandEnd(){
+        var selected_exon_start_end = $F('start_exon');
+        var exon_and_limits = selected_exon_start_end.split(":");
+        limits = exon_and_limits[1];
+        var start_end = limits.split("-");
+        var start = start_end[0];
+        var end = start_end[1];
+        $('target_start').value = start;
+        $('target_end').value = end;
+    }
+
+    function loadTargetStartandEndforNegStrand(){
+        var selected_exon_start_end = $F('start_exon');
+        var exon_and_limits = selected_exon_start_end.split(":");
+        limits = exon_and_limits[1];
+        var start_end = limits.split("-");
+        var start = start_end[0];
+        var end = start_end[1];
+        $('target_start').value = end;
+        $('target_end').value = start;
+    }
+    
+    function loadInsertionStart() {
+        var selected_exon_start_end = $F('start_exon');
+        var exon_and_limits = selected_exon_start_end.split(":");
+        limits = exon_and_limits[1];
+        var start_end = limits.split("-");
+        var start = parseInt(start_end[0]);
+        $('start').value = start-1;
+    }
+
+    function loadInsertionStartforNegStrand() {
+        var selected_exon_start_end = $F('start_exon');
+        var exon_and_limits = selected_exon_start_end.split(":");
+        limits = exon_and_limits[1];
+        var start_end = limits.split("-");
+        var start = parseInt(start_end[1]);
+        $('start').value = start+1;
+    }
+
+    function loadInsertionEnd() {
+        var selected_exon_start_end = $F('end_exon');
+        var exon_and_limits = selected_exon_start_end.split(":");
+        limits = exon_and_limits[1];
+        var start_end = limits.split("-");
+        var end = parseInt(start_end[1]);
+        $('end').value = end+1;
+    }
+
+    function loadInsertionEndforNegStrand() {
+        var selected_exon_start_end = $F('end_exon');
+        var exon_and_limits = selected_exon_start_end.split(":");
+        limits = exon_and_limits[1];
+        var start_end = limits.split("-");
+        var end = parseInt(start_end[0]);
+        $('end').value = end-1;        
+    }
+
+    function searchForGBG(){
+        document.edit_design_form.action = "[% c.uri_for('search_for_gene_build_gene') %]";
+        document.edit_design_form.submit;
+    }
+
+    function createDesignAndRun(){
+        var selected_target = $$('input:checked[type="radio"][name="target_choice"]').pluck('value');
+    
+        document.edit_design_form.action = "[% c.uri_for('create_design_and_run') %]?selected_target=" + selected_target;
+        document.edit_design_form.submit;      
+    }
+    
+    function runDesign() {
+        document.edit_design_form.action = "[% c.uri_for('run_design') %]";
+        document.edit_design_form.submit;     
+    }
+    
+    function refreshDesign(){
+        document.edit_design_form.action = "[% c.uri_for('refresh_design') %]";
+        document.edit_design_form.submit;
+    }
+
+    function exportDesign(){
+        document.edit_design_form.action = "[% c.uri_for('export_design') %]";
+        document.edit_design_form.submit;
+    }
+
+    function deleteDesign(){
+        document.edit_design_form.action = "[% c.uri_for('/design/crud/delete') %]";
+        document.edit_design_form.submit;
+    }
+    
+    function editDesign() {
+        document.edit_design_form.action = "[% c.uri_for('edit_design') %]";
+        document.edit_design_form.submit;   
+    }
+    
+    function render_design_form(){
+        document.edit_design_form.action = "[% c.uri_for('load_design_form') %]";
+        document.edit_design_form.submit;
+   }
+   
+    //]]>
+</script>
+
+<form id="edit_design_form" name="edit_design_form" method="post" action="">
+    <p>
+        This custom vector design tool is provided by the EUCOMM consortium as a service to the research community. When
+        using this tool, the user agrees not to submit more than five designs per day for creation without prior discussion
+        with the <a href="mailto:vvi@sanger.ac.uk">High Throughput Gene Targeting Group</a> at the Sanger Institute.
+    </p>
+    <table>
+        <tr>
+            <td>
+                Design Type
+                [% IF c.user %]
+                    <select name="design_type" id="design_type">
+                        <option [% IF design_info.design_type == "Knockout first" %] selected="selected" [% END %]>Knockout first</option>
+                        <option [% IF design_info.design_type == "Deletion" %] selected="selected" [% END %]>Deletion</option>
+                        <option [% IF design_info.design_type == "Insertion" %] selected="selected" [% END %]>Insertion</option>
+                    </select>
+                [% ELSE %]
+                    <input type="text" disabled="disabled" value="[% design_info.design_type %]" />
+                [% END %]
+            </td>
+            <td>
+                Oligo Select Method
+                [% IF c.user %]
+                    <select name="oligo_select_method" id="oligo_select_method"> 
+                        <option [% IF design_info.oligo_select_method == "Block Specified" %] selected="selected" [% END %]>Block Specified</option>
+                        <option [% IF design_info.oligo_select_method == "Location Specified" %] selected="selected" [% END %]>Location Specified</option>
+                    </select>
+                [% ELSE %]
+                    <input type="text" disabled="disabled" value="[% design_info.oligo_select_method %]" />
+                [% END %]
+            </td>
+            <td>
+                Artificial Intron Design
+                <select name="artificial_intron_design" id="artificial_intron_design">
+                    <option [% IF design_info.artificial_intron_design == "No" %] selected="selected" [% END %]>No</option>
+                    <option [% IF design_info.artificial_intron_design == "Yes" %] selected="selected" [% END %]>Yes</option>
+                </select>
+            </td>
+            [% IF c.user %]
+                <td><input type="submit" value="Specify new design" onclick="render_design_form()" /></td>
+            [% END %]
+            <td class="nocol"><input type="hidden" name="design_id" value="[% design_info.design_id %]" /></td>
+        </tr>
+    </table>
+    
+    [% IF design_info.design_type == "Knockout first"  && design_info.oligo_select_method == "Location Specified" %]  
+        <table cellspacing="0" cellpadding="0" border="0" id="design_image">
+            <tr class="nocol">
+                <td><img src="[% c.uri_for('/static/images/g5_bz.GIF') %]" alt="" /></td>
+                <td style="text-align:right;">
+                    <img alt="" src="[% c.uri_for('/static/images/insertion_start_ko_l.GIF') %]"/>
+                </td>
+                <td colspan="2">
+                    <img src="[% c.uri_for('/static/images/cassette.gif') %]" alt="" />
+                </td>
+                <td>
+                    <img alt="" src="[% c.uri_for('/static/images/insertion_end_ko_l.GIF') %]"/>
+                </td>
+                <td colspan="2">
+                    <img alt="" src="[% c.uri_for('/static/images/LoxP.gif') %]"/>
+                </td>
+                <td>
+                    <img src="[% c.uri_for('/static/images/g3_label.GIF') %]" alt="3' retrieval block size" align="right"/>
+                </td>
+            </tr>
+            <tr class="nocol">
+                <td style="text-align:left;">
+                    <input type="text" size="4" name="retrieval_primer_length_5p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_length_5p %]" />
+                </td>
+                <td></td>
+                <td style="text-align:right;">
+                    <input type="text" size="12" name="cassette_start" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.cassette_start %]" />
+                </td>
+                <td style="text-align:left;" colspan="1">
+                    <input type="text" size="12" name="cassette_end" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.cassette_end %]" />
+                </td>
+                <td></td>
+                <td style="text-align:left;">
+                    <input type="text" size="12" name="loxp_start" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.loxp_start %]" />
+                    <input type="text" size="12" name="loxp_end" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.loxp_end %]" />
+                </td>
+                <td></td>                
+                <td style="text-align:right;">
+                    <input type="text" size="4" name="retrieval_primer_length_3p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_length_3p %]" />
+                </td>
+            </tr>
+            <tr class="nocol">
+                <td colspan="2">
+                    <img src="[% c.uri_for('/static/images/g5_exon_l.GIF') %]" alt="" />
+                </td>
+                <td colspan="2">
+                    <img src="[% c.uri_for('/static/images/exon_ko_l.GIF') %]" alt="" />
+                </td>
+                <td colspan="4" >
+                    <img src="[% c.uri_for('/static/images/exon_g3_ko_l.GIF') %]" alt="" />
+                </td>
+            </tr>
+            <tr class="nocol">
+                <td colspan="2">
+                    <img src="[% c.uri_for('/static/images/5_arm_label_l.GIF') %]" alt="" />
+                </td>
+                <td colspan="2">&nbsp;</td>
+                <td colspan="4">
+                    <img src="[% c.uri_for('/static/images/3_arm_label_ko_l.GIF') %]" alt="" />
+                </td>
+            </tr>
+            <tr class="nocol">
+                <td class="nocol">&nbsp;</td>
+                <td style="text-align:center;">
+                    <input type="text" size="4" name="retrieval_primer_offset_5p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_offset_5p %]" />
+                </td>
+                <td colspan="4">&nbsp;</td>
+                <td style="text-align:left;">
+                    <input type="text" size="4" name="retrieval_primer_offset_3p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_offset_3p %]" />
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    [% END %]
+    
+    [% IF design_info.design_type == "Knockout first"  && design_info.oligo_select_method == "Block Specified"%]
+        <table cellspacing="0" cellpadding="0" border="0" id="design_image">
+            <tr class="nocol">
+                <td><img src="[% c.uri_for('/static/images/g5_bz.GIF') %]" alt="5' retrieval block size" /></td>
+                <td style="text-align:center;"><img src="[% c.uri_for('/static/images/U_block_size.GIF') %]" alt="U block size" /></td>
+                <td style="text-align:center;"><img src="[% c.uri_for('/static/images/5space_label.GIF') %]" alt="Min 5' spacer" /></td>
+                <td style="text-align:center;"><img src="[% c.uri_for('/static/images/CE.GIF') %]" alt="Critical Exon" /></td>
+                <td><img src="[% c.uri_for('/static/images/3space_label.GIF') %]" alt="Min 3' spacer" /></td>
+                <td><img src="[% c.uri_for('/static/images/D_block_size.GIF') %]" alt="D block size" /></td>
+                <td style="text-align:right;"><img src="[% c.uri_for('/static/images/g3_label.GIF') %]" alt="3' retrieval block size" /></td>
+            </tr>
+            <tr class="nocol">
+                <td style="text-align:left;">
+                    <input type="text" size="4" name="retrieval_primer_length_5p" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_length_5p %]" />
+                </td>
+                <td style="text-align:center;" >
+                    <input type="text" size="2" name="split_5p_target_seq_length" id="u5_size" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.split_5p_target_seq_length %]" />
+                </td>
+                <td style="text-align:center;" >
+                    <input type="text" size="3" name="min_5p_exon_flanks" id="min_flank_5p" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.min_5p_exon_flanks %]" />
+                </td>
+                <td style="text-align:center;"><img src="[% c.uri_for('/static/images/arrow.GIF') %]" alt="" /></td>
+                <td style="text-align:center;" colspan="1" >
+                    <input type="text" size="3" name="min_3p_exon_flanks" id="min_flank_3p" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.min_3p_exon_flanks %]" />
+                </td>
+                <td style="text-align:left;">
+                    <input type="text" size="2" name="split_3p_target_seq_length" id="d3_size" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.split_3p_target_seq_length %]" />
+                </td>
+                <td style="text-align:right;">
+                    <input type="text" size="4" name="retrieval_primer_length_3p" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_length_3p %]" />
+                </td>
+            </tr>
+            <tr class="nocol">
+                <td colspan="3"><img src="[% c.uri_for('/static/images/g5_exon.GIF') %]" alt="" /></td>
+                <td><img src="[% c.uri_for('/static/images/exon.GIF') %]" alt="" /></td>
+                <td colspan="3"><img src="[% c.uri_for('/static/images/exon_g3.GIF') %]" alt="" /></td>
+            </tr>
+            <tr class="nocol">
+               <td></td>
+               <td style="text-align:right;">
+                   <input type="text" size="2" name="multi_region_5p_offset_shim" id="offset_5p" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.multi_region_5p_offset_shim %]" />
+               </td>
+               <td></td>
+               <td></td>
+               <td style="text-align:right;">
+                   <input type="text" size="2" name="multi_region_3p_offset_shim" id="offset_3p" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.multi_region_3p_offset_shim %]" />
+               </td>
+            </tr>
+            <tr class="nocol">
+                <td colspan="3"><img src="[% c.uri_for('/static/images/5_arm_label.GIF') %]" alt="" /></td>
+                <td>&nbsp;</td>
+                <td colspan="3"><img src="[% c.uri_for('/static/images/3_arm_label_ko.GIF') %]" alt="" /></td>
+            </tr>
+            <tr class="nocol">
+                <td class="nocol">&nbsp;</td>
+                <td style="text-align:center;">
+                    <input type="text" size="4" name="retrieval_primer_offset_5p" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_offset_5p %]" />
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style="text-align:right;">
+                    <input type="text" size="4" name="retrieval_primer_offset_3p" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_offset_3p %]" />
+                </td>
+            </tr>
+        </table>
+    [% END %]
+
+    [% IF design_info.design_type =="Deletion" && design_info.oligo_select_method == "Block Specified" %]
+        <table cellspacing="0" cellpadding="0" border="0" id="design_image">
+            <tr class="nocol">
+                <td><img src="[% c.uri_for('/static/images/g5_bz.GIF') %]" alt="" /></td>
+                <td style="text-align:right;"><img src="[% c.uri_for('/static/images/U_block_label_1.GIF') %]" alt="" /></td>
+                <td style="text-align:center;"><img src="[% c.uri_for('/static/images/5space_label.GIF') %]" alt="" /></td>
+                <td></td>
+                <td><img src="[% c.uri_for('/static/images/3space_label.GIF') %]" alt="" /></td>
+                <td><img src="[% c.uri_for('/static/images/D_block_label_1.GIF') %]" alt="" /></td>
+                <td style="text-align:right;"><img src="[% c.uri_for('/static/images/g3_label.GIF') %]" alt="" /></td>
+            </tr>
+            <tr class="nocol">
+                <td style="text-align:left;">
+                    <input type="text" size="4" name="retrieval_primer_length_5p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_length_5p %]" />
+                </td>
+                <td style="text-align:right;">
+                    <input type="text" size="2" name="split_5p_target_seq_length" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.split_5p_target_seq_length %]" />
+                </td>
+                <td style="text-align:center;">
+                    <input type="text" size="4" name="min_5p_exon_flanks" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.min_5p_exon_flanks %]" />
+                </td>
+                <td></td>
+                <td style="text-align:center;" colspan="1">
+                    <input type="text" size="4"  name="min_3p_exon_flanks" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.min_3p_exon_flanks %]" />
+                </td>
+                <td style="text-align:left;">
+                    <input type="text" size="2"  name="split_3p_target_seq_length" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.split_3p_target_seq_length %]" />
+                </td>
+                <td style="text-align:right;">
+                    <input type="text" size="4"  name="retrieval_primer_length_3p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_length_3p %]" />
+                </td>
+            </tr>
+            <tr class="nocol">
+                <td colspan="3"><img src="[% c.uri_for('/static/images/g5_exon_b.GIF') %]" alt="" /></td>
+                <td><img src="[% c.uri_for('/static/images/exon_b.GIF') %]" alt="" /></td>
+                <td colspan="3"><img src="[% c.uri_for('/static/images/exon_g3_b.GIF') %]" alt="" /></td>
+            </tr>
+            <tr class="nocol">
+                <td colspan="3"><img src="[% c.uri_for('/static/images/5_arm_label_b.GIF') %]" alt="" /></td>
+                <td>&nbsp;</td>
+                <td colspan="3"><img src="[% c.uri_for('/static/images/3_arm_label_b.GIF') %]" alt="" /></td>
+            </tr>
+            <tr class="nocol">
+                <td class="nocol">&nbsp;</td>
+                <td style="text-align:center;">
+                    <input type="text" size="4" name="retrieval_primer_offset_5p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_offset_5p %]" />
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style="text-align:right;">
+                    <input type="text" size="4" name="retrieval_primer_offset_3p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_offset_3p %]" />
+                </td>
+            </tr>
+        </table>
+    [% END %]
+
+    [% IF design_info.design_type =="Insertion" && design_info.oligo_select_method == "Block Specified" %]
+        <table cellspacing="0" cellpadding="0" border="0" id="design_image">
+            <tr class="nocol">
+                <td style="text-align:left;"><img src="[% c.uri_for('/static/images/g5_bz.GIF') %]" alt="" /></td>
+                <td style="text-align:right;"><img src="[% c.uri_for('/static/images/U_block_label_1.GIF') %]" alt="" /></td>
+                <td style="text-align:left;"><img src="[% c.uri_for('/static/images/D_block_label_2.GIF') %]" alt="" /></td>
+                <td style="text-align:left;"><img src="[% c.uri_for('/static/images/5space_label_1.GIF') %]" alt="" /></td>
+                <td style="text-align:right;"><img src="[% c.uri_for('/static/images/g3_label.GIF') %]" /></td>
+            </tr>
+            <tr class="nocol">
+                <td style="text-align:left;">
+                    <input type="text" size="4" name="retrieval_primer_length_5p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_length_5p %]" />
+                </td>
+                <td style="text-align:right;">
+                    <input type="text" size="2" name="split_5p_target_seq_length" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.split_5p_target_seq_length %]" />
+                </td>
+                <td style="text-align:left;">
+                    <input type="text" size="2" name="split_3p_target_seq_length" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.split_3p_target_seq_length %]" />
+                </td>
+                <td style="text-align:left;">
+                    <input type="text" size="4" name="min_5p_exon_flanks" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.min_5p_exon_flanks %]" />
+                </td>
+                <td style="text-align:right;">
+                    <input type="text" size="4" name="retrieval_primer_length_3p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_length_3p %]" />
+                </td>
+            </tr>
+            <tr class="nocol">
+                <td colspan="2"><img src="[% c.uri_for('/static/images/g5-u5_ins_block.GIF') %]" alt="" /></td>
+                <td colspan="4"><img src="[% c.uri_for('/static/images/d3-g3_ins_block.GIF') %]" alt="" /></td>
+            </tr>
+            <tr class="nocol">
+                <td colspan="2"><img src="[% c.uri_for('/static/images/5arm_ins_block.GIF') %]" alt="" /></td>
+                <td colspan="4"><img src="[% c.uri_for('/static/images/3arm_ins_block.GIF') %]" alt="" /></td>
+            </tr>
+            <tr class="nocol">
+                <td colspan="2" style="text-align:center;">
+                    <input type="text" size="4" name="retrieval_primer_offset_5p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_offset_5p %]" />
+                </td>
+                <td colspan="3" style="text-align:center;">
+                    <input type="text" size="4" name="retrieval_primer_offset_3p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_offset_3p %]" />
+                </td>
+            </tr>
+        </table>
+    [% END %]
+
+    [% IF design_info.design_type !="Knockout first" && design_info.oligo_select_method == "Location Specified" %]  
+        <table cellspacing="0" cellpadding="0" border="0" id="design_image">
+            <tr class="nocol">
+                <td><img src="[% c.uri_for('/static/images/g5_bz.GIF') %]" alt="" /></td>
+                <td style="text-align:right;">
+                    <img alt="" 
+                        [% IF design_info.design_type =="Deletion" %] src="[% c.uri_for('/static/images/del_start.GIF') %]"
+                        [% ELSE %]                                    src="[% c.uri_for('/static/images/insertion_start.GIF') %]"
+                        [% END %] />
+                </td>
+                <td></td>
+                <td>
+                    <img alt="" 
+                        [% IF design_info.design_type =="Deletion" %] src="[% c.uri_for('/static/images/del_end.GIF') %]"
+                        [% ELSE %]                                    src="[% c.uri_for('/static/images/insertion_end.GIF') %]"
+                        [% END %]  />
+                </td>
+                <td style="text-align:right;"><img src="[% c.uri_for('/static/images/g3_label.GIF') %]" alt="" /></td>
+            </tr>
+            <tr class="nocol">
+                <td style="text-align:left;">
+                    <input type="text" size="4" name="retrieval_primer_length_5p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_length_5p %]" />
+                </td>
+                <td style="text-align:right;">
+                    <input type="text" size="12" name="start" id="start" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.target_start %]" />
+                </td>
+                <td></td>
+                <td style="text-align:left;" colspan="1">
+                    <input type="text" size="12" name="end" id="end" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.target_end %]" />
+                </td>
+                <td style="text-align:right;">
+                    <input type="text" size="4" name="retrieval_primer_length_3p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_length_3p %]" />
+                </td>
+            </tr>
+            <tr class="nocol">
+                <td colspan="2"><img src="[% c.uri_for('/static/images/g5_exon_l.GIF') %]" alt="" /></td>
+                <td><img src="[% c.uri_for('/static/images/exon_l.GIF') %]" alt="" /></td>
+                <td colspan="2" ><img src="[% c.uri_for('/static/images/exon_g3_l.GIF') %]" alt="" /></td>
+            </tr>
+            <tr class="nocol">
+                <td colspan="2"><img src="[% c.uri_for('/static/images/5_arm_label_l.GIF') %]" alt="" /></td>
+                <td>&nbsp;</td>
+                <td colspan="2"><img src="[% c.uri_for('/static/images/3_arm_label_l.GIF') %]" alt="" /></td>
+            </tr>
+            <tr class="nocol">
+                <td class="nocol">&nbsp;</td>
+                <td style="text-align:center;">
+                    <input type="text" size="4" name="retrieval_primer_offset_5p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_offset_5p %]" />
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style="text-align:left;">
+                    <input type="text" size="4" name="retrieval_primer_offset_3p" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.retrieval_primer_offset_3p %]" />
+                </td>
+            </tr>
+        </table>
+    [% END %]
+
+    [% IF design_info.design_type != "" %]
+        <table>
+            [% IF design_info.design_type == "Knockout first" %]
+            <tr>
+                <td>Subtype</td>
+                <td>
+                    [% IF mode != "create" && design_info.import_otter_gene != 1 %]
+                        <input type="text" disabled="disabled" value="[% design_info.subtype %]" />
+                    [% ELSE %]
+                        [% IF design_info.design_type == "Knockout first" %]
+                            <select name="subtype" id="subtype">
+                                <option [% IF design_info.subtype == "frameshift"%] selected="selected" [% END %]>frameshift</option>
+                                <option [% IF design_info.subtype == "domain" %] selected="selected" [% END %]>domain</option>
+                            </select>
+                        [% ELSE %]
+                            <input type="text" name="subtype" id="subtype" value="[% design_info.subtype %]" size="25">
+                        [% END %]
+                    [% END %]
+                </td>
+                <td>Domain Disrupted</td>
+                <td>
+                    <input type="text" name="subtype_description" size="35" [% IF mode != "create" && design_info.import_otter_gene != 1 %]disabled="disabled"[% END %] value="[% design_info.subtype_description %]" />
+                </td>
+            </tr>
+            [% END %]
+            <tr>
+                <td>Gene Build</td>
+                <td>
+                    [% IF mode != "create" %]
+                        <input name="gene_build" id="gene_build" type="text" size="35" disabled="disabled" value="[% design_info.gene_build %]" />
+                    [% END %]
+                        [% IF mode == "create" %]
+                            <select name="gene_build" id="gene_build" onchange="flushGeneBuildGene()">
+                                [% FOREACH build = design_info.gene_build_list %]
+                                    <option [% IF build == design_info.gene_build %] selected="selected" [% END %]>[% build %]</option>
+                                [% END %]
+                            </select>
+                        [% END %]
+                </td>
+                <td>Gene</td>
+                <td>
+                    <input type="text" name="selected_gene_build_gene" id="selected_gene_build_gene" size="35" [% IF mode != "create" %] disabled="disabled" [% END %] value="[% design_info.selected_gene_build_gene %]" />
+                    [% IF mode == "create" && design_info.import_otter_gene != 1 %]
+                        <input type="submit" value="Search For Gene" onclick="searchForGBG()" />
+                    [% END %]
+                </td>
+            </tr>
+ 
+            [% IF display_find_target %]
+            <tr>
+                <td>
+                   <button type="button" id="find_target">Find Me A Target</button>       
+                </td>
+                
+                <td >Click <a id="toggle_help" href="" >here</a> to view explanations.</td>
+            </tr>
+            <tr id="design_help" style="display:none">
+                <td colspan="4">
+                    <p><strong>Conditional frameshift alleles </strong></p>
+                    <p> In this allele a non-symmetrical exon is tagged for removal, such that a frameshift occurs as a consequence.
+                        In most cases the frameshift results in non-sense mediated decay (NMD) due to the presence of a premature
+                        termination codon (PTC) upstream from splicing signals. </p>
+                    <p><strong>Conditional domain-disruption alleles </strong></p>
+                       <p>are not subject to NMD and are hence likely
+                       to produce a protein, but the critical region is chosen such that a significant part of the functional
+                       domain is deleted.</p>
+                    <p><strong>Deletion alleles </strong>are non-conditional and are designed when none of the
+                       above is possible.</p>
+                    <p>Though exhaustive, these design strategies can not yet target all type of genes in the mouse genome.
+                       Typical loci for which we can not design so far are single exon genes,
+                       or those with the overwhelming majority of the coding sequence in the very first exon </p>
+                    <button id="close_tool_tip">Close</button>
+                </td>
+            </tr>
+            <tr class="nocol" id="target_status"></tr>
+            <script type="text/javascript" charset="utf-8">
+               $('toggle_help').observe('click', function(event){
+                  $('design_help').toggle();
+                  event.stop();
+               });
+               
+               $('close_tool_tip').observe('click', function (event) {
+                   $('design_help').toggle();
+                   event.stop(); 
+               });
+               
+              
+               
+               $('find_target').observe('click', function (event) {
+                   //var selected_type = $$('input:checked[type="radio"][name="type"]').pluck('value');
+                   
+                   //var url = '[% c.uri_for('/design/designedit/find_target') %]?type=' + selected_type + '&ensembl_id=' + $F('selected_gene_build_gene') + '&gene_build=' + $F('gene_build');
+                   var url = '[% c.uri_for('/design/designedit/find_target') %]?type=' + $F('subtype') + '&ensembl_id=' + $F('selected_gene_build_gene') + '&gene_build=' + $F('gene_build');
+                   
+                   $('target_status').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Working...');
+                   new Ajax.Updater( 'target_result', url, { 
+                        asynchronous: true,
+                        eval_script: true,
+                        onComplete: function() {
+                           if (!$('target_result').visible()){
+                             $('target_result').toggle();
+                           }
+                           $('target_status').update();
+                        }
+                   });
+                   event.stop();
+               });
+               
+            </script>
+            
+            [% END %]
+            
+            </table>
+
+            <div id="target_result" style="display:none">
+                [% INCLUDE 'design/_target_result.tt' %]
+            </div>
+                        
+            <table>
+            <tr>
+                <td>Start Exon</td>
+                <td>
+                    [% IF mode != "create" && design_info.import_otter_gene != 1 %] <input type="text" disabled="disabled" size="35" value="[% design_info.start_exon %]" />[% END %]
+                    [% IF mode == "create" || design_info.import_otter_gene == 1 %]
+                        <select name="start_exon" id="start_exon"
+                            [% IF design_info.design_type =="Insertion" && design_info.oligo_select_method == "Block Specified" %]
+                                [% IF design_info.chr_strand == 1 %]
+                                    onchange="loadTargetStartandEnd()"
+                                [% ELSE %]
+                                    onchange="loadTargetStartandEndforNegStrand()"
+                                [% END %]
+                            [% ELSIF design_info.design_type !="Knockout first" && design_info.oligo_select_method == "Location Specified" %]
+                                [% IF design_info.chr_strand == 1 %]
+                                    onchange="loadInsertionStart()"
+                                [% ELSE %]
+                                    onchange="loadInsertionStartforNegStrand()"
+                                [% END %]
+                            [% ELSE %]
+                                [% IF design_info.chr_strand == 1 %]
+                                    onchange="loadTargetStart()"
+                                [% ELSE %]
+                                    onchange="loadTargetStartforNegStrand()"
+                                [% END %]
+                            [% END %]
+                        >
+                            <option>select ...</option>
+                            [% FOREACH exon = design_info.exons %]
+                                [% match = exon.match((design_info.start_exon)'.*') %]
+                                <option id="start_[% exon.split(':').0 %]" [% IF match %] selected="selected" [% END %]>[% exon %]</option>                        
+                            [% END %]
+                        </select>
+                    [% END %]
+                </td>
+                <td>End Exon</td>
+                <td>
+                    [% IF mode != "create" && design_info.import_otter_gene != 1 %]<input type="text" disabled="disabled" size="35" value="[% design_info.end_exon %]" />
+                    [% ELSIF mode == "create" && design_info.design_type =="Insertion" && design_info.oligo_select_method == "Block Specified" %]
+                        <select disabled="disabled">
+                        </select>
+                    [% ELSE %]
+                        <select name="end_exon" id="end_exon"
+                            [% IF design_info.design_type != "Knockout first" && design_info.oligo_select_method == "Location Specified" %]
+                                [% IF design_info.chr_strand == 1 %]
+                                    onchange="loadInsertionEnd()"
+                                [% ELSE %]
+                                    onchange="loadInsertionEndforNegStrand()"
+                                [% END %]
+                            [% ELSE %]
+                                [% IF design_info.chr_strand == 1 %]
+                                    onchange="loadTargetEnd()"
+                                [% ELSE %]
+                                    onchange="loadTargetEndforNegStrand()"
+                                [% END %]
+                            [% END %]
+                        >
+                            <option>select ...</option>
+                            [% FOREACH exon = design_info.exons %]
+                                [% match = exon.match((design_info.end_exon)'.*') %]
+                                <option id="end_[% exon.split(':').0 %]" [% IF match %] selected="selected" [% END %]>[% exon %]</option>
+                            [% END %]
+                        </select>
+                    [% END %]
+                </td> 
+            </tr>
+        
+            [% IF !( design_info.design_type != "Knockout first" && design_info.oligo_select_method == "Location Specified") %]
+            
+            <tr>
+                <td>Target Start</td>
+                <td>
+                    <input type="text" size="20" name="target_start" id="target_start" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %]  value="[% design_info.target_start %]" />
+                </td>
+                <td>Target End</td>
+                <td>
+                    <input type="text" size="20" name="target_end" id="target_end" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %]  value="[% design_info.target_end %]" />
+                </td>
+            </tr>
+            [% END %]
+            <tr>
+                <td>Primer Length</td>
+                <td>
+                    <input type="text" name="primer_length" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.primer_length %]" />
+                </td>
+                <td>Design Comment</td>
+                <td>
+                    <input type="text" size="35" name="score" [% IF mode != "create" && design_info.import_otter_gene != 1 %] disabled="disabled" [% END %] value="[% design_info.score %]" />
+                </td>
+            </tr>
+            <tr>
+                <td>Created by</td>
+                <td>[% design_info.created_user %]</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="nocol"><span style="color:red;">[% design_info.message %]</span></td>
+            </tr>
+            [% IF mode == "create" && design_info.import_otter_gene != 1 %]
+                <tr>
+                    <td><input type="submit" value="Create And Run" onclick="createDesignAndRun()" /></td>
+                </tr>
+                </table>
+            [% ELSE %]
+                [% IF design_info.import_otter_gene == 1 %]
+                    <tr>
+                        <td><input type="submit" value="Run Design" onclick="runDesign()" /></td>
+                    </tr>
+                    </table>
+                [% ELSE %]
+                    </table>
+                    <div id="validate_design_div">
+                        [% INCLUDE 'design/_validate_design.tt' %]
+                    </div>
+                    
+                    <div id="comments_div">
+                        [% INCLUDE 'design/_design_comment_table.tt' %]
+                    </div>
+                    
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <input type="submit" value="Refresh" onclick="refreshDesign()" />
+                                <input type="radio" name="oligo_strand" value="forward" [% IF design_info.oligo_strand == 'forward' %] checked="checked" [% END %] /> oligos on fwd strand 
+                                <input type="radio" name="oligo_strand" value="ordered" [% IF design_info.oligo_strand == 'ordered' %] checked="checked" [% END %] /> oligos as ordered
+                            </td>
+                            [% IF design_info.show_delete %]<td><input type="submit" value="Delete" onclick="deleteDesign()" /></td>[% END %]
+                            [% IF c.user %]<td><input type="submit" value="Edit" onclick="editDesign()" /></td>[% END %]
+                            <td><input type="submit" value="Export" onclick="exportDesign()" /></td>
+                            <td>
+                                <a class="link" href="http://www.ensembl.org/Mus_musculus/contigview?gene=[% design_info.selected_gene_build_gene %];add_das_source=(name=KO_designs+url=http://das.sanger.ac.uk/das+dsn=KO_designs+type=ensembl_location_toplevel+active=1)" target="_blank">
+                                    View gene and design in Ensembl
+                                </a>
+                            </td>
+                            [% IF concat_rcmb_primers.length %]
+                                <td><a class="link" onclick="$('UCSC_BLAT').submit('Lucky'); return false;">UCSC BLAT recombineering primers</a></td>
+                            [% END %]
+                        </tr>
+                    </table>
+                [% END %]
+            [% END %]
+</form>
+
+[% IF concat_rcmb_primers.length %]
+    <form id="UCSC_BLAT" enctype="multipart/form-data" method="post" action="http://genome.ucsc.edu/cgi-bin/hgBlat" name="UCSC_BLAT" target="_blank">
+        <input type="hidden" name="org" value="Mouse" />
+        <input type="hidden" name="db" value="mm10" />
+        <input type="hidden" name="type" value="DNA" />
+        <input type="hidden" name="sort" value="query,score" />
+        <input type="hidden" name="output" value="hyperlink" />
+        <input type="hidden" name="userSeq" value="[% ">design" _ design_info.design_id _ "\n" _ concat_rcmb_primers %]"/>
+        <input type="hidden" name="Lucky" value="I'm feeling lucky" />
+        <!--<input type="submit" value="UCSC BLAT Rcmb primers" name="Lucky"/>-->
+    </form>
+[% END %]
+
+[% IF mode == "create" %]
+    <p>Instruction for using this tool: </p>
+    <ol>
+        <li>Choose a gene-build to select a gene from. You will have a choice of recent Ensembl builds (e.g. &quot;Ensembl 48.37c&quot;) or of vega builds (e.g.     &quot;Vega v29&quot;)</li>
+        <li>Inspect your target gene in Ensembl. Determine which exon(s) you'd like to knock out.</li>
+        <li>Load a gene into the tool. You will have to type in the exact Ensembl gene-id (e.g. ENSMUSG00000013663) if you've chosen an Ensembl gene build), or the exact Vega gene-id (e.g. OTTMUSG00000015967) into the &quot;Gene&quot; field.</li>
+        <li>The Start Exon and End Exon drop-downs will now be loaded with the exons for the gene: Select the start and end of the target you wish to knock out. If you mis-typed the gene id, then these drop-downs will be blank - try again!.</li>
+        <li>Fill in the parameters fields tailored around to the target you wish to knock out. Modify the comment field, if neccessary.</li>
+        <li>Click 'Create' - this results in the following happening:</li>
+        <ul>
+            <li>The design-creation job is submitted to be processed in 'batch'. This typically takes between five and ten minutes on the Sanger compute farm, and is independent of your browser session (i.e. you can go away and come back later).</li>
+            <li>You will see a design id reported on the page. You can retrieve the design later by this id.</li>
+            <li>You can click on 'Refresh': this will refresh the page, along with the comments of the process making the design. If you see no comments, the process has not started yet.</li>
+            <li>When the design is finished you will see the chosen recombineering oligos, along with seqeuence for the homology arms, and enough flanking sequence to allow you to construct the synthetic allele (if necessary).</li>
+        </ul>
+        <li>You can export the design information and oligos with the 'export' button, and you (and you only) can delete the design if you wish to with the 'delete' button.</li>
+    </ol>
+[% END %]
+
+[% IF mode != "create" %]
+
+[%# IF c.check_user_roles('edit') %]
+[% IF c.user %]
+    <fieldset class="toggleable">
+        <legend>Short Range Primer Tool</legend>
+        <div>
+            <table class="nocol">
+                <tr>
+                    <td>Arm:</td>
+                    <td>
+                        <select id="arm_choice">
+                            <option value="3-arm">LoxP</option>
+                            <option value="5-arm">Cassette</option>
+                        </select>
+                    </td>
+                    <td>Melting Temperature:</td>
+                    <td>
+                        <input id="meltTemp" type="text" value="62" />
+                    </td>
+                    <td>Amplicon Size (± 50nt):</td>
+                    <td>
+                        <input id="ampliconSize" type="text" value="500" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Repeat Masking:</td>
+                    <td>
+                        <select id="masking" type="text">
+                            <option value="norep">No</option>
+                            <option value="rep">Yes</option>
+                        </select>
+                    </td>
+                    <td>5' Shim:</td>
+                    <td><input id="five_prime_shim" type="text" value="60" /></td>
+                    <td>3' Shim:</td>
+                    <td><input id="three_prime_shim" type="text" value="60" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" onclick="javascript:create_primers();return false" value="Create Primers" />
+                    </td>
+                </tr>
+            </table>
+            <div class="created_primers" id="created_primers"></div>
+            <!--
+                <div id="existing_primer_data">
+                    <div id="insert_primers" style="width:49%;float:left;">
+                        <table>
+                            <tr>
+                                <td>
+                                    Target Arm:
+                                </td>
+                                <td>
+                                    <select id="insert_arm_choice">
+                                        <option>3-arm</option>
+                                        <option>5-arm</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Forward Primer:
+                                </td>
+                                <td>
+                                    <input type="text" id="forward5" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Reverse Primer:
+                                </td>
+                                <td>
+                                    <input type="text" id="forward3" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="submit" value="Insert Primers" onclick="javascript:add_primers_to_db();return false" /><td class="nocol"><span id="primer_status"> </span></td>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div id="get_existing_primers" style="width:49%;float:right;">
+                        <table>
+                            <tr>
+                                <th>Applied Primers</th>
+                            </tr>
+                            <tr>
+                                <td>Forward</td>
+                                <td> aaaaa </td>
+                                <td>Reverse</td>
+                                <td> ggggg </td>                                                
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            -->
+        </div>
+    </fieldset>
+[% END %]
+
+<script type="text/javascript" charset="utf-8">
+    //<![CDATA[
+    function add_primers_to_db() {
+        var designID     = '[% design_info.design_id %]';
+        var five_primer  = $('forward5').value;
+        var three_primer = $('forward3').value;
+        var arm_choice   = $('insert_arm_choice').value;
+        new Ajax.Updater(
+            'primer_status',
+            '[% c.uri_for('/design/insert_short_range_primers') %]',
+            {
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({
+                    design_id: designID,
+                    five_prime: five_primer,
+                    three_prime: three_primer,
+                    arm: arm_choice
+                })
+            }
+        );
+    
+    }
+
+    function create_primers() {
+        $('created_primers').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        var designID     = '[% design_info.design_id %]';
+        var armChoice    = $('arm_choice').value;
+        var ampliconsize = $('ampliconSize').value;
+        var melt         = $('meltTemp').value;
+        var masking      = $('masking').value;
+        var fpshim       = $('five_prime_shim').value;
+        var tpshim       = $('three_prime_shim').value;
+    
+        new Ajax.Updater(
+            'created_primers',
+            '[% c.uri_for('/design/create_primers') %]',
+            {
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({
+                    design_id: designID,
+                    armChoice: armChoice,
+                    melt: melt,
+                    ampsize: ampliconsize,
+                    masking: masking,
+                    fpshim: fpshim,
+                    tpshim: tpshim
+                })
+            }
+        );
+    }
+    //]]>
+</script>
+
+<table>
+    <tr>
+        <td>Design ID:</td>
+        <td>[% design_info.design_id %]</td>    
+    </tr>
+    <tr>
+        <td>Chr:</td>     
+        <td>[% design_info.chr_name %]</td>
+    </tr>
+    <tr>
+        <td>Strand:</td>
+        <td>[% design_info.chr_strand %]</td>    
+    </tr>
+    <tr>
+        <td>Status:</td>      
+        <td>[% design_info.status %]</td>
+    </tr>
+    <tr>
+        <td>BACs:</td>
+        <td>[% design_info.bac_string%]</td>
+    </tr>
+    [% FOREACH instance = design_info.instance_string_array %]
+    <tr>
+        <td>Instance:</td>
+        <td>[% instance %]</td>
+    </tr>
+    [% END %]
+    <tr>
+        <td>Oligos on GRCm38:</td>
+        <td>
+            <table id="feature_table" class="zebra sortable">        
+                <thead>
+                    <tr>          
+                        <th>Type</th>
+                        <th>Start</th>
+                        <th>End</th>          
+                        <th>Length</th>
+                        <th>Seq</th>
+                    </tr>        
+                </thead>
+                <tbody>
+                    [% FOR feature = design_info.validated_features %]
+                      <tr> 
+                        <td>[% feature.name %]</td> 
+	                    <td>[% feature.start %]</td>
+                        <td>[% feature.end %]</td>
+                        <td>[% feature.length %]</td>
+                        <td class="seqstr">[% feature.seq %]</td>
+                      </tr>
+                    [% END %]
+                </tbody>
+            </table>
+        </td>
+    </tr>    
+    <tr>
+        <td>Oligos:</td>
+        <td>
+            <table id="feature_table" class="zebra sortable">        
+                <thead>
+                    <tr>          
+                        <th>Type</th>
+                        <th>Start</th>
+                        <th>End</th>          
+                        <th>Length</th>
+                        <th>Seq</th>
+                    </tr>        
+                </thead>
+                <tbody>
+                    [% FOR feature = design_info.features %]
+                    <tr> 
+                        <td>[% feature.name %]</td> 
+	                        <td>[% feature.start %]</td>
+                        <td>[% feature.end %]</td>
+                        <td>[% feature.length %]</td>
+                        <td class="seqstr">[% feature.seq %]</td>
+                    </tr>
+                    [% END %]
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>Comments:</td>
+        <td>
+            <table>
+                [% FOR note = design_info.design_notes %]
+                <tr><td>[% note %]</td></tr>
+                [% END %]
+            </table>
+        </td>
+    </tr>
+</table>
+
+[% END %]
+
+[% END %]

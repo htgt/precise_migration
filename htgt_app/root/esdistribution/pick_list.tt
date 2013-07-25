@@ -1,0 +1,97 @@
+<div style="margin-top:20px">
+<h1>[% consortium %] Pick Lists</h1>
+
+<h2>Unpicked</h2>
+<table>
+  <thead>
+    <tr>
+      <th>MGI Accession ID</th>
+      <th>Marker Symbol</th>
+      <th>Bespoke Status</th>
+      <th>Production centre</th>
+      <th>Priority</th>
+      <th>Clones at WTSI</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH u IN unpicked -%]
+    <tr>
+      <td>[% u.mgi_accession_id %]</td>
+      <td>[% u.marker_symbol %]</td>
+      <td>[% u.bespoke_status %]</td>
+      <td>[% u.group %]</td>
+      <td>[% u.priority %]</td>
+      <td>[% u.clones_at_wtsi %]</td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+
+<h2>Failed</h2>
+<table>
+  <thead>
+    <tr>
+      <th>MGI Accession ID</th>
+      <th>Marker Symbol</th>
+      <th>Bespoke Status</th>
+      <th>Production Centre</th>
+      <th>Priority</th>
+      <th>PIQ Wells</th>
+      <th>FP Ancestors</th>      
+      <th>EPD Ancestors</th>
+      <th>Picked clones</th>
+      <th>Unpicked clones at WTSI</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH f IN failed -%]
+    <tr>
+      <td>[% f.mgi_accession_id %]</td>
+      <td>[% f.marker_symbol %]</td>
+      <td>[% f.bespoke_status %]</td>
+      <td>[% f.group %]</td>
+      <td>[% f.priority %]</td>
+      <td>[% f.piq_well_statuses %]</td>
+      <td>[% f.fp_ancestors %]</td>
+      <td>[% f.epd_ancestors %]</td>
+      <td>[% f.picked_epd_wells %]</td>
+      <td>[% f.unpicked_epd_wells_at_wtsi %]</td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+
+<h2>All MI Attempts Aborted</h2>
+<table>
+  <thead>
+    <tr>
+      <th>MGI Accession ID</th>
+      <th>Marker Symbol</th>
+      <th>Bespoke Status</th>
+      <th>Production Centre</th>
+      <th>Priority</th>
+      <th>PIQ Wells</th>
+      <th>FP Ancestors</th>      
+      <th>EPD Ancestors</th>
+      <th>Picked clones</th>
+      <th>Unpicked clones at WTSI</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH a IN aborted -%]
+    <tr>
+      <td>[% a.mgi_accession_id %]</td>
+      <td>[% a.marker_symbol %]</td>
+      <td>[% a.bespoke_status %]</td>
+      <td>[% a.group %]</td>
+      <td>[% a.priority %]</td>
+      <td>[% a.piq_well_statuses %]</td>
+      <td>[% a.fp_ancestors %]</td>
+      <td>[% a.epd_ancestors %]</td>
+      <td>[% a.picked_epd_wells %]</td>
+      <td>[% a.unpicked_epd_wells_at_wtsi %]</td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+</div>

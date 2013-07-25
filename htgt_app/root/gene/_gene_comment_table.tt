@@ -1,0 +1,88 @@
+[% IF gene_comments.size >0 %]
+
+<table class="resizable tksort editable" id="comments[% timestamp %]">
+  <thead>
+    <tr>
+      <th id="comment">Comment</th>
+      <th id="user" class="noedit">Edited User</th>
+      <th id="date" class="sortfirstasc noedit date-oracle">Edited Date</th>
+      [% IF c.check_user_roles("design") %]
+         <th id="visibility">Visibility</th>
+      [% END %]
+      <th class="noedit nosort nocol"></th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH comment IN gene_comments %]
+        [% IF new_comment_id && (new_comment_id == comment.gene_comment_id) %]
+          [% SET rowclass='new' %]
+        [% ELSE %]
+          [% SET rowclass = '' %]         
+        [% END %]
+    
+        [% IF c.check_user_roles("design") %]
+            <tr class="[% rowclass %]" id="[% comment.gene_comment_id %]">
+              <td class="edit">[% comment.gene_comment %]</td>
+              <td>[% comment.edited_user %]</td>
+              <td>[% comment.edited_date %]</td>  
+              <td class="edit">[% comment.visibility %]</td>
+              [% IF comment.edited_user == c.user.id %]
+                 <td class="nocol">
+                   <a class="delete" onclick="deleteComment([% comment.gene_comment_id %],[% project_id %]); return false">delete</a>
+                 </td>
+              [% END %]
+            </tr>
+        [% ELSE %]
+           [% IF comment.visibility == "public" %]
+              <tr>
+                <td class="edit">[% comment.gene_comment %]</td>
+                <td>[% comment.edited_user %]</td>
+                <td>[% comment.edited_date %]</td>
+              </tr>
+           [% END %]
+        [% END %]
+    [% END %]
+  </tbody>
+</table>
+
+[% ELSE %]
+    <table>
+       <thead>
+         <tr>
+            <th id="comment" class="noedit">Comment</th>
+            <th id="user" class="noedit">Edited User</th>
+            <th id="date" class="sortfirstasc noedit date-oracle">Edited Date</th>
+            
+               <th id="visibility">Visibility</th>
+            
+         </tr>
+       </thead>
+       <tbody>
+         <tr>
+           <td colspan="2" class="nocol">No Comments</td>
+         </tr>
+       </tbody>
+   </table>
+[% END %]
+
+[% IF c.check_user_roles("design") %]
+ <a class="add" onclick="addComment([% project_id %]); return false">add a new comment</a>
+[% END %]
+ 
+ 
+<script type="text/javascript" charset="utf-8">
+    [% IF gene_comments.size > 0 %]
+      var comments_table = new TableKit( 'comments[% timestamp %]', {
+        [% IF c.check_user_roles("design") %] editAjaxURI: '[% c.uri_for('/gene/update/_gene_comment_update/') %]'
+        [% ELSE %]                            editable: false
+        [% END %]
+      });
+      
+      TableKit.Editable.selectInput('visibility', {}, [
+        ['internal','internal'],
+        ['public','public']
+      ]);
+    [% END %]
+     
+</script>
+   

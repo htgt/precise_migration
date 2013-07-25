@@ -1,0 +1,107 @@
+[% META title = "Submit QC Job" %]
+
+<form method="POST">
+
+    [% UNLESS plate_map_request %]
+        <a class="add" href="#" onClick="addFormField(); return false;">Add Sequencing Project</a><br />
+    [% END %]
+
+    <div id="sequencingprojects">
+        [%- IF c.request.param( 'sequencing_project' ).defined && c.request.param( 'sequencing_project' ) %]
+            [%- FOREACH seq_proj IN c.request.param( 'sequencing_project' ) %]
+                <label for="sequencing_project">Sequencing Project</label>
+                <input name="sequencing_project" id="sequencing_project" type="text" autocomplete="off" value="[%- seq_proj %]"
+                    [%- IF plate_map_request %] class="form-readonly" readonly="readonly"[% END -%] 
+                />
+
+                <br />
+                
+                <div class="auto_complete" id="sequencing_project_suggestions"></div>
+            [%- END %]
+        [%- ELSE %]
+            <label for="sequencing_project">Sequencing Project</label>
+            <input name="sequencing_project" id="sequencing_project" type="text" autocomplete="off"
+                [%- IF plate_map_request %] class="form-readonly" readonly="readonly" [% END -%] 
+            />
+
+            <br />
+
+            <div class="auto_complete" id="sequencing_project_suggestions"></div>
+        [%- END %]
+    </div>
+
+    <br />
+
+    <label for="template_plate">Template Plate</label>
+    <input name="template_plate" id="template_plate" type="text" autocomplete="off"
+        [%- IF c.request.param( 'template_plate' ).defined %] value="[% c.request.param( 'template_plate' ) %]" [% END %] 
+        [%- IF plate_map_request %] class="form-readonly" readonly="readonly" [% END -%] 
+    />
+
+    <div class="auto_complete" id="template_plate_suggestions"></div> 
+
+    <label for="profile">Profile</label>
+    [% IF plate_map_request %]
+        <input name="profile" id="profile" readonly="readonly" class="form-readonly" size="50" value="[% c.request.param( 'profile' ) %]" />
+    [% ELSE %]
+        <select name="profile" id="profile">
+            [%- SET selected_profile = c.req.param( 'profile' ) %]
+                <option>-</option>
+            [% FOR p IN profiles -%]
+                <option [% IF p == selected_profile %] selected="selected" [% END %]>[% p %]</option>
+            [% END -%]
+        </select>
+        <span id="qc_job_submit_indic" style="display:none;">
+            <img src="[% c.uri_for( "/static/images/indicator.gif" ) %]" alt="Working..." />
+        </span>
+    [% END %]
+
+    [% IF plate_map_request %]
+        <h5>Plate Map</h5>
+        <table>
+            <tr>
+                <th>Plate Name</th>
+                <th>Canonical Name</th>
+            </tr>
+            [%- FOR plate IN plate_map %]
+                <tr>
+                    <td>[% plate.key %]</td>
+                    <td>
+                        <input name="[% plate.key %]_map" id="[% plate.key %]_map" type="text" value="[% plate.value %]" />
+                    </td>
+                </tr>
+            [% END -%]
+        </table><br />
+        <label for="big_memory">Large Memory Job</label>
+        <input name="big_memory" id="big_memory" type="checkbox" /><br/><br/>
+        <input name="submit_plate_map_info" id="submit" type="submit" value="Submit QC - step 2" />
+    [% ELSE %]
+        <br /><input name="submit_initial_info" id="submit" type="submit" value="Submit QC - step 1" />
+    [% END %]
+
+</form>
+
+<script type="text/javascript" charset="utf-8">
+    /* Add new sequencing project field */
+    function addFormField() {
+        
+        Element.insert( $('sequencingprojects'),
+        { 'bottom' : "<label for='sequencing_project'>Sequencing Project</label><input type='text' name='sequencing_project' id='sequencing_project' autocomplete='off'><br /><div class='auto_complete' id='sequencing_project_suggestions'></div>" } );
+    }
+
+    Event.observe(window, 'load', function() {
+      new Ajax.Autocompleter(
+        "sequencing_project",
+        "sequencing_project_suggestions",
+        "[% c.uri_for('/newqc/suggest_sequencing_projects') %]",
+        { indicator: "qc_job_submit_indic" }
+      );
+
+      new Ajax.Autocompleter(
+        "template_plate",
+        "template_plate_suggestions",
+        "[% c.uri_for('/newqc/suggest_template_plates') %]",
+        { indicator: "qc_job_submit_indic" }
+      );
+    });
+</script>

@@ -1,0 +1,47 @@
+<p>
+    [% genes.size %] genes [% list_type %].
+</p>
+
+<table id="assigned_genes[% timestamp %]" class="report_table tksort">
+    <thead>
+        <tr>
+            <th id='gene' class="noedit">Gene</th>
+            <th id='sng_status' class="noedit">S</th>
+            <th id='gsf_status' class="noedit">G</th>
+            <th id='mrc_status' class="noedit">M</th>
+            <th id='ics_status' class="noedit">I</th>
+            <th id='cnr_status' class="noedit">C</th>
+            <th width='100' class='sortfirstasc date-oracle noedit' id="gene_date">Assign<br>Date</th>
+            <th id='cell_line' class="noedit">Cell Line</th>
+            <th id='dist_cells' class="noedit">Num.<br>Dist</th>
+            <th id='cell_string' class="noedit">ES Cell details</th>
+            <th id='cell_link' class="noedit">Load clones</th>
+        </tr>
+    </thead>
+    <tbody> 
+        [% FOR gene IN genes %]
+          <tr>
+            <td>[% gene.name %]</td>
+            <td>[% gene.sng_status %]</td>
+            <td>[% gene.gsf_status %]</td>
+            <td>[% gene.mrc_status %]</td>
+            <td>[% gene.ics_status %]</td>
+            <td>[% gene.cnr_status %]</td>
+            <td>[% gene.assign_date %]</td>
+            <td>[% gene.cell_line %]</td>
+            <td>[% gene.cell_count %]</td>
+            <td>[% gene.cell_string %]</td>
+            <td><a class='button load' onclick="fetchClonesByGene('[% gene.name %]')">...</a></td>
+          </tr>
+        [% END %]
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    var well_table =
+        new TableKit(
+            'assigned_genes[% timestamp %]',
+            { editable: false,
+            }
+        );
+</script>

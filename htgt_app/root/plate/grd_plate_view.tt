@@ -1,0 +1,63 @@
+<h5>Plate [% plate_name %]</h5>
+
+<table class= "editable resizable tksort" id="grd_plate_view">
+   <thead>
+        <tr>
+            <th class="noedit sortfirstasc">Well Name</th>
+            <th class="noedit">Project</th>
+            <th class="noedit">Gene Symbol</th>
+            <th class="noedit">Phase</th>
+            <th class="noedit">Cassette</th>
+            <th class="noedit">Backbone</th>
+            <th class="noedit">GrandParent Plate</th>
+            <th class="noedit">GrandParent Well</th>
+            <th class="noedit">Parent Plate</th>
+            <th class="noedit">Parent Well</th>
+            <th class="noedit">Child Wells</th>
+            <th class="noedit">Expected design</th>
+            <th class="noedit">Observed design</th>
+            <th class="noedit">Exp/Obs Match</th>
+            <th class="noedit">pass level</th>
+            <th class="noedit">primers</th>
+            <th id="comment_on_ep">Comment on EP</th>
+        </tr>
+   </thead>
+   <tbody> 
+        [% FOREACH data IN all_data %]
+       <tr id="[% data.well_id %]"> 
+            <td class="noedit">[% data.well_name %]</td>
+            <td class="noedit">[% data.project %]</td>
+            <td class="noedit">[% data.gene_symbol %]</td>
+            <td class="noedit">[% data.phase %]</td>
+            <td class="noedit">[% data.cassette %]</td>
+            <td class="noedit">[% data.backbone %]</td>
+            <td class="noedit"><a href="[% c.uri_for('/plate/view', { plate_name => data.grandparent_plate_name })%]">[% data.grandparent_plate_name %]</a></td>
+            <td class="noedit">[% data.grandparent_well_name %]</td>
+            <td class="noedit"><a href="[% c.uri_for('/plate/view', { plate_name => data.parent_plate_name })%]">[% data.parent_plate_name %]</a></td>
+            <td class="noedit">[% data.parent_well_name %]</td>
+            <td class="noedit">[% data.child_wells %]</td>
+            <td class="noedit">[% data.exp_design %]</td>
+            <td class="noedit">[% data.obs_design %]</td>
+            <td class="noedit">[% data.match %]</td>
+            <td class="noedit"><a href="[% c.uri_for('/qc/qctest_result_view', { qctest_result_id => data.qctest_result_id }) %]">[% data.pass_level %]</a></td>
+            <td class="noedit">[% data.good_primers %]</td>
+            <td>[% data.do_not_ep %]</td>
+       </tr>
+       [% END -%]
+   </tbody> 
+</table>
+
+<script type="text/javascript" charset="utf-8">
+   var well_table = new TableKit( 'grd_plate_view', {
+      [% IF c.check_user_roles('edit') -%]
+         editAjaxURI: '[% c.uri_for('/plate/update/_insert_do_not_ep_flag') %]'
+      [% ELSE -%]
+         editable: false
+      [% END -%]
+   });
+   
+   TableKit.Editable.selectInput('comment_on_ep',{}, [
+      ['DO_NOT_EP','DO_NOT_EP'],
+      ['-','-']
+   ]);
+</script>

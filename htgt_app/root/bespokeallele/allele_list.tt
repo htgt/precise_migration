@@ -1,0 +1,29 @@
+<div style="margin-top:20px">
+<h1>[% row_heading %] - [% column_heading %]</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Redmine Issue</th>
+      <th>Allele</th>
+      <th>Status</th>
+      <th>Requestor</th>
+      <th>Assignee</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH a IN allele_list -%]
+    <tr>
+      <td><a href="[% "http://htgt.internal.sanger.ac.uk:4013/issues/${a.issue}" %]">[% a.issue %]</a></td>
+      <td>[% a.marker_symbol %]</td>
+      <td>[% a.status %]</td>
+      <td>[% a.requestor %]</td>
+      <td>[% a.assignee %]</td>
+      <td>[% a.description %]</td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+
+</div>

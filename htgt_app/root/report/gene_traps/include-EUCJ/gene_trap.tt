@@ -1,0 +1,55 @@
+<h2>Gene Traps</h2>
+
+<table>
+    
+    <tr class='nocol'>
+        
+        <td>
+            <a class='button link' href="[% c.uri_for('/report/gene_trap_data') %]" >View Gene Trap Data</a>
+        </td>
+        
+        <td>
+            <a class='button csv' href="[%  c.uri_for('/report/gene_trap_data') %]?view=csvdl&file=gene_trap_data.csv" >Download Gene Trap Data as CSV</a>
+        </td>
+    </tr>
+        
+</table>
+
+<table>
+    <tr class='nocol'>
+        <td>
+            <a class='button save' href="[% c.uri_for('/static/gene_trap/geneTrapSequenceTags.fasta.tgz')%]">Download Sequence Tags (FASTA)</a>
+        </td>
+        
+        <td>
+            <a class='button save' href="[% c.uri_for('/static/gene_trap/vector_sequence.fasta')%]">Download Vector Sequence</a>
+        </td>
+    </tr>
+        
+</table>
+
+
+
+    
+    
+<div>
+        <img src='[% c.uri_for("/static/images/gene_traps/sumPlot.png")%]' />
+    
+        <img src='[% c.uri_for("/static/images/gene_traps/gePlatePlot.png")%]' />
+
+        <img src='[% c.uri_for("/static/images/gene_traps/jPlatePlot.png")%]' />
+        
+        <table>
+            <tr class='nocol'>
+                <td>Printed in <span style='color: #000; font-weight: bold;'>BLACK</span>: All annotated genes</td>
+            </tr>
+            <tr class='nocol'>
+                <td>Printed in <span style='color: #FF0000; font-weight: bold;'>RED</span>: Genes annotated with &gt;= 0.5 alignment quality</td>
+            </tr>
+            <tr class='nocol'>
+                <td>Printed in <span style='color: #3300CC; font-weight: bold;'>BLUE</span>: Genes annotated with &gt;= 0.8 alignment quality</td>
+            </tr>
+        </table>
+        
+</div>
+

@@ -1,0 +1,28 @@
+[% META title="Recovery Reports" -%] 
+
+<table>
+[%- FOR s IN reports %]
+  <tr>
+    <th "colspan=2">[% s.name %]</th>
+  </tr>
+[%- FOR r IN s.reports %]
+  <tr>
+    <td><a href="[% r.csv_uri %]">[% r.name %] (CSV)</a></td>
+    <td align="right">[% r.count %]</td>
+  </tr>
+[%- END %]
+[%- END %]
+</table>
+
+<h2>Other Recovery Reports</h2>
+<ul>
+  <li><a href="[% c.uri_for( '/report/recovery/secondary_gateway' ) %]">Secondary Gateway</a></li>
+</ul>
+
+<h2>Recovery Tools</h2>
+<ul>
+  <li>
+    <a href="[% c.uri_for(  '/gene/redesign/bulk_reset_status_redesign_requested' ) %]">
+      Bulk reset of gene status to redesign requested</a>        
+  </li>
+</ul>

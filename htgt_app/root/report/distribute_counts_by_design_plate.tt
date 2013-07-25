@@ -1,0 +1,28 @@
+<table id="distribute_counts_by_design_plate" class="report_table tksort">
+    <thead>
+        <tr>
+            <th id='plate' class="noedit">Design Plate</th>
+            <th id='plate' class="noedit">Project</th>
+            <th id='plate' class="noedit">Distributable Vectors</th>
+            <th id='plate' class="noedit">TV Plates</th>
+        </tr>
+    </thead>
+    <tbody> 
+        [% FOR plate IN plates %]
+          <tr>
+            <td><a href="[% c.uri_for('/plate/view',{plate_name=plate.name})%]">[% plate.name %]</a></td>
+            <td>[% plate.project %]</td>
+            <td>[% plate.main_count %]</td>
+            <td>[% plate.main_child_plates %]</td>
+          </tr>
+        [% END %]
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    var well_table =
+        new TableKit(
+            'distribute_counts_by_design_plate',
+            { editable: false, }
+        );
+</script>

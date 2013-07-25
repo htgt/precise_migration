@@ -1,0 +1,26 @@
+<ul id="side-navigation">
+    <li><a href="/">Home &amp; Search</a></li>
+    <li><a href="/information/">Project Information</a>
+        <ul>
+            <li><a href="/information/news-and-events/">News &amp; Events</a></li>
+            <li><a href="/information/media-releases/">Media Releases</a></li>
+            <li><a href="/information/jobs/">Jobs</a></li>
+            <li><a href="/links/">Links</a></li>
+        </ul>
+    </li>
+    <li>Experimental Information
+        <ul>
+            <li><a href="/information/trapping/">Trapping</a></li>
+            <li><a href="/information/targeting/">Targeting</a>
+                <ul>
+                    <li><a href="/htgt/cassettes">Cassettes</a></li>
+                    <li><a href="/htgt/backbones">Backbones</a></li>
+                </ul>
+            </li>
+            <li><a href="/information/protocols/">Protocols</a></li>
+            <li><a href="/information/publications/">Publications</a></li>
+        </ul>
+    </li>
+    <li><a href="/information/participants-and-sab/">Participants &amp; SAB</a></li>
+    <li><a href="/contact/">Contact &amp; Ordering</a></li>
+</ul>

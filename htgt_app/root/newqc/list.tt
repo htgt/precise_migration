@@ -1,0 +1,70 @@
+<div style="margin: 10px">
+  <a href="[% c.uri_for( "/newqc/submit" ) %]" class="button link">Submit QC Job</a>
+  <a href="[% c.uri_for( "/newqc/submit_es_cell" ) %]" class="button link">Submit ES Cell QC Job</a>
+  <a href="[% c.uri_for( "/qc" ) %]" class="button link">Old QC System</a>
+  <a href="[% c.uri_for( "/newqc/failed_runs" ) %]" class="button link">Old Failed QC Runs</a>
+  <a href="[% c.uri_for( "/newqc/latest_runs" ) %]" class="button link">Latest QC Runs</a>
+  <a href="[% c.uri_for( "/newqc/latest_runs", { prescreen => 1 } ) %]" class="button link">Latest Prescreen Runs</a>
+</div>
+
+<div style="margin-top:20px">
+<h1>Latest QC Runs</h1>
+
+<form method="GET">
+  <fieldset>
+    <legend>Filter runs by</legend>
+    <label for="sequencing_project">Sequencing Project</label>
+    <input name="sequencing_project" id="sequencing_project" type="text" />
+    <label for="template_plate">Template Plate</label>
+    <input name="template_plate" id="template_plate" type="text" />
+    <label for="profile">Profile</label>
+    <select name="profile" id="profile">
+      <option>-</option>
+      [% FOR p IN profiles -%]
+      <option>[% p %]</option>
+      [% END -%]
+    </select>
+    <input name="filter" id="filter" type="submit" value="Filter" />
+    <input name="show_all" id="show_all" type="submit" value="Show All" />
+  </fieldset>  
+</form>
+
+<p>
+[% IF prev_page_uri -%]
+<a href="[% prev_page_uri %]">[Previous]</a>
+[% END %]
+Page [% qc_run_rs.pager.current_page %] of [% qc_run_rs.pager.last_page %]
+[% IF next_page_uri -%]
+<a href="[% next_page_uri %]">[Next]</a>
+[% END %]
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>QC Run Id</th>
+      <th>Profile</th>
+      <th>Run Date</th>
+      <th>Sequencing Project</th>
+      <th>Template Plate</th>
+      <th>Expected Designs</th>
+      <th>Observed Designs</th>
+      <th>Valid Designs</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% WHILE ( r = qc_run_rs.next ) -%]
+    <tr>
+      <td><a href="[% c.uri_for( "/newqc/view_run", r.qc_run_id ) %]">[% r.qc_run_id.substr(0,8) %]</a></td>
+      <td>[% r.profile %]</td>
+      <td>[% r.qc_run_date %]</td>
+      <td>[% r.sequencing_project.replace( ',', ', ') %]</td>
+      <td>[% r.template_plate.name %]</td>
+      <td>[% r.count_designs %]</td>
+      <td>[% r.count_observed_designs %]</td>
+      <td>[% r.count_valid_designs %]</td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+</div>

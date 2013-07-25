@@ -1,0 +1,170 @@
+[% IF called_elsewhere %]
+    [%# do nothing !%]
+[% ELSE %]
+    [% IF style == 'EUCOMM' %]
+        <h1>Pipeline Summary by Gene</h1>
+    [% ELSE %]
+        <h3>Pipeline Summary by Gene</h3>
+    [% END %]
+[% END %]
+
+<p id="summary_text">Cumulative totals of pipeline products</p>
+<table id="summary_table">
+    <thead>
+        <tr>
+            <th>Total Generated Products</th>
+            <th>EUCOMM</th>
+            <th>KOMP</th>
+            <th>NorCOMM</th>
+            <th>EuTRACC</th>
+            <th>EUCOMM-Tools</th>
+            <th>EUCOMM-Tools-Cre</th>
+            [% IF c.check_user_roles( 'edit' ) -%]
+            <th>SWITCH</th>
+            [% END -%]
+            <th>TPP</th>
+            <th>MGP-Bespoke</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Mice</td>
+            <td>[% total_mouse_counts.EUCOMM -%]</td>
+            <td>[% total_mouse_counts.KOMP -%]</td>
+            <td>[% total_mouse_counts.NORCOMM -%]</td>
+            <td>[% total_mouse_counts.EUTRACC -%]</td>
+            <td>[% total_mouse_counts.EUCOMM_TOOLS -%]</td>
+            <td>[% total_mouse_counts.EUCOMM_TOOLS_CRE -%]</td>
+            [% IF c.check_user_roles( 'edit' ) -%]
+            <td>[% total_mouse_counts.IS_SWITCH -%]</td>
+            [% END -%]
+            <td>[% total_mouse_counts.TPP -%]</td>
+            <td>[% total_mouse_counts.MGP_BESPOKE -%]</td>
+        </tr>
+        <tr>
+            <td>ES Cells</td>
+            <td>[% total_es_cell_counts.EUCOMM -%]</td>
+            <td>[% total_es_cell_counts.KOMP -%]</td>
+            <td>[% total_es_cell_counts.NORCOMM -%]</td>
+            <td>[% total_es_cell_counts.EUTRACC -%]</td>
+            <td>[% total_es_cell_counts.EUCOMM_TOOLS -%]</td>
+            <td>[% total_es_cell_counts.EUCOMM_TOOLS_CRE -%]</td>
+            [% IF c.check_user_roles( 'edit' ) -%]            
+            <td>[% total_es_cell_counts.IS_SWITCH -%]</td>            
+            [% END -%]
+            <td>[% total_es_cell_counts.TPP -%]</td>
+            <td>[% total_es_cell_counts.MGP_BESPOKE -%]</td>
+        </tr>
+        <tr>
+            <td>Vectors</td>
+            <td>[% total_vector_counts.EUCOMM -%]</td>
+            <td>[% total_vector_counts.KOMP -%]</td>
+            <td>[% total_vector_counts.NORCOMM -%]</td>
+            <td>[% total_vector_counts.EUTRACC -%]</td>
+            <td>[% total_vector_counts.EUCOMM_TOOLS -%]</td>
+            <td>[% total_vector_counts.EUCOMM_TOOLS_CRE -%]</td>
+            [% IF c.check_user_roles( 'edit' ) -%]            
+            <td>[% total_vector_counts.IS_SWITCH -%]</td>
+            [% END -%]
+            <td>[% total_vector_counts.TPP -%]</td>
+            <td>[% total_vector_counts.MGP_BESPOKE -%]</td>
+        </tr>
+        <tr>
+            <td>Designs</td>
+            <td>[% total_design_counts.EUCOMM -%]</td>
+            <td>[% total_design_counts.KOMP -%]</td>
+            <td>[% total_design_counts.NORCOMM -%]</td>
+            <td>[% total_design_counts.EUTRACC -%]</td>
+            <td>[% total_design_counts.EUCOMM_TOOLS -%]</td>
+            <td>[% total_design_counts.EUCOMM_TOOLS_CRE -%]</td>
+            [% IF c.check_user_roles( 'edit' ) -%]            
+            <td>[% total_design_counts.IS_SWITCH -%]</td>
+            [% END -%]
+            <td>[% total_design_counts.TPP -%]</td>
+            <td>[% total_design_counts.MGP_BESPOKE -%]</td>
+        </tr>
+    </tbody>
+</table>
+
+[% IF c.check_user_roles( 'edit' ) -%]  
+<p id="summary_text">Genes selected for targeted conditional knockout by pipeline stage / project:</p>
+
+<table id="summary_table">
+    <thead>
+        <tr>
+            <th>Stage</th>
+            [% IF style == 'EUCOMM' || source == 'EUCOMM' %]
+                <th>EUCOMM</th>
+            [% ELSIF style == 'KOMP' || source == 'KOMP' %]
+                <th>KOMP</th>
+                [% IF c.check_user_roles("edit") %]
+                <th>Regeneron</th>
+                [% END %]
+            [% ELSE %]
+                <th>EUCOMM</th>
+                <th>KOMP</th>
+                [% IF c.check_user_roles("edit") %]
+                <th>MGP</th>
+                [% END %]
+                <th>NorCOMM</th>
+                <th>EuTRACC</th>
+                [% IF c.check_user_roles("edit") %]
+                <th>Regeneron</th>
+                [% END %]
+                <th>EUCOMM-Tools</th>
+                <th>EUCOMM-Tools-Cre</th>
+                [% IF c.check_user_roles("edit") %]
+                <th>SWITCH</th>
+                [% END %]
+                <th>TPP</th>
+                <th>MGP-Bespoke</th>
+            [% END %]
+        </tr>
+    </thead>
+    <tbody>
+        [% SET row = 0 -%]
+        [% FOR status_obj IN status_list %]
+            [% NEXT IF status_obj.project_status_id == 99 %]
+            [% row = row + 1 -%]
+            <tr class="[% IF row % 2 %]rowodd[% ELSE %]roweven[% END %]">
+                <td>[% status_obj.name %]</td>
+                [% IF style == 'EUCOMM' || source == 'EUCOMM' %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_eucomm='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.EUCOMM %]</a></td>
+                [% ELSIF style == 'KOMP' || source == 'KOMP' %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_komp_csd='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.KOMP %]</a></td>
+                    [% IF c.check_user_roles("edit") %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_komp_regeneron='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.REGENERON %]</a></td>
+                    [% END %]
+                [% ELSE %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_eucomm='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.EUCOMM %]</a></td>
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_komp_csd='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.KOMP %]</a></td>
+                    [% IF c.check_user_roles("edit") %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_mgp='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.MGP %]</a></td>
+                    [% END %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_norcomm='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.NORCOMM %]</a></td>
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_eutracc='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.EUTRACC %]</a></td>
+                    [% IF c.check_user_roles("edit") %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_komp_regeneron='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.REGENERON %]</a></td>
+                    [% END %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_eucomm_tools='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.EUCOMM_TOOLS %]</a></td>
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_eucomm_tools_cre='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.EUCOMM_TOOLS_CRE %]</a></td>
+                [% IF c.check_user_roles("edit") %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_switch='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.IS_SWITCH %]</a></td>
+                [% END %]
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_tpp='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.TPP %]</a></td>
+                    <td><a href="[% c.uri_for('/report/project_reports', { is_mgp_bespoke='yes', status=status_obj.name, generate_report='true', is_latest_for_gene='yes' }) %]">[% PROCESS show_number count=project_counts.${status_obj.project_status_id}.MGP_BESPOKE %]</a></td>
+                [% END %]
+            </tr>
+        [% END %]
+    </tbody>
+</table>
+[% END -%]
+
+[% BLOCK show_number %]
+    [% IF ! count %]
+        0
+    [% ELSE %]
+        [% count %]
+    [% END %]
+[% END %]
+

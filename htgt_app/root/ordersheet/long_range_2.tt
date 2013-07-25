@@ -1,0 +1,25 @@
+[% META title = 'High Throughput Gene Targeting: Print PB LR Oligo Order Sheets' -%]
+
+<form 
+  name="print_long_range_order_sheet_form" enctype="multipart/form-data" 
+  method="post" action='[% c.uri_for('/ordersheet/print/print_long_range_oligo_orders') %]'
+>
+
+<input type="hidden" name="pb_oligos" value="yes">
+<table><tr><td>Plate:</td><td><input type="text" name="plate" size="10" value=[% plate %]></td></tr></table>
+<table><td><input type="submit" value="Get Order Sheet"> </td></tr></table>
+
+<br>PLATE,WELL,GF3,GF3,GF4,GF4,EX32,EX32,EX52,EX52,GR3,GR3,GR4,GR4</br>
+[% FOREACH row IN oligo_data %]
+  <br>
+      [% row.PLATE %],[% row.WELL %],
+      [% row.GF3_LABEL %],[% row.GF3 %],
+      [% row.GF4_LABEL %],[% row.GF4 %],
+      [% row.EX32_LABEL %],[% row.EX32 %],
+      [% row.EX52_LABEL %],[% row.EX52 %],
+      [% row.GR3_LABEL %],[% row.GR3 %],
+      [% row.GR4_LABEL %],[% row.GR4 %]
+  </br>
+[% END %]
+
+</form>

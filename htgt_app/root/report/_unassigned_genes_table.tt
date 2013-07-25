@@ -1,0 +1,57 @@
+<p>
+    [% genes.size %] Genes with no assignments (or assigned clones).
+</p>
+
+<table id="assigned_genes[% timestamp %]" class="report_table tksort">
+    <thead>
+        <tr>
+            <th id='Source' class="noedit">Source</th>
+            <th id='MGP' class="noedit">MGP</th>
+            <th id='gene' class="noedit">Gene</th>
+            <th id='cell_line' class="noedit">Cell Line</th>
+            <th id='cell_count' class="noedit">ES Cell Count</th>
+            <th id='ep_plate' class="noedit">EP plate</th>
+            <th id='cell_link' class="noedit">Load clones</th>
+        </tr>
+    </thead>
+    <tbody> 
+        [% FOR gene IN genes %]
+          <tr>
+            <td>[% gene.source %]</td>
+            <td>[% gene.mgp %]</td>
+            <td>[% gene.name %]</td>
+            <td>[% gene.cell_line %]</td>
+            <td>[% gene.cell_count %]</td>
+            <td>[% gene.ep_plate %]</td>
+            <td><a class='button load' onclick="fetchClonesByGene('[% gene.name %]')">...</a></td>
+          </tr>
+        [% END %]
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    var well_table =
+        new TableKit(
+            'assigned_genes[% timestamp %]',
+            { editable: false,
+            }
+        );
+    
+    function fetchClonesByGene( symbol ){
+        alert('fetching for '+symbol);
+        $('assigned_cells').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        new Ajax.Updater(
+            'clone_table',
+            '[% c.uri_for('/report/_clones_by_gene') %]',
+            {
+                method: 'get',
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({
+                    gene_symbol:    symbol
+                })
+            }
+        );
+    }
+
+</script>

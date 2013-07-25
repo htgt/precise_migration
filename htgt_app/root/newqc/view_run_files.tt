@@ -1,0 +1,146 @@
+<script type="text/javascript">
+    document.observe('dom:loaded', function() {
+        $$('.load_well').each(function(el) {
+            el.observe('click', get_well_data);
+        });
+    });
+
+    function get_well_data(event) {
+        event.stop(); //don't follow the link url
+
+        //add a little loading icon
+        //give it a load_well class so we can hide all this if necessary
+        var loading = '<img alt="Working..." class="load_well" src="[% c.uri_for( "/static/images/indicator.gif" ) %]">';
+        this.update(loading);
+        //$$('.load_well').each(function(el) { el.update(loading); }); //set all tds to loading
+
+        //fetch all the well data and smash it into the html table
+        new Ajax.Request('[% c.uri_for( "/newqc/get_alignment_data" ) %]', {
+            method: 'post',
+            parameters: { qc_run_id: '[% qc_run_id %]' },
+            onSuccess: function(transport) {
+                var json = transport.responseText.evalJSON();
+
+                //clear all the tds that didn't get an entry just in case.
+                $$('.load_well').each(function(el) {el.up().update("-")});
+                
+                //now parse this huge json tree
+                for ( var id in json ) {
+                    var table_cell = $(id); //this is the well td in each row
+                    var cell_content = "";
+                     
+                    //sort wells so we can display alphabetically
+                    var wells = [];
+                    for ( var well in json[id] ) wells.push(well);
+                    wells.sort();
+
+                    //now iterate our sorted wells and add the content to the cell
+                    for ( var i = 0; i < wells.length; i++ ) {
+                        var links = "";
+
+                        for ( var j = 0; j < json[id][wells[i]].length; j++) {
+                            var primer_display_name = json[id][wells[i]][j];
+                            var primer = primer_display_name.split(" ")[0]; //in format 'R2R (142)'
+                            //this is horrible, i'm sorry
+                            links += '<a href="[% c.uri_for( "/newqc/view_file_alignment/${qc_run_id}/" ) %]' 
+                                     + wells[i] + '/' + encodeURIComponent(id) + '/' +  primer 
+                                     + '">' + primer_display_name + '</a>';
+                            if ( j != json[id][wells[i]].length-1 ) links += ", ";
+                        }
+
+                        //cell_content += wells[i] + ": " + json[id][wells[i]].join(", ") + "<br/>\n";
+                        cell_content += wells[i] + ": " + links + "<br/>\n";
+                    } 
+
+                    table_cell.update(cell_content);
+                }
+
+            },
+            onFailure: function(transport) { //assume failure means no data
+                $$('.load_well').each(function(el) {el.up().update("Error: No data")});
+            }
+        });
+
+    }
+</script>
+
+<h1>Run information for [% qc_run_id %]</h1>
+
+[% IF sequencing_projects.size %]
+    <h4>Sequencing projects for [% template_plate %]:</h4>
+    <ul>
+        [% FOR p IN sequencing_projects %]
+            <li>[% p %]</li>
+        [% END %]
+    </ul>
+[% ELSE %]
+    <h4>Error: Couldn't find any sequencing projects for this run.</h4>
+[% END %]
+
+[%- IF fasta_exists %]
+    <h4>Fasta Reads:</h4>
+    <ul>
+    [%- IF fasta_files.size %]
+        [%# we only get the fasta_files array if its an es cell run and need to show many files. %]
+        [%- FOR f IN fasta_files -%]
+            <li><a href='[% c.uri_for( "/newqc/get_fasta_reads/${qc_run_id}/${f}" ) %]'>Get fasta reads for [% f %]</a></li>
+        [%- END -%]
+    [%- ELSE %]
+        <li><a href="[% c.uri_for( "/newqc/get_fasta_reads/${qc_run_id}" ) %]">Get fasta reads</a></li>
+    [%- END %]
+    </ul>
+[% ELSE %]
+    <h4>Error: Couldn't find any fasta reads.</h4>
+[%- END %]
+
+[% IF genes %]
+    <h4>Engineered Sequences</h4>
+    <table>
+        <tr>
+            <th>Gene</th>
+            <th>Design</th>
+            <th>Engineered Sequence</th>
+            <th>Well</th>
+        </tr>
+    [%- FOR d IN genes.keys.sort %]
+        <tr>
+            <td>[% d %]</td>
+            [%- FOR design IN genes.$d %]
+                [% eng_seq_id = eng_seq_files.$design %]
+                <td>[% design %]</td>
+                <td><a href='[% c.uri_for( "/newqc/get_fasta_eng_seq/${qc_run_id}/" ) %][% eng_seq_id | uri %]'>[% eng_seq_id %]</a></td>
+                <td id="[% eng_seq_id %]">
+                    <a href="#" class="load_well">Load Well Data</a>
+                </td>
+            [% END -%]
+        </tr>
+    [% END -%]
+    </table>
+[% ELSE %]
+    <h4>Error: Couldn't find any engineered sequences.</h4>
+[% END %]
+
+[% IF profile_name %]
+    <h4>Profile information:</h4>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Primers</th>
+            <th>Pass Condition</th>
+            <th>Vector Stage</th>
+            <th>Pre-Filter Min Score</th>
+            <th>Post-Filter Min Primers</th>
+        </tr>
+        <tr>
+            <td>[% profile_name %]</td>
+            <td>[% primers %]</td>
+            <td>[% pass_condition %]</td>
+            <td>[% vector_stage %]</td>
+            <td>[% pre_filter_min_score %]</td>
+            <td>[% post_filter_min_primers %]</td>
+        </tr>
+    </table>
+[% ELSE %]
+    <h4>Error: Couldn't get profile information.</h4>
+[% END %]

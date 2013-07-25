@@ -1,0 +1,106 @@
+<h3>Gene Traps for [% project.mgi_gene.ensembl_gene_id %]</h3>
+
+<br />
+
+<fieldset class="toggleable">
+<legend>Cassette Information</legend>
+<div>
+    <img src='http://www.eucomm.org/images/genetrapvector.png' />
+    
+    <p>This image represents a vector design for conditional gene trapping, based on FlpROSAβgeo, from the work presented in the following paper:</p>
+    
+    <p>
+    <strong>Genomewide production of multipurpose alleles for the functional analysis of the mouse genome.</strong><br />
+    <em>Schnütgen&nbsp;F, De-Zolt&nbsp;S, Van Sloun&nbsp;P, Hollatz&nbsp;M, Floss&nbsp;T, Hansen&nbsp;J, Altschmied&nbsp;J, Seisenberger&nbsp;C, Ghyselinck&nbsp;NB, Ruiz&nbsp;P, Chambon&nbsp;P, Wurst&nbsp;W, von Melchner&nbsp;H</em><br />
+
+    Proc. Natl. Acad. Sci. U.S.A. 2005; 102(20); pp.7221-6. 
+    PubMed ID: <a class="pubmed" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=PubMed&amp;list_uids=15870191&amp;dopt=Abstract">15870191</a> 
+    DOI: <a class="doi" href="http://dx.doi.org/10.1073/pnas.0502273102">10.1073/pnas.0502273102</a>
+    </p>    
+</div>
+</fieldset>
+
+<br />
+
+<h4>Gene Trap Cell Lines</h4>
+
+<p>
+The alignment quality falls in the range of 0 .. 1.  The higher the value, the more confidence we have
+in the alignment of the probe and the gene.  Confidence is further increased if the 5' &amp 3' probes can be paired.
+
+    Paired means that the two probes identify one consistent location.  An unpaired read is where the each probe is paired with a distinct location.
+    A singleton consists of only one probe sequence.
+</p>
+
+<div>
+<table class='tksort report_table' id='trap_table'>
+    <tr>
+        <th>Gene Trap Cell Lines</th>
+        <th class='sortfirstdesc'>Alignment Quality</th>
+        <th>Paired Read</th>
+        <th>ES Cell Line</th>
+
+[% FOR project_gene_trap IN project.gene_trap_links %]
+    [% FOR gene_trap_well IN project_gene_trap.gene_trap_well %]
+        <tr>
+
+<!-- splink=project_gene_trap.splink_orientation,  is_paired=gene_trap_well.is_paired, splink=project_gene_trap.splink_orientation, mgi_gene_id=project.mgi_gene.mgi_gene_id  -->
+
+            <td><a href="[% c.uri_for('/report/gene_trap_well_page', 
+                { 
+                    gene_trap_well=gene_trap_well.gene_trap_well_id, 
+                }
+                ) %]">[% gene_trap_well.gene_trap_well_name %]</a></td>
+            [% IF project_gene_trap.splink_orientation%]
+                [% IF project_gene_trap.splink_orientation == 5 %]
+                    <td>[% gene_trap_well.five_prime_align_quality %]</td>
+                [% ELSE %]
+                    <td>[% gene_trap_well.three_prime_align_quality %]</td>                
+                [% END %]   
+            [% ELSIF gene_trap_well.is_paired %]
+                <td>[% gene_trap_well.three_prime_align_quality %]</td>
+            [% ELSE %]
+                <td>0</td>
+            [% END %] 
+            
+            [% IF gene_trap_well.is_paired %]
+                <td>Paired</td>
+            
+            [% ELSE %]
+                [% IF gene_trap_well.three_prime_align_quality && gene_trap_well.five_prime_align_quality %]
+                    <td>Unpaired</td>
+                [% ELSE %]
+                    <td>Singleton</td>
+                [% END %]
+            [% END %]
+          
+          <td> [% gene_trap_well.es_cell_line %] </td>
+          
+          </tr> 
+    [% END %]
+[% END %]
+
+</table>
+</div>
+
+
+<script>
+    var trap_table = new TableKit('trap_table',{
+       editable: false 
+    });
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

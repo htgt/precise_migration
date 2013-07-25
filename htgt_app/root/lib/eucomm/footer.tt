@@ -1,0 +1,14 @@
+                        </div>
+                    </div>
+                </div>
+                <div class="yui-b first">
+                    [% PROCESS 'eucomm/main-navigation.tt' %]
+                </div>
+            </div>
+            <div id="ft">
+                [% PROCESS 'eucomm/small-navigation.tt' position='footer' %]
+                <span id="copyright">&copy; 2008, EUCOMM Project</span>
+            </div>
+        </div>
+    </body>
+</html>

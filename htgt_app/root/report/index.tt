@@ -1,0 +1,76 @@
+[% META title = 'Reports Available' -%]
+[% SET reports = [
+   {
+        name => 'EPD Plate Summary',
+        path => '/report/epd_plate_summary',
+        csv  => 'EPD_Plate_Summary.csv'
+   },
+   {
+        name => 'KOMP Summary',
+        path => '/report/komp_cond_targ_trap_counts',
+        csv  => 'Komp_Summary.csv'
+   },
+   {
+        name => 'EP Summary',
+        path => '/report/ep_summary',
+        csv  => 'EP_summary.csv'
+   },
+   {
+        name => 'PIQ Data',
+        path => '/report/piq_data',
+        csv  => 'PIQ_Data.csv'
+   },
+   {
+        name => 'Project Reports',
+        path => '/report/project_reports',
+   },
+   {
+        name => 'Microinjections',
+        path => '/report/microinjections'
+   },
+   {
+        name => 'KOMP ES Cells',
+        path => '/report/komp_es_cells',
+        csv  => 'KOMP_ES_Cells.csv'
+   },
+   {
+        name => 'Recovery',
+        path => '/report/recovery'
+   },
+   {
+        name => 'Sequencing Archive Labels',
+        path => '/report/sequencing_archive_labels',
+        csv  => 'sequencing_archive_labels.csv'
+   },
+   {
+        name => 'Conditional ES Cell Counts (by gene)',
+        path => '/report/conditional_es_cell_count_by_gene'
+   }
+]
+%]
+<table id="reports_available" class="report_table tksort">
+  <thead>
+    <tr>
+      <th>Report</th>
+      <th class="nosort">CSV</th>
+    </tr> 
+  </thead>
+  <tbody>
+[%- FOR r IN reports %]
+    <tr>
+      <td>
+        <a href="[% c.uri_for( r.path) %]">[% r.name %]</a>
+      </td>
+      <td>
+        [% IF r.csv -%]
+        <a href="[% c.uri_for( r.path, { view => 'csvdl', file => r.csv } ) %]">CSV</a>
+        [%- END %]
+      </td>
+    </tr>
+[%- END %]    
+  </tbody>
+</table>
+<script type="text/javascript" charset="utf-8">
+      var reports_available_table = new TableKit( 'reports_available', { editable: false } );
+</script>
+

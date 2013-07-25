@@ -1,0 +1,110 @@
+[% META title = 'Southern Blot Tool' -%]
+
+<p>
+  This utility will attempt to find restriction enzymes suitable for a
+  Southern Blot assay using an internal probe in the Neo sequence or
+  3' or 5' half or the LacZ sequence. Note that the current utility is
+  designed for high throughput screening of ES cell clones using only
+  internal probes (probes inside the artificial cassette sequence).
+</p>
+<p>
+  The enzymes suggested for 5' analysis will cut outside the 5'
+  homology arm (upstream of the G5 oligo) and downstream of the
+  internal probe (and nowhere in between). The following diagram shows
+  the ideal cut sites for 5' analysis using Neo sequence as an
+  internal probe:
+</p>
+<img src="[% c.uri_for( "/static/images/southern-blot_5.png" ) %]" alt="Restriction sites for 5' assay" width="500" />
+<p>
+   Similarly, the enzymes for 3' analysis will cut outside the 3'
+   homology arm (downstream of the G3 oligo) and upstream of the
+   internal probe:
+</p>
+<img src="[% c.uri_for( "/static/images/southern-blot_3.png" ) %]" alt="Restriction sites for 3' assay" width="500" />
+
+<h1>Find Restriction Enzymes</h1>
+
+<form name="find_restriction_enzymes" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="tolerance" value="[% tolerance %]" />
+  <p>
+    ES clone name: <input type="text" name="es_clone_name" size="20" value="[% es_clone_name %]" />
+  </p>
+  <p>
+    Probe: <br /> [% FOR probe IN probes -%]
+    <input type="radio" name="probe" value="[% probe.name %]" [%- IF probe.checked %] checked="checked" [%- END %] />[% probe.desc %] <br />
+    [% END -%]
+  </p>
+  <p>
+    This utility assumes a generic internal probe inside the CDS selected above. Enzymes that cut upto 25%
+    into the internal probe sequence are included in the output.
+  </p>
+  <p>
+    <input type="submit" name="find_restriction_enzymes" value="Find Restriction Enzymes" />
+  </p>
+</form>
+
+[% IF show_results -%]
+<h2>Restriction Enzymes for analysis of [% es_clone_name %] with a [% probe_desc %]</h2>
+<p>
+  If no cut is found inside the sequence flanking the cassette (approximately 15kb),
+  the fragment size may be given as a lower bound (e.g. >12345).
+</p>
+
+<h2>Enzymes for 5' analysis</h2>
+[%- IF fivep_enzymes.size > 0 %]
+<table id="fivep_enzymes" class="report_table">
+  <thead>
+    <tr>
+      <th>Enzyme</th>
+      <th>Fragment Size (bp)</th>
+      <th>Preferred enzyme?</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+  [%- FOR enzyme IN fivep_enzymes %]
+  <tr>
+    <td>[% enzyme.enzyme %]</td>
+    <td>[% enzyme.fragment_size %]</td>
+    <td>[% enzyme.is_preferred %]</td>
+    <td>[% IF enzyme.distance_probe_num < 0 %]Cuts inside probe[% END %]</td>
+  </tr>
+  [%- END %]
+  </tbody>
+</table>
+[%- ELSE %]
+<p>
+  No suitable enzymes found for 5' analysis. Note that this could be
+  due to a limitation of this online tool.
+</p>
+[%- END %]
+
+<h2>Enzymes for 3' analysis</h2>
+[%- IF threep_enzymes.size > 0 %]
+<table id="threep_enzymes" class="report_table">
+  <thead>
+    <tr>
+      <th>Enzyme</th>
+      <th>Fragment Size (bp)</th>
+      <th>Preferred enzyme?</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+  [%- FOR enzyme IN threep_enzymes %]
+  <tr>
+    <td>[% enzyme.enzyme %]</td>
+    <td>[% enzyme.fragment_size %]</td>
+    <td>[% enzyme.is_preferred %]</td>
+    <td>[% IF enzyme.distance_probe_num < 0 %]Cuts inside probe[% END %]</td>    
+  </tr>
+  [%- END %]
+  </tbody>
+</table>
+[%- ELSE %]
+<p>
+  No suitable enzymes found for 3' analysis.  Note that this could be
+  due to a limitation of this online tool.
+</p>
+[%- END %]
+[%- END %]

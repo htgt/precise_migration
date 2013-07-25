@@ -1,0 +1,26 @@
+[% IF response != "" %]
+      <h4>Import Result</h4>
+      <table>
+        <tr class="nocol">
+          <td><textarea cols="100" rows="4">[% response %]</textarea></td>
+        </tr>
+        <tr class="nocol">
+          <td><a class="button refresh" onClick="RefreshDesign(); return false;">Refresh Design</a></td>
+        </tr>
+      </table>
+[% END %]
+
+<script type="text/javascript" charset="utf-8">
+   function RefreshDesign() {
+      var timestamp = new Date().getTime();
+      var url = '[% c.uri_for('/gene/update/_refreshdesign/') %]'+'?gene_name=[% gene_name %]&gene_id=[% gene_id %]&timestamp='+timestamp;
+       
+       new Ajax.Updater( 'design_div', url, { 
+          asynchronous: true,
+          onComplete: function() {
+            new TableKit('designs_table'+timestamp);
+       }
+    });        
+   
+   }
+</script>

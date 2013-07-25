@@ -1,0 +1,11 @@
+<table>
+    <tr>
+      <td>
+        <select id="new_parent_well">
+           [% FOREACH well IN well_data %]
+                <option value="[% well.0 %]">[% well.1 %]    [% well.2 %]    [% well.3 %]</option>
+           [% END %]
+        </select>
+      </td>
+    </tr>
+</table>

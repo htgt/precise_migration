@@ -1,0 +1,23 @@
+[% IF plates.size > 0 %]
+  <table id="taqman_plates[% timestamp %]" class="report_table" [% IF called_elsewhere %]width="100%"[% END %]>
+      <thead>
+          <tr>
+              <th>Plate Name</th>
+          </tr>
+      </thead>
+      <tbody>
+          [% SET row = 0 -%]
+          [% FOR plate IN plates %]
+            [% row = row + 1 -%]
+            <tr class="[% IF row % 2 %]rowodd[% ELSE %]roweven[% END %]">
+                 <td><a href="[% c.uri_for('/design/primers/view_taqman_assay_plate',{ plate_name = plate.name }) %]">
+                    [% plate.name %]</a>
+                </td>
+
+            </tr>
+          [% END %]
+      </tbody>
+  </table>
+[% ELSE %]
+  <small><em>no plates</em></small>
+[% END %]

@@ -1,0 +1,4 @@
+Gene Name, Associated Projects, Associated EP plates, Count
+[% FOR gene IN gene_ep_hash.keys.sort -%]
+[% gene %],[% FOR i IN gene_projects.${gene} -%][% i -%][% END -%],[% sorted_list = gene_ep_hash.${gene} %][% FOR ep IN sorted_list -%][% ep -%][% END -%],[% sorted_list.size %]
+[% END -%]

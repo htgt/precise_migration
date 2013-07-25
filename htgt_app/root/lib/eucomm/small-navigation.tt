@@ -1,0 +1,5 @@
+<ul id="[% position %]-navigation">
+    <li class="first"><a href="/">Home</a></li>
+[%#    <li><a href="/information/jobs/">Jobs</a></li> %]
+    <li class="no-border"><a href="/contact/">Contact</a></li>
+</ul>

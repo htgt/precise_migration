@@ -1,0 +1,31 @@
+<h2>Designs with [% check_type_name.$check_type %] Status:  [% status.replace('_', ' ') %]</h2>
+<div id="report_area"></div>
+
+[% IF check_type %]
+<script type="text/javascript" charset="utf-8">
+    //<![CDATA[
+
+    Event.observe('report_area', 'load', generateReport(1));
+
+    function generateReport (page_num) {
+        $('report_area').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        new Ajax.Updater(
+            'report_area',
+            '[% c.uri_for('/design/annotations/_list_status_designs') %]',
+            {
+                asynchronous: true,
+                evalScripts: true,
+                parameters: {
+                  page: page_num,
+                  check_type: '[% check_type %]',
+                  status: '[% status %]',
+                  assembly_id: '[% assembly_id %]',
+                  build_id: '[% build_id %]'
+                }
+            }
+        );
+    }
+
+    //]]>
+</script>
+[% END %]

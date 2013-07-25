@@ -1,0 +1,85 @@
+<!-- TODO: Make the pagination links ajaxified to save full page reloads -->
+[% IF page_info.last_page AND page_info.last_page > 1 %]
+    <div class="paginatecontainer">
+        <div class="paginatetitle">
+            Browsing [% plate_count %] plates.<br />
+            Showing page [% page_info.current_page %] of [% page_info.last_page %]. ([% page_info.entries_per_page %] plates per page)
+        </div>
+        [% PROCESS pagination_controls %]
+    </div>
+[% END %]
+
+<table class="report_table">
+    <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Hide Inheritance Link</th>
+        [% IF plate_type == 'FP' %]
+            <th>Parent Plate(s)</th>
+        [% END %]
+        <th>Source</th>
+        <th>Background</th>
+        <th>Latest QC</th>
+        <th>Desc</th>
+        <th>Last Comment</th>
+        <th>Created Date</th>
+        <th>Created By</th>
+    </tr>
+    [% SET row = 0 -%]
+    [% FOR plate IN plates %]
+        [% row = row + 1 -%]
+        <tr class="[% IF row % 2 %]rowodd[% ELSE %]roweven[% END %]">
+            <td>[% IF plate.type == 'PGD' %]PGS[% ELSE %][% plate.type %][% END %]</td>
+            <td><a href="[% c.uri_for('/plate/view')%]?plate_id=[% plate.plate_id %]">[% plate.name %]</a>[% IF plate_type == 'EPD' %] <a href="[% c.uri_for('/plate/qc_view')%]?plate_id=[% plate.plate_id %]">(QC&nbsp;view)</a>[% ELSIF plate_type == 'GRD' || plate_type == 'GRQ' %] <a href="[% c.uri_for('/plate/grd_plate_view') %]?plate_name=[% plate.name %]">(QC&nbsp;view)</a>[% END %]
+            </td>
+            <td>
+            <a href="[% c.uri_for('/plate/view')%]?plate_id=[% plate.plate_id %]&hide_plate_inheritance=true">[% plate.name %]</a>
+            </td>
+            [% IF plate_type == 'FP' %]
+                <td>
+                [% FOR parent_plate IN plate.plate_obj.parent_plates %]
+                    <a href="[% c.uri_for('/plate/view')%]?plate_id=[% parent_plate.plate_id %]">[% parent_plate.name %]</a>[% UNLESS parent_plate == plate.parent_plates.last %]<br />[% END %]
+                [% END %]
+                </td>
+            [% END %]
+            <td>[% plate.sources %]</td>
+            <td>[% plate.bacs %]</td>
+            <td>[% plate.latest_qc %]</td>
+            <td>[% plate.description %]</td>
+            <td>[% plate.last_comment %]</td>
+            <td>[% plate.created_date %]</td>
+            <td>[% plate.created_user %]</td>
+        </tr>
+    [% END %]
+</table>
+
+[% IF page_info.last_page AND page_info.last_page > 1 %]
+    <div class="paginatecontainer">
+        [% PROCESS pagination_controls %]
+    </div>
+[% END %]
+
+[% BLOCK pagination_controls %]
+    <div class="paginate">
+        <ul>
+            [% IF page_info.current_page == page_info.first_page %]
+                <li>&lt;&lt; First</li>
+                <li>&lt; Previous</li>
+            [% ELSE %]
+                <li><a href="[% c.uri_for('/plate/list',{ type = plate_type, page = page_info.first_page, order = query_order }) %]">&lt;&lt; First</a></li>
+                <li><a href="[% c.uri_for('/plate/list',{ type = plate_type, page = page_info.previous_page, order = query_order }) %]">&lt; Previous</a></li>
+            [% END %]
+            [% FOR page IN page_info.pages_in_set %]
+                <li [% IF page == page_info.current_page %]class="current_page"[% END %]><a href="[% c.uri_for('/plate/list',{ type = plate_type, 'page' = page, order = query_order }) %]">[% page %]</a></li>
+            [% END %]
+            [% IF page_info.current_page == page_info.last_page %]
+                <li>Next &gt;</li>
+                <li>Last &gt;&gt;</li>
+            [% ELSE %]
+                <li><a href="[% c.uri_for('/plate/list',{ type = plate_type, page = page_info.next_page, order = query_order }) %]">Next &gt;</a></li>
+                <li><a href="[% c.uri_for('/plate/list',{ type = plate_type, page = page_info.last_page, order = query_order }) %]">Last &gt;&gt;</a></li>
+            [% END %]
+        </ul>
+    </div>
+[% END %]
+

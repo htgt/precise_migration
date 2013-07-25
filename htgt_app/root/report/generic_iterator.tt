@@ -1,0 +1,29 @@
+[%- IF report.name.defined %]
+<h1>[% report.name %]</h1>
+[%- END %]
+[%- IF report.preamble.defined %]
+<p>[% report.preamble %]</p>
+[%- END %]
+[% IF report.csv_uri.defined %]
+<p>
+  <a href="[% report.csv_uri %]">Download report as CSV</a>
+</p>
+[% END %]
+<table [% IF report.table_id.defined %]id="[% report.table_id %]"[% END %]>
+  <thead>
+    [%- FOR col_name IN report.columns %]
+    <th>[% col_name %]</th>
+    [%- END %]
+  </thead>
+  <tbody>
+    [%- WHILE report.has_next %]
+    [%- SET data = report.next_record %]
+    [%- SET row_class = row_class == 'roweven' ? 'rowodd' : 'roweven' %]
+    <tr class="[% row_class %]">
+      [%- FOR col_name IN report.columns %]
+      <td>[% data.$col_name %]</td>
+      [%- END %]
+    </tr>
+    [%- END %]
+  </tbody>
+</table>

@@ -1,0 +1,195 @@
+<h3>Design Annotation: [% data.da.design_id %]</h3>
+
+[% data_fields = [
+  'assembly_id',
+  'build_id',
+  'oligo_status_id',
+  'oligo_status_notes',
+  'design_quality_status_id',
+  'design_quality_status_notes',
+  'target_region_status_id',
+  'target_region_status_notes',
+  'artificial_intron_status_id',
+  'artificial_intron_status_notes',
+  'target_gene',
+  'final_status_id',
+  'edited_by',
+ ]
+%]
+
+[% tests = [
+  'oligo',
+  'design_quality',
+  'target_region',
+  'artificial_intron',
+]
+%]
+
+<table id="design_annotation" class="report_table">
+  <tbody>
+
+    <tr>
+      <td><strong>design id</strong></td>
+      <td><a href="[% c.uri_for( '/design/designedit/refresh_design', { 'design_id' = data.design.design_id } ) %]">[% data.design.design_id %]</td>
+    </tr>
+
+    <tr>
+      <td>design type</td>
+      <td>[% data.design.info.type %]</td>
+    </tr>
+
+  [% FOR field IN data_fields %]
+    <tr>
+      <td><strong>[% field.replace('_', ' ') %]</strong></td>
+      <td>[% data.da.$field.replace('\n', '<br>') %]</td>
+    </tr>
+  [% END %]
+
+  </tbody>
+</table>
+
+</br>
+
+<form method="POST" name="add_human_annotation">
+<h5>Add Human Annotation</h5>
+<div id="plate_comments_and_data_wrapper" class="yui-g">
+        [% IF data.da.target_region_status_id == "target_gene_does_not_match_project_gene"%]
+    <div style="width:25%;float:left;">
+            <input type="hidden" name="change_project_gene" value= "true">
+            <label>Change projects gene to: </label>
+            <select name="correct_project_gene">
+                 <option value=""></option>
+                [% FOR gene IN data.target_region_genes %]
+                    <option value="[% gene.mgi_accession_id %]">[% gene.mgi_accession_id %]</option>
+                [% END %]
+            </select>
+
+    </div>
+    <div class="clear"></div>
+    <div>
+        <input type="hidden" name="design_annotation_id" value="[% data.da.design_annotation_id %]">
+        [% FOR test IN tests %]
+            [% field = test _ '_status_id' %]
+            [% notes = test _ '_status_notes' %]
+            [% IF data.da.$field != 'valid'%]
+                <input type="hidden" name="failed_test" value="[% data.da.$field %]">
+                <input type="hidden" name="failed_test_table" value="[% field %]">
+                <input type="hidden" name="failed_test_notes" value="[% data.da.$notes %]">
+                [% LAST %]
+            [% END %]
+        [% END %]
+        <input name="add_human_annotation" id="add_human_annotation" type="submit" value="Add Annotation" />
+    </div>
+        [% END %]
+</div>
+</form>
+
+<div class="clear"></div></br>
+
+[% IF data.human_annotations.size > 0 %]
+  <h5>Human Annotations</h5>
+  <table id="human_annotations" class="report_table">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Notes</th>
+          <th>Linked Status</th>
+          <th>Linked Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        [% FOR ha IN data.human_annotations %]
+          <tr>
+            <td>[% ha.human_annotation_status_id %]</td>
+            <td>[% ha.human_annotation_status_notes.replace( '\n', '<br>' ) %]</td>
+            [% FOR test IN tests %]
+                [% field = test _ '_status_id' %]
+                [% IF ha.$field %]
+                    <td>[% ha.$field %]</td>
+                    <td>[% ha.design_check_status_notes.replace( '\n', '<br>' ) %]</td>
+                    [% LAST %]
+                [% END %]
+            [% END %]
+          </tr>
+        [%- END %]
+      </tbody>
+  </table>
+[% END %]
+
+[% IF data.target_region_genes.size > 0 %]
+  <h5>Target Region Genes</h5>
+  <table id="target_region_genes" class="report_table">
+      <thead>
+        <tr>
+          <th>Ensembl Gene ID</th>
+          <th>MGI Accession ID(s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        [% FOR gene IN data.target_region_genes %]
+          <tr>
+            <td><a href="http://www.ensembl.org/Mus_musculus/contigview?gene=[% gene.ensembl_gene_id %];add_das_source=(name=KO_designs+url=http://das.sanger.ac.uk/das+dsn=KO_designs+type=ensembl_location_toplevel+active=1)">[% gene.ensembl_gene_id %]</td>
+            <td>
+              [% FOR mgi_id IN gene.mgi_accession_id.split(',') %]
+                <a href="http://www.informatics.jax.org/marker/[% mgi_id %]">[% mgi_id %]</a>
+              [% END %]
+          </tr>
+        [%- END %]
+      </tbody>
+  </table>
+[% END %]
+
+[% IF data.projects.size > 0 %]
+  <h5>Projects</h5>
+  <table id="projects" class="report_table">
+      <thead>
+        <tr>
+          <th>Project ID</th>
+          <th>Sponsor</th>
+          <th>Status</th>
+          <th>MGI Accession ID</th>
+          <th>Ensembl ID</th>
+          <th>Marker Symbol</th>
+        </tr>
+      </thead>
+      <tbody>
+        [% FOR project IN data.projects %]
+          <tr>
+            <td><a href="[% c.uri_for( '/report/gene_report', { 'project_id' = project.project_id } ) %]">[% project.project_id %]</td>
+            <td>[% project.sponsor %]</td>
+            <td>[% project.status.name %]</td>
+            <td><a href="http://www.informatics.jax.org/marker/[% project.mgi_gene.mgi_accession_id %]">[% project.mgi_gene.mgi_accession_id %]</a></td>
+            <td><a href="http://www.ensembl.org/Mus_musculus/contigview?gene=[% project.mgi_gene.ensembl_gene_id %];add_das_source=(name=KO_designs+url=http://das.sanger.ac.uk/das+dsn=KO_designs+type=ensembl_location_toplevel+active=1)">[% project.mgi_gene.ensembl_gene_id %]</a></td>
+            <td>[% project.mgi_gene.marker_symbol %]</td>
+          </tr>
+        [%- END %]
+      </tbody>
+  </table>
+[% END %]
+
+[% IF data.alternate_das.size > 0 %]
+  <h5>Design Annotations on Alternate Assemblies and Builds</h5>
+  <table id="alternate_design_annotations" class="report_table">
+      <thead>
+        <tr>
+          <th>Assembly</th>
+          <th>Build</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        [%- FOR da IN data.alternate_das %]
+          <tr>
+            <td>[% da.build_id %]</td>
+            <td>[% da.assembly_id %]</td>
+            <td>
+               <a href="[% c.uri_for('/design/annotations/view_design_annotation',
+                { 'design_id' = design_id, 'assembly_id' = da.assembly_id , 'build_id' = da.build_id }) %]">
+                  view
+               </a>
+            </td>
+          </tr>
+        [%- END %]
+      </tbody>
+  </table>
+[% END %]

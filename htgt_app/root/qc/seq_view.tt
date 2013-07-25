@@ -1,0 +1,67 @@
+[% IF design_id AND gene %]
+    <h1>Allele Map for [% gene.primary_name %] (Design ID [% design_id %])</h1>
+[% ELSIF design_id %]
+    <h1>Allele Map for Design ID [% design_id %]</h1>
+[% ELSIF engseq_id %]
+    <h1>Allele Map for Synthetic Allele [% engseq_id %]</h1>
+[% END %]
+
+<p>&nbsp;</p>
+    <img src="[% c.uri_for('/qc/seq_view_graphics',c.req.params) %]" alt="feature map" />
+<p>&nbsp;</p>
+
+[% IF c.req.params.notart ; ELSE; %]
+<style type="text/css" media="screen">
+    .legendbox {
+        border: 1px solid #000;
+    }
+</style>
+
+<fieldset>
+    <legend>Image Legend</legend>
+    <div style="margin:10px;">
+        <div>
+            <p><strong>Genomic Features</strong></p>
+            <span>&#160;&#160;<span class="legendbox" style="background-color:#FF0000;">&#160;&#160;&#160;&#160;</span> Genomic Region</span>
+            <span>&#160;&#160;<span class="legendbox" style="background-color:#7FFF00;">&#160;&#160;&#160;&#160;</span> Floxed Region</span>
+        </div>
+        <div>
+            <p><strong>Mutation Features</strong></p>
+            <span>&#160;&#160;<span class="legendbox" style="background-color:#00FFFF;">&#160;&#160;&#160;&#160;</span> En2 SA</span>
+            <span>&#160;&#160;<span class="legendbox" style="background-color:#008000;">&#160;&#160;&#160;&#160;</span> Sv40 pA</span>
+            [% IF cassette == 'L1L2_Bact_P' %]
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#800080;">&#160;&#160;&#160;&#160;</span> ECMV IRES</span>
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#0000FF;">&#160;&#160;&#160;&#160;</span> lacZ</span>
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#FF00FF;">&#160;&#160;&#160;&#160;</span> Beta Actin Promoter</span>
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#808080;">&#160;&#160;&#160;&#160;</span> Neomycin Resistance</span>
+            [% ELSIF cassette.match('L1L2_Pgk_P') %]
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#800080;">&#160;&#160;&#160;&#160;</span> ECMV IRES</span>
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#0000FF;">&#160;&#160;&#160;&#160;</span> lacZ</span>
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#FF00FF;">&#160;&#160;&#160;&#160;</span> PGK Promoter</span>
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#808080;">&#160;&#160;&#160;&#160;</span> Neomycin Resistance</span>
+            [% ELSIF cassette.match('L1L2_gt') %]
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#0000FF;">&#160;&#160;&#160;&#160;</span> Beta Galactosidase</span>
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#808080;">&#160;&#160;&#160;&#160;</span> Neomycin Resistance</span>
+            [% ELSIF cassette.match('L1L2_st') %]
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#0000FF;">&#160;&#160;&#160;&#160;</span> Beta Galactosidase</span>
+                <span>&#160;&#160;<span class="legendbox" style="background-color:#808080;">&#160;&#160;&#160;&#160;</span> Neomycin Resistance</span>
+            [% END %]
+        </div>
+        <div>
+            <p><strong>Exon Features</strong></p>
+            <span>&#160;&#160;<span class="legendbox" style="background-color:#FFA500;">&#160;&#160;&#160;&#160;</span> Exon</span>
+            <span>&#160;&#160;<span class="legendbox" style="background-color:#074987;">&#160;&#160;&#160;&#160;</span> Target Exon(s)</span>
+        </div>
+        <div>
+            <p><strong>Primers</strong></p>
+            <span>&#160;&#160;<span class="legendbox" style="background-color:#0000FF;">&#160;&#160;&#160;&#160;</span> Long-Range PCR Primers</span>
+            <span>&#160;&#160;<span class="legendbox" style="background-color:#000000;">&#160;&#160;&#160;&#160;</span> Gap Retrieval Primers</span>
+        </div>
+        <div>
+            <p><strong>FRT/loxP Sites</strong></p>
+            <span>&#160;&#160;<span class="legendbox" style="background-color:#008000;">&#160;&#160;&#160;&#160;</span> FRT Site</span>
+            <span>&#160;&#160;<span class="legendbox" style="background-color:#FF0000;">&#160;&#160;&#160;&#160;</span> LoxP Site</span>
+        </div>
+    </div>
+</fieldset>
+[%END%]

@@ -1,0 +1,72 @@
+<table>
+    <tr>
+        <th>Arm:</th>
+        <td>
+            <select id="arm_choice">
+                <option value="3-arm">LoxP</option>
+                <option value="5-arm">Cassette</option>
+            </select>
+        </td>
+        <th>Melting Temperature:</th>
+        <td>
+            <input id="meltTemp" type="text" value="62" />
+        </td>
+        <th>Amplicon Size (&plusmn; 50nt):</th>
+        <td>
+            <input id="ampliconSize" type="text" value="500" />
+        </td>
+    </tr>
+    <tr>
+        <th>Repeat Masking:</th>
+        <td>
+            <select id="masking" type="text">
+                <option value="norep">No</option>
+                <option value="rep">Yes</option>
+            </select>
+        </td>
+        <th>5' Shim:</th>
+        <td><input id="five_prime_shim" type="text" value="60" /></td>
+        <th>3' Shim:</th>
+        <td><input id="three_prime_shim" type="text" value="60" /></td>
+    </tr>
+    <tr class="nocol">
+        <td>
+            <a id="create_primer" class="button cog_go">Create&nbsp;Primers</a>
+        </td>
+    </tr>
+</table>
+
+<div class="created_primers" id="created_primers"></div>
+
+
+<script type="text/javascript" charset="utf-8">
+   // observer to create primer
+   $('create_primer').observe('click', function() {
+       $('created_primers').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        var designId = '[% project.design_id %]';
+        var armChoice    = $('arm_choice').value;
+        var ampliconsize = $('ampliconSize').value;
+        var melt         = $('meltTemp').value;
+        var masking      = $('masking').value;
+        var fpshim       = $('five_prime_shim').value;
+        var tpshim       = $('three_prime_shim').value;
+        
+        new Ajax.Updater(
+            'created_primers',
+            '[% c.uri_for('/design/create_primers') %]',
+            {
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({
+                    design_id: designId,
+                    armChoice: armChoice,
+                    melt: melt,
+                    ampsize: ampliconsize,
+                    masking: masking,
+                    fpshim: fpshim,
+                    tpshim: tpshim
+                })
+            }
+        );
+   });
+</script>

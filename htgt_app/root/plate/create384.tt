@@ -1,0 +1,100 @@
+[% META title = 'Create A 384 Well Plate' -%]
+
+<form action="[% c.uri_for('/plate/update/save384') %]"
+    name="create384_plate"
+    id="create384_plate"
+    method="post"
+    accept-charset="utf-8">
+    <table>
+        <tr class="nocol">
+            <td>Parent Plate:</td>
+            <td>
+                <input type="text" name="parent_plate" value="" id="parent_plate" autocomplete="off" class="required" />
+                <span id="parent_plate_search_indic" style="display:none;"><img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /></span>
+                <input type="hidden" id="parent_plate_id" name="parent_plate_id" />
+                <div class="auto_complete" id="parent_plate_suggestions"></div>
+            </td>
+            <td></td>
+        </tr>
+        <tr class="nocol">
+            <td>Child Plate:<br /> <span class="small">(omit the _1/2/3/4 etc. suffix)</span></td>
+            <td>
+                <input type="text" name="child_plate" value="" id="child_plate" class="required" />
+            </td>
+            <td>
+                <select name="child_plate_type" id="child_plate_type">
+                    <option value="PCS">PC</option>
+                    <option value="PGD" selected="yes">PG</option>
+                    <option value="GR">GR</option>
+                    <option value="GRD">GRD</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="nocol">
+            <td>No. of Replicates:</td>
+            <td>
+                <input type="text" name="no_replicates" value="4" id="no_replicates" class="required" />
+            </td>
+        </tr>
+        <tr class="nocol">
+            <td>First Replicate:</td>
+            <td>
+               <input type="text" name="first_replicate" value="1" id="first_replicate" class="required" />
+            </td>
+        </tr>
+        <tr class="nocol">
+            <td>Cassette:</td>
+            <td>
+                <select name="cassette" id="cassette">
+                    <option value="-" selected="yes">-</option>
+                    [% FOR cassette IN cassettes.keys.sort %]
+                    <option value="[% cassette %]">[% cassette %]</option>
+                    [% END %]
+                </select>
+            </td>
+        </tr>
+        <tr class="nocol">
+            <td>Backbone:</td>
+            <td>
+                <select name="backbone" id="backbone">
+                    <option value="-" selected="yes">-</option>
+                    [% FOR backbone IN backbones.keys.sort %]
+                    <option value="[% backbone %]">[% backbone %]</option>
+                    [% END %]
+                </select>
+            </td>
+        </tr>
+        <tr class="nocol">
+            <td>Load QC data:</td>
+            <td>
+                <input type="radio" name="load_qc" value="yes" /> Yes 
+                <input type="radio" name="load_qc" value="no" checked="checked" /> No
+            </td>
+        </tr>
+        <tr class="nocol">
+            <td></td>
+            <td>
+                <input type="submit" value="Create Plates">
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script type='text/javascript'>
+    // Add an autocompleter to the parent plate field
+    new Ajax.Autocompleter(
+        "parent_plate",
+        "parent_plate_suggestions",
+        "[% c.uri_for('/utils/_suggest_plate_names') %]",
+        {
+            indicator: "parent_plate_search_indic",
+            afterUpdateElement: function (text, li) { $('parent_plate_id').value = li.id; }
+        }
+    );
+    
+    // Add validations to the form.
+    var valid = new Validation('create384_plate', {
+        immediate: true,
+        focusOnError: true
+    });
+</script>

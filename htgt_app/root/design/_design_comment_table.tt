@@ -1,0 +1,134 @@
+ [% IF design_info.design_comments.size >0 %]
+ 
+ <table class="resizable tksort editable" id="comments[% timestamp %]">
+     <thead>
+       <tr>
+         <th id="category">Comment Type</th>
+         <th id="design_comment">Comment Detail</th>
+         <th id="created_user" class="noedit">Edited User</th>
+         <th id="created_date" class="sortfirstasc noedit date-oracle">Edited Date</th>
+         [% IF c.check_user_roles("design") %]
+            <th id="visibility">Visibility</th>
+         [% END %]
+         <th class="noedit nosort nocol"></th>
+       </tr> 
+     </thead>
+     <tbody>
+       [% FOR comment IN design_info.design_comments %]
+         [% IF new_comment_id && (new_comment_id == comment.design_comment_id) %]
+            [% SET rowclass='new' %]
+          [% ELSE %]
+            [% SET rowclass = ''%]         
+          [% END %]
+          
+         [% IF c.check_user_roles("design") %] 
+            <tr class="[% rowclass %]" id="[% comment.design_comment_id %]">
+              <td class="edit">[% comment.category.category_name %]</td>
+              <td class="edit" id="design_comment_field">[% comment.design_comment %]</td>
+              <td>[% comment.edited_user %]</td>
+              <td>[% comment.edited_date %]</td>
+              <td >[% comment.visibility %]</td>
+              [% IF comment.edited_user == c.user.id %]
+                 <td class="nocol">
+                   <a class="delete" href="#" onclick="deleteComment([% comment.design_comment_id %]);return false">delete</a>
+                 </td>
+              [% END %]
+            </tr>
+         [% ELSE %]
+           [% IF comment.visibility == "public" %]
+              <tr>
+                <td id="edit">[% comment.design_comment %]</td>
+                <td>[% comment.edited_user %]</td>
+                <td>[% comment.edited_date %]</td>
+              </tr>
+           [% END %]
+        [% END %]
+         
+       [% END %] 
+     </tbody>
+   </table>
+[% ELSE %]            
+   [% IF c.check_user_roles("design") %]
+      <table>
+        <thead>
+          <tr>
+            <th id="category" class="noedit">Comment Category</th>
+            <th id="comment" class="noedit">Comment</th>
+            <th id="user" class="noedit">User</th>
+            <th id="date" class="sortfirstasc noedit date-oracle">Date</th>          
+            <th id="public">Visibility</th>
+          </tr>
+         </thead>
+         <tbody>
+           <tr>
+              <td colspan="2" class="nocol">No Comments</td>
+           </tr>
+         </tbody>
+      </table>
+   [% END %]
+[% END %]
+   
+[% IF c.check_user_roles("design") %]
+    <a href="#" class="add" onClick="addComment([% design_info.design_id %]); return false;">add a new comment</a>
+[% END %]
+   
+ <script type="text/javascript" charset="utf-8">
+    [% IF design_info.design_comments.size > 0 %]
+    var comments_table = new TableKit( 'comments[% timestamp %]', {
+        [% IF c.check_user_roles("design") %]
+        editAjaxURI: '[% c.uri_for('/design/designedit/_design_comment_update/') %]?design_id=[% design_info.design_comments.design_id %]'
+        [% ELSE %]
+        editable: false
+        [% END %]
+    });
+    [% END %]
+
+    [% IF c.check_user_roles("design") %]
+    // Function to add a comment to the table and refresh the table
+    function addComment(design_id) {
+        var timestamp = new Date().getTime();
+        var new_table = 'comments' + timestamp;
+        var url = '[% c.uri_for('/design/designedit/_design_comment_new/') %]?design_id=' + design_id + '&timestamp=' + timestamp;
+        new Ajax.Updater( 'comments_div', url, { 
+            asynchronous: true,
+            onComplete: function() {
+                new TableKit( new_table, {
+                    editAjaxURI: '[% c.uri_for('/design/designedit/_design_comment_update/') %]?design_id=[% design_info.design_id %]'
+                })
+            }
+        });
+    }
+
+    // Function to delete a comment from the table and refresh the table
+    function deleteComment(comment_id) {
+        var timestamp = new Date().getTime();
+        var new_table = 'comments' + timestamp;
+        var url = '[% c.uri_for('/design/designedit/_design_comment_delete/') %]?design_comment_id=' + comment_id + '&timestamp=' + timestamp;
+        var answer = confirm('Are you sure you want to delete this comment?');
+        if (answer) {
+            new Ajax.Updater( 'comments_div', url, { 
+                asynchronous: true,
+                onComplete: function() {
+                    new TableKit( new_table, {
+                        editAjaxURI: '[% c.uri_for('/design/designedit/_design_comment_update/') %]?design_id=[% design_info.design_comments.design_id %]'
+                    })
+                }
+            });
+            return false;
+        }
+    }
+    [% END %]
+    
+    TableKit.Editable.selectInput('visibility', {}, [
+        ['internal','internal'],
+        ['public','public']
+    ]);
+    
+    TableKit.Editable.selectInput('category', {}, [
+      [% FOR c IN design_comment_categories -%]
+        [ '[% c.category_name %]', '[% c.category_id %]' ][% UNLESS loop.last %],[% END %]
+      [% END -%]    
+    ]);  
+</script>
+ 
+ 

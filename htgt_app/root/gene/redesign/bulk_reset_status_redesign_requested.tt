@@ -1,0 +1,30 @@
+[% META title = "Reset Gene Status to 'Redesign Requested'" %]
+
+<p>
+  This utility will termitate all projects in the specified pipeline
+  for each marker symbol listed below. A new project in status
+  'Redesign Requested' will be created for each gene.
+</p>
+
+<form id="bulk_set_gene_status_redesign" name="bulk_set_gene_status_redesign"
+  method="post" action="[% c.uri_for('/gene/redesign/bulk_reset_status_redesign_requested') %]" accept-charset="utf-8">
+  
+  <p>
+    Pipeline:
+    [%- FOR p IN pipelines.keys.sort %]
+    [% p %] <input type="radio" name="pipeline" id="pipeline_[% p %]" value="[% p %]" [% IF pipelines.${p} %]checked="checked"[% END %]</input>
+    [% END %]
+  </p>
+
+  <p>
+    Enter marker symbols, one per line: <br />
+    <textarea name="markers" id="markers" rows="12" cols="20">[%- markers -%]</textarea>
+  </p>
+
+  <p>
+    <input type="submit" name="reset_gene_status" value="Reset Gene Status to Redesign Requested" />
+  </p>
+</form>
+
+  
+

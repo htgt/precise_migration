@@ -1,0 +1,432 @@
+[%
+
+    ## HTGT Sidebar NavMenu...
+    #
+    # The variable 'menu' contains the structure of the navmenu, it is
+    # an array ref containing a hash ref defining each navmenu entry.
+    #
+    # The options for each hash ref (menu entry) are as follows:
+    #   - text      => The text that is to be displayed
+    #   - url       => The url for a 'normal' navmenu entry
+    #   - csvurl    => The url for a 'csv' link for a report
+    #   - block     => Enter the HTML for a block of code (i.e. a search box) to be displayed
+    #   - header    => Enter a '1' if this is a header entry
+    #   - login     => Enter a '1' if this entry requires the user to be logged in to VIEW
+    #   - disable   => Enter a '1' if this entry requires the user to be logged in to USE (is disabled otherwise)
+    #   - edit      => Enter a '1' if this entry requires the 'edit' role to view
+    #   - eucomm    => Enter a '1' if this entry requires the 'eucomm' role to view
+    #   - design    => Enter a '1' if this entry requires the 'design' role to view
+    #
+
+    # Some pre-formatted code blocks...
+    gene_search  = INCLUDE gene_search;
+    plate_search = INCLUDE plate_search;
+
+    # The menu...
+    menu_list = [
+        {
+            text    = 'Home',
+            url     = c.uri_for('/welcome')
+        },
+        ######
+        {
+            text    = 'Search for a Gene',
+            header  = 1,
+            edit    = 1,
+        },
+        {
+            block   = gene_search,
+            edit    = 1,
+        },
+        ######
+        {
+            text    = 'Reports',
+            header  = 1,
+            url     = c.uri_for('/report')
+        },
+        {
+            text    = 'BioMart',
+            url     = c.uri_for('/biomart')
+        },
+        {
+            text    = 'EP Summary',
+            url     = c.uri_for('/report/ep_summary')
+        },
+        {
+            text    = 'Project Reports',
+            url     = c.uri_for('/report/project_reports'),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {#does this need to be eucomm_edit only?
+            text    = 'Microinjection',
+            url     = c.uri_for('/report/microinjections'),
+        },
+        {
+            text    = 'Komp ES Cells',
+            url     = c.uri_for('/report/komp_es_cells'),
+            edit    = 1
+        },
+        {
+            text    = 'Recovery',
+            url     = c.uri_for('/report/recovery'),
+            edit    = 1
+        },
+        ######
+        {
+            text    = 'Designs',
+            header  = 1
+        },
+        {
+            text    = 'Browse For Designs',
+            url     = c.uri_for('/design/designlist/list_designs')
+        },
+        {
+            text    = 'Custom Design Tool',
+            url     = c.uri_for('/design/designedit/show_create'),
+            disable = 1
+        },
+        {
+            text    = 'Allocate Design to Plate',
+            url     = c.uri_for('/design/design/list'),
+            edit    = 1
+        },
+        {
+            text    = 'Designs Requiring Validation by Annotation',
+            url     = c.uri_for('/design/validatedesign/load_form'),
+            design  = 1
+        },
+        {
+            text    = 'Primers',
+            url     = c.uri_for('/design/primers'),
+            edit    = 1
+        },
+        {
+            text    = 'Annotations',
+            url     = c.uri_for('/design/annotations'),
+            edit    = 1
+        },
+        ######
+        {
+            text    = 'Plates',
+            header  = 1,
+            login   = 1
+        },
+        {
+            block   = plate_search,
+            login   = 1
+        },
+        {
+            text    = 'List All Plates',
+            url     = c.uri_for('/plate/list'),
+            login   = 1
+        },
+        {	text    = 'View Well Hierarchy',
+        	url     = c.uri_for('/well/tree_view'),
+        	login   = 1
+        },
+        {
+            text    = 'Create/Link A Plate',
+            url     = c.uri_for('/plate/create'),
+            edit    = 1
+        },
+        {
+            text    = 'Create A 384 Well Plate',
+            url     = c.uri_for('/plate/create384'),
+            edit    = 1
+        },
+        {
+            text    = 'Bulk Data Update',
+            url     = c.uri_for('/plate/bulk_data_update'),
+            edit    = 1
+        },
+        #{
+        #    text    = 'Nanodrop Upload',
+        #    url     = c.uri_for('/plate/nanodrop'),
+        #    edit    = 1
+        #},
+        ######
+        {
+            text    = 'QC',
+            header  = 1,
+            edit    = 1,
+            eucomm  = 1,
+            url     = c.uri_for('/newqc')            
+        },
+        {
+            text    = 'Latest Runs',
+            url     = c.uri_for( '/newqc/latest_runs' ),
+            edit    = 1
+            eucomm  = 1
+        },
+        {
+            text = 'Latest Prescreen Runs',
+            url = c.uri_for( '/newqc/latest_runs', { prescreen => 1 } ),
+            edit = 1,
+            eucomm = 1,
+        },
+        {
+            text    = 'Submit Vector QC Job',
+            url     = c.uri_for('/newqc/submit'),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'Submit ES Cell QC Job',
+            url     = c.uri_for( '/newqc/submit_es_cell' ),
+            edit    = 1
+            eucomm  = 1
+        },
+        {
+            text    = 'Old Post Cre',
+            url     = c.uri_for('/qc/qc_runs', { stage = 'post_cre' }),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'Old Post Gateway',
+            url     = c.uri_for('/qc/qc_runs', { stage = 'post_gateway' }),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'Old Allele',
+            url     = c.uri_for('/qc/qc_runs', { stage = 'allele' }),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'Old Allele - Target Region Only',
+            url     = c.uri_for('/qc/qc_runs', { stage = 'allele_tronly' }),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = "Old Allele - 3' Region Only",
+            url     = c.uri_for('/qc/qc_runs', { stage = 'allele_tponly' }),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = "Old Allele - 5' Region Only",
+            url     = c.uri_for('/qc/qc_runs', { stage = 'allele_fponly' }),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = "Update Distribution QC Results",
+            url     = c.uri_for('/qc/update/update_qc_results'),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = "Synthetic Vectors",
+            url     = c.uri_for('/tools/engseqbuilder'),
+            edit    = 1,
+            eucomm  = 1
+        },
+        ######
+        {
+            text    = 'ES Cell Distribution',
+            header  = 1,
+            url     = c.uri_for('/esdistribution')
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'BaSH Pick List',
+            url     = c.uri_for('/esdistribution/pick_list/BaSH'),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'MGP Pick List',
+            url     = c.uri_for('/esdistribution/pick_list/MGP'),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'MRC Pick List',
+            url     = c.uri_for('/esdistribution/pick_list/MRC'),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'Distributable ES Cell QC Failures',
+            url     = c.uri_for('/esdistributionfailures'),
+            edit    = 1,
+            eucomm  = 1
+        },           
+        ######
+        {
+            text    = 'Bespoke Allele Tracking',
+            header  = 1,
+            url     = c.uri_for('/bespokeallele'),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'Issue Tracker',
+            url     = 'http://htgt.internal.sanger.ac.uk:4013/projects/bespoke/issues',
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'Status Report',
+            url     = c.uri_for('/bespokeallele/status_report'),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'Languishing Report',
+            url     = c.uri_for('/bespokeallele/languishing_report'),
+            edit    = 1,
+            eucomm  = 1
+        },
+        {
+            text    = 'Unassigned Genes',
+            url     = c.uri_for('/bespokeallele/allele_tracker'),
+            edit    = 1,
+            eucomm  = 1
+        },
+        ######
+        {
+            text    = 'Mutagenesis Prediction Reports',
+            header  = 1,
+            url     = c.uri_for('/mutagenesispredictions'),
+            edit    = 1,
+            eucomm  = 1
+        },           
+    ];
+    
+-%]
+
+[%
+    menu_text = INCLUDE sanger_menu menu=menu_list;
+    sanger_header.replace('<li>INSERT NAV HERE</li>', menu_text);
+-%]
+
+<!--[if IE]>
+    <style type="text/css" media="screen">
+        #navigation div.navigator2 ul li span a.csvlink {
+            margin-top: -22px;
+        }
+    </style>
+<![endif]-->
+
+
+[% BLOCK sanger_menu %]
+    [% FOR entry IN menu -%]
+        [% SET disable = undef -%]
+        [% IF entry.disable;  UNLESS c.user; disable = 1; END; END; -%]
+        [% SET display = 1 -%]
+	[% IF entry.login OR entry.edit OR entry.eucomm OR entry.design OR entry.eucomm_edit -%]
+	  [% SET display = undef -%]
+          [% IF ( (entry.login AND c.user) OR
+                (entry.edit  AND c.check_user_roles("edit")) OR
+                (entry.eucomm AND c.check_user_roles("eucomm")) OR
+                (entry.eucomm_edit AND c.check_user_roles("eucomm_edit")) OR
+                (entry.design AND c.check_user_roles("design"))
+	      ); display = 1; END; -%]
+        [% END -%]
+        [% IF display -%]
+            [% IF entry.header -%]
+                [% IF entry.url -%]
+                    <li><a class='barhead' href="[% entry.url %]">[% entry.text %]</a></li>
+                [% ELSE %]
+                    <li><span class='barhead'>[% entry.text %]</span></li>
+                [% END -%]
+            [% ELSIF entry.block -%]
+                <li>[% entry.block %]</li>
+            [% ELSE -%]
+                [% IF disable -%]
+                    <li><span class='disabled'>[% entry.text %]</span></li>
+                [% ELSE -%]
+                    <li>
+                        [% IF entry.csvurl -%]
+                            <span class="sidebar">
+                                <a class="sidebarcsv" href="[% entry.csvurl %]">(csv)</a>
+                                <a href="[% entry.url %]">[% entry.text %]</a> 
+                            </span>
+                        [% ELSE %]
+                            <a class="sidebar" href="[% entry.url %]">[% entry.text %]</a>
+                        [% END -%]
+                    </li>
+                [% END -%]
+            [% END -%]
+        [% END -%]
+    [% END -%]
+[% END %]
+
+[% BLOCK gene_search %]
+    <form id="gene_search" method="get" action="[% c.uri_for('/report/gene_search') %]">
+        <input class="default-value" autocomplete="off" type="text" id="gene_name" name="query" size="18" title="Gene search" />
+        <img id="gene_search_spinner" src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." style="display:none;" />
+    </form>
+    <script type='text/javascript'>
+        function resetGeneSearch() {
+            Element.hide('gene_search_spinner');
+            Element.show('naked_content');
+            $('site_wide_search_results').update('');
+            $('gene_search').reset();
+        }
+        
+        function runGeneSearch( page_num, search ) {
+            Element.show('gene_search_spinner');
+            Element.hide('naked_content');
+            new Ajax.Updater(
+                'site_wide_search_results',
+                '[% c.uri_for('/report/gene_search') %]',
+                {
+                    asynchronous:true,
+                    evalScripts:true,
+                    onSuccess: function(request){
+                        Element.hide('gene_search_spinner')
+                    }, 
+                    parameters: $H(
+                        {
+                            query: search,
+                            called_elswhere: 1,
+                            page: page_num
+                        }
+                    )
+                }
+            );
+        }
+        
+        new Form.Element.Observer(
+            'gene_name',
+            2,
+            function(element, value) {
+                if ( value == '' || value == 'Gene search' ) {
+                    Element.hide('gene_search_spinner');
+                    Element.show('naked_content');
+                    $('site_wide_search_results').update('');
+                } else {
+                    runGeneSearch( 1, value );
+                }
+            }
+        );
+    </script>
+[% END %]
+
+[% BLOCK plate_search %]
+    <form name="plate_search" method="get" action="[% c.uri_for('/plate/view') %]">
+        <input class="default-value" autocomplete="off" type="text" id="plate_name" name="plate_name" size="14" title="Plate search" /><input type='submit' value='go' />
+        <span id="plate_search_indic" style="display:none;"><img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /></span>
+        <input type="hidden" id="plate_id" name="plate_id" />
+        <input type="hidden" id="hide_plate_inheritance" name="hide_plate_inheritance" value="true" />
+        <div class="auto_complete" id="plate_suggestions"></div>
+    </form>
+    <script type='text/javascript'>
+        new Ajax.Autocompleter(
+            "plate_name",
+            "plate_suggestions",
+            "[% c.uri_for('/utils/_suggest_plate_names') %]",
+            {
+                indicator: "plate_search_indic",
+                afterUpdateElement: function (text, li) { $('plate_id').value = li.id; }
+            }
+        );
+    </script>
+[% END %]

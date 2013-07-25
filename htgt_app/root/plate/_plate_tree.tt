@@ -1,0 +1,119 @@
+<style type="text/css" media="screen">
+    #parents, #children, #target {
+        border: 1px dotted #ccc;
+        margin: 5px;
+    }
+    
+    #target {
+        background-color: #f5f5f5;
+    }
+    
+    a.plate {
+        color: #1b5890;
+        background-color: #e7edf3;
+        border: 1px solid #074987;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        text-decoration: none !important;
+        padding: 5px;
+        cursor: pointer;
+    }
+    
+    a.plate:hover {
+        color: #ff7200;
+        background-color: #c2d2e1;
+    }
+    
+    [% FOR level IN [ 0 .. 10 ] %]
+    .platelevel[%level%] {
+        margin-left: [% level * 50 %]px;
+        clear: both;
+        padding: 10px;
+    }
+    [% END %]
+</style>
+
+[% BLOCK recurse_children -%]
+    [% IF plate.child_plates -%]
+        [% depth = depth + 1 -%]
+        [% FOR child_plate IN plate.child_plates -%]
+            [% INCLUDE plate_obj plate = child_plate depth = depth %]
+            [% INCLUDE recurse_children plate = child_plate depth = depth -%]
+        [% END -%]
+    [% END -%]
+[% END -%]
+
+[% BLOCK recurse_parents -%]
+    [% IF plate.parent_plates -%]
+        [% depth = depth + 1 -%]
+        [% FOR parent_plate IN plate.parent_plates -%]
+            [%
+                SET hash_obj = {
+                    plate = parent_plate
+                    depth = depth
+                };
+                parents.push(hash_obj);
+            %]
+            [% INCLUDE recurse_parents plate = parent_plate depth = depth -%]
+        [% END -%]
+    [% END -%]
+[% END -%]
+
+[% BLOCK plate_obj %]
+    <div class="platelevel[% depth %]">
+        <span class="[% plate.type %]">
+            <a href="[% c.uri_for('/plate/view')%]?plate_id=[% plate.plate_id %]" class="plate" [% IF plate.created_date && plate.created_user %]title="created [% plate.created_date %] by [% plate.created_user %]"[% END %]>[% plate.name %]</a>
+        </span>
+    </div>
+[% END %]
+
+<div id="parent_toggle" class="show_more" onClick="parentToggle();">Parent Plates</div>
+<div id="parents" style="display:none;">
+    [% SET depth = 0 %]
+    [% SET parents = [ ] %]
+    [% INCLUDE recurse_parents -%]
+    
+    [% FOR parent IN parents %]
+        [% IF parent.depth > depth %]
+            [% depth = parent.depth %]
+        [% END %]
+    [% END %]
+    
+    [% FOR parent IN parents.reverse %]
+        [% INCLUDE plate_obj plate = parent.plate depth = depth - parent.depth %]
+    [% END %]
+</div>
+
+<div id="target">[% INCLUDE plate_obj plate = plate depth = depth %]</div>
+
+<div id="close_children" class="hide_more" onClick="childrenToggle();" style="display:none;">Child Plates</div>
+<div id="children" style="display:none;">
+    [% INCLUDE recurse_children plate = plate depth = depth -%]
+</div>
+<div id="children_toggle" class="show_more" onClick="childrenToggle();">Child Plates</div>
+
+<script type="text/javascript" charset="utf-8">
+    function parentToggle() {
+        if ($('parents').style.display == 'none') {
+            $('parent_toggle').setAttribute("class", "hide_more");
+            $('parent_toggle').setAttribute("className", "hide_more");
+        } else {
+            $('parent_toggle').setAttribute("class", "show_more");
+            $('parent_toggle').setAttribute("className", "show_more");            
+        }
+        Effect.toggle('parents', 'blind', { duration: '0.1' });
+    }
+    
+    function childrenToggle() {
+        if ($('children').style.display == 'none') {
+            $('children_toggle').setAttribute("class", "hide_more");
+            $('children_toggle').setAttribute("className", "hide_more");
+        } else {
+            $('children_toggle').setAttribute("class", "show_more");
+            $('children_toggle').setAttribute("className", "show_more");
+            location.href = "#top";
+        }
+        Effect.toggle('children', 'blind', { duration: '0.1' });
+        Effect.toggle('close_children', 'blind', { duration: '0.1' });
+    }
+</script>

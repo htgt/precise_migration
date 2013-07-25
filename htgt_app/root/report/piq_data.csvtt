@@ -1,0 +1,4 @@
+[% USE CSV -%]
+[% FOR datum IN piq_data -%]
+[% CSV.data( datum ) %]
+[% END -%]

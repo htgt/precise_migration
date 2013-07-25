@@ -1,0 +1,57 @@
+[% META title = 'Synthetic Vectors' -%]
+
+<p>
+Please supply an HTGT design ID, cassette and backbone to download an allele or cassette genbank file.
+Choosing "targeted trap" will create an allele without a downstream LoxP site for conditional designs.
+</p>
+
+
+<form name="generate_genbank" method="post" enctype="multipart/form-data">
+  <label>
+    Design ID: <input type="text" name="design_id" size="20" value="[% design_id %]" id="design_autocomplete_field" />
+    <div class="auto_complete" id="design_autocomplete_menu"></div>
+  </label>
+  <p>
+    Cassette : 
+    <select name = "cassette">
+    [% FOR cass IN cassettes.sort %]
+    <option value="[% cass %]" [%- IF cassette.match(cass) %] selected="selected" [%- END %]>[% cass %]</option>
+    [% END %]
+    </select>
+  </p>
+  <p>
+    Backbone :
+    <select name = "backbone">
+    [% FOR bb IN backbones.sort %]
+    <option value="[% bb %]" [%- IF backbone.match(bb) %] selected="selected" [%- END %]>[% bb %]</option>
+    [% END %]
+    </select>
+  </p>
+  <p>
+    Type : <select name="type">
+            <option value="allele" [%- IF type.match('allele') %] selected="selected" [%- END %]>allele</option>
+            <option value="vector" [%- IF type.match('vector') %] selected="selected" [%- END %]>vector</option>
+           </select>
+  </p>
+  <p>
+    Targeted Trap: <input type="checkbox" name="targeted_trap" value="1" [%- IF targeted_trap == 1 %] checked="checked" [%- END %] />
+  </p>
+  <p>
+    <input type="submit" name="generate_genbank" value="Generate GenBank File" />
+  </p> 
+</form>
+
+<script type="text/javascript" charset="utf-8">
+
+new Ajax.Autocompleter(
+    'design_autocomplete_field',
+    'design_autocomplete_menu',
+    '[% c.uri_for('/design/_search_suggestions') %]',
+    {
+        callback: function () { return 'text='+$F('design_autocomplete_field')+'&field=design' }, 
+        evalScripts: true,
+        afterUpdateElement: function () { $('design_autocomplete_field').focus }
+    }
+);
+
+</script>

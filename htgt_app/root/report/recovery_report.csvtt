@@ -1,0 +1,30 @@
+[% USE CSV -%]
+[% IF gateway_recovery == 1 -%]
+
+[% CSV.set_columns( [ 'MARKER_SYMBOL', 'ENSEMBL_GENE_ID', 'VEGA_GENE_ID', 'PROGRAM','PRIORITY_COUNT','DESIGN_PLATE_NAME', 'DESIGN_WELL_NAME',
+                      'PHASE',  'SP', 'TM', 'MGI_GT_COUNT', 'IGTC_GT_COUNT',
+                      'PCS_PLATE_NAME', 'PCS_WELL_NAME', 'REC_RESULT','PC_QC_RESULT','CLONE_SELECTION','GATEWAY_RECOVERY_PLATE' ] )
+-%]
+
+[% CSV.header( [ 'Marker Symbol','Ensembl Gene','Vega Gene','Program','Priority count','Design Plate','Design Well', 'Phase', 'SP', 'TM',
+'MGI_GT_Count','IGTC_GT_Count','Intvec Plate', 'Intvec Well', 'Rec Result', 'PC QC Result', 'Clone Selection','Gateway Recovery Plate' ] )
+-%]
+
+[% ELSE %]
+
+[% CSV.set_columns( [ 'MARKER_SYMBOL', 'ENSEMBL_GENE_ID', 'VEGA_GENE_ID', 'PROGRAM','PRIORITY_COUNT','DESIGN_PLATE_NAME', 'DESIGN_WELL_NAME',
+                      'PHASE',  'SP', 'TM', 'MGI_GT_COUNT', 'IGTC_GT_COUNT',
+                      'PCS_PLATE_NAME', 'PCS_WELL_NAME', 'REC_RESULT','PC_QC_RESULT','CLONE_SELECTION' ] )
+-%]
+
+[% CSV.header( [ 'Marker Symbol','Ensembl Gene','Vega Gene','Program','Priority count','Design Plate','Design Well', 'Phase', 'SP', 'TM',
+'MGI_GT_Count','IGTC_GT_Count','Intvec Plate', 'Intvec Well', 'Rec Result', 'PC QC Result', 'Clone Selection' ] )
+-%]
+
+[% END -%]
+[% FOR value IN rows -%] 
+    [% CSV.data( value ) %] 
+[% END -%]
+       
+
+

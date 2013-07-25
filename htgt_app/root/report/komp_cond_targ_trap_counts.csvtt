@@ -1,0 +1,6 @@
+[% USE CSV -%]
+[% CSV.set_columns( columns ) -%]
+[% CSV.header %]
+[% FOR row IN rows -%]
+[% CSV.data( row ) %]
+[% END -%]

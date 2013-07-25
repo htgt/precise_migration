@@ -1,0 +1,83 @@
+[% META title = 'Find SBDNA or QPCRDNA Wells for Gene or Design' -%]
+
+<form name="get_qc_dna_data_wells" method="post" >
+  <p>
+    Design IDs or Gene Marker Symbols
+  </p>
+
+  <p>
+    <textarea name="input_data" rows="20" cols="55">[% input_data %]</textarea><br>
+    QC Type:<select name="qc_type">
+      [% FOR type = qc_types %]
+      <option value="[% type %]" [% IF type == qc_type %]selected="selected"[% END %]>[% type %]</option>
+      [% END %]
+    </select>
+  </p>
+  <p>
+    <input type="submit" name="get_qc_data" value="Get Qc Data" />
+    <input type="submit" name="get_qc_data_csv" value="Downoad CSV" />
+  </p>
+</form>
+
+[% IF report.data %]
+[%- SET columns = report.columns -%]
+
+<table id="data" class="report_table tksort">
+    <thead>
+        <tr>
+        [% FOR name IN columns -%]
+          <th>[% name %]</th>
+        [% END %]
+        </tr> 
+    </thead>
+
+    <tbody>
+        [% FOR datum IN report.data -%]
+          <tr>
+          [%- FOR name IN columns %]
+            <td class="[% name %]">
+                [% IF name == 'plate' %]
+                 <a href="[% c.uri_for('/plate/view',{ plate_name = datum.plate, hide_plate_inheritance = 'true'}) %]"> [% datum.plate %] </a>
+                [% ELSE %]
+                    [% datum.$name %]
+                [% END %]
+            </td>
+          [% END %]
+          </tr>
+        [% END %]
+    </tbody>
+</table>
+<br>
+<br>
+[% END %]
+
+<fieldset id="find_dna_qc_wells" class="toggleable">
+  <legend>How to use this search form</legend>
+  <div>
+    <p>
+        This form is used to search for SBDNA or QPCRDNA wells linked to designs in our system<br>
+    </p>
+
+    <div>
+    <h2>INPUT FORMAT</h2>
+        The form accepts comma, space or newline seperated design ids or gene marker symbols.<br>
+        When gene marker symbols are used all the designs associated with that gene will be shown.<br>
+        <br>
+        Example:
+        <pre>
+            33693 356
+            Cbx1,Serpine1
+        </pre>
+    <h2>OUTPUT FORMAT</h2>
+        The output will be a table listing all the SBDNA or QPCRDNA wells for each design.<br>
+        Where a design does not have a relevant well a blank cell will be displayed.
+    <h3>Note</h3>
+        An error message will appear if any invalid design id or marker symbols are entered.<br>
+    <br>
+    </div>
+  </div>
+</fieldset>
+
+<script type="text/javascript" charset="utf-8">
+new TableKit('data',  {editable: false } );
+</script>

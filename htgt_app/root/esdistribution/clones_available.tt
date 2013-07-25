@@ -1,0 +1,27 @@
+<div style="margin-top:20px">
+<h1>[% group_info.consortium %] - [% group_info.group %] - [%group_info.category %]</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>MGI Accession ID</th>
+      <th>Marker Symbol</th>
+      <th>Clones</th>
+      <th>Parental Cell Lines</th>
+      <th>Status Dates</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH g IN genes -%]
+    <tr>
+      <td>[% g.mgi_accession_id %]</td>
+      <td>[% g.marker_symbol %]</td>
+      <td>[% g.clone_names %]</td>
+      <td>[% g.parental_cell_lines %]</td>
+      <td>[% g.status_dates %]</td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+
+</div>

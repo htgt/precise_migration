@@ -1,0 +1,20 @@
+[% USE CSV -%]
+
+[% CSV.set_columns( [ 'well_name', 'project', 'priority_count', 'gene_symbol', 'vega_gene_id', 'ensembl_gene_id', 'design_id',
+                       'phase', 'cassette', 'backbone', 'distribute_release', 'distribute', 'targeted_trap', 'allele_name', 'loa', 'threep_loxp_taqman',
+                       'vec_int', 'five_arm_pass_level', 'loxp_pass_level', 'three_arm_pass_level', 'first_test_start_date', 'latest_test_completion_date',
+                       'karyotype','copy_number_equals_one', 'threep_loxp_srpcr', 'fivep_loxp_srpcr',  'vector_integrity'
+                    ] )
+-%]
+
+[% CSV.header( [ 'Well Name', 'Project', 'Priority Count', 'Gene Symbol', 'Otter ID', 'Ensembl ID', 'Design',
+                  'Phase', 'Cassette', 'Backbone', 'Distribute Release', 'Potential Distribute', 'Targeted Trap', 'Allele', 'LOA', 'Three primer loxP TaqMan',
+                  'Vec Int', '5 Prime Pass Level', 'Loxp Pass Level', '3 Prime Pass Level', 'First Test Start Date', 'Latest Test Completion Date',
+                  'Karyotype','Copy Number Equals One','3 Prime Loxp SRPCR ', 'Five Prime Loxp SRPCR', 'Vector Integrity' ])
+-%]
+
+[% FOR r IN qc_results -%]
+    [% CSV.data( r ) %] 
+[% END -%]
+
+

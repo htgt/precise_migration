@@ -1,0 +1,38 @@
+<h2>Gene Traps</h2>
+
+<table>
+    
+    <tr class='nocol'>
+        
+        <td>
+            <a class='button link' href="[% c.uri_for('/report/gene_trap_data') %]" >View Gene Trap Data</a>
+        </td>
+        
+        <td>
+            <a class='button csv' href="[%  c.uri_for('/report/gene_trap_data') %]?view=csvdl&file=gene_trap_data.csv" >Download Gene Trap Data as CSV</a>
+        </td>
+    </tr>
+        
+</table>
+
+<table>
+    <tr class='nocol'>
+        <td>
+            <a class='button save' href="[% c.uri_for('/static/gene_trap/geneTrapSequenceTags.fasta.tgz')%]">Download Sequence Tags (FASTA)</a>
+        </td>
+        
+        <td>
+            <a class='button save' href="[% c.uri_for('/static/gene_trap/vector_sequence.fasta')%]">Download Vector Sequence</a>
+        </td>
+        
+        <td>
+            <a class='button save' href="[% c.uri_for('/static/gene_trap/all_clone_summary.csv.tgz')%]">Download Raw Clone Summary</a>
+        </td>
+    </tr>     
+</table>
+    
+<div>
+<img src='[% c.uri_for("/static/images/gene_traps/eucg_e_f_trapping_efficiency.png")%]' />
+<img src='[% c.uri_for("/static/images/gene_traps/eucj_trapping_efficiency.png")%]' />
+</div>
+

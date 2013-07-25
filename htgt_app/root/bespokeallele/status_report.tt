@@ -1,0 +1,47 @@
+<div style="margin-top:20px">
+<h1>Bespoke Allele Status Report</h1>
+
+<table>
+  <thead>
+    <tr align="center">
+      <th></th>
+      <th>All projects</th>
+      <th>New</th>
+      <th>Design</th>
+      <th>Vector Construction Custom</th>
+      <th>Tissue Culture Custom</th>
+      <th>Vector Construction HT</th>
+      <th>Tissue Culture HT</th>
+      <th>Pre-Injection QC Custom</th>
+      <th>Pre-Injection QC HT</th>
+      <th>Faculty Micro-Injection</th>
+      <th>Model Acquisition Initiated</th>
+      <th>Model Acquisition Completed</th>
+      <th>MGP</th>
+      <th>Terminated</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH r IN requestors -%]
+    <tr>
+      <td>[% r %]</td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/All___${r}" ) %]">[% counts.All.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/New___${r}" ) %]">[% counts.New.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/Design___${r}" ) %]">[% counts.Design.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/VectorConstructionCustom___${r}" ) %]">[% counts.VectorConstructionCustom.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/TissueCultureCustom___${r}" ) %]">[% counts.TissueCultureCustom.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/VectorConstructionHT___${r}" ) %]">[% counts.VectorConstructionHT.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/TissueCultureHT___${r}" ) %]">[% counts.TissueCultureHT.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/PreInjectionQCCustom___${r}" ) %]">[% counts.PreInjectionQCCustom.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/PreInjectionQCHT___${r}" ) %]">[% counts.PreInjectionQCHT.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/FacultyMicroInjection___${r}" ) %]">[% counts.FacultyMicroInjection.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/ModelAcquisitionInitiated___${r}" ) %]">[% counts.ModelAcquisitionInitiated.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/ModelAcquisitionCompleted___${r}" ) %]">[% counts.ModelAcquisitionCompleted.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/MGP___${r}" ) %]">[% counts.MGP.$r %]</a></td>
+      <td><a href="[% c.uri_for( "/bespokeallele/status_report_list/Terminated___${r}" ) %]">[% counts.Terminated.$r %]</a></td> 
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+
+</div>

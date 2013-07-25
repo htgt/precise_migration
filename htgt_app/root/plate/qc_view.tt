@@ -1,0 +1,104 @@
+<h5>Plate [% plate_name %]</h5>
+
+<table class= "editable resizable tksort" id="qc_view">
+   <a class='button csv' href="[% csv_uri %]" title="Export the table as a CSV file">Export to CSV</a>
+   <thead>
+        <tr>
+            <th class="noedit" colspan="14">Gene Info</th>
+            <th class="noedit" colspan="2">User QC</th>
+            <th class="noedit" colspan="5">QC Phase I</th>
+            <th class="noedit" colspan="7">QC Phase II</th>
+        </tr>
+        <tr>
+            <th class="sortfirstasc noedit">Well Name</th>
+            <th class="noedit">Project</th>
+            <th class="noedit">Priority Count</th>
+            <th class="noedit">Gene Symbol</th>
+            <th class="noedit">Otter ID</th>
+            <th class="noedit">Ensembl ID</th>
+            <th class="noedit">Design</th>
+            <th class="noedit">Phase</th>
+            <th class="noedit">Cassette</th>
+            <th class="noedit">Backbone</th>
+            <th class="noedit">Distribute Release</th>
+            <th class="noedit">Potential Distribute</th>
+            <th class="noedit">Targeted_trap</th>
+            <th class="noedit">Allele Name</th>
+            <th id="five_lrpcr_column">Five LRPCR</th>
+            <th id="three_lrpcr_column">Three LRPCR</th>
+            <th class="noedit">LOA</th>
+            <th class="noedit">3 prime loxP Taqman</th>
+            <th class="noedit">Vec Int</th>
+            <th class="noedit">5 prime pass level</th>
+            <th class="noedit">loxp pass level</th>
+            <th class="noedit">3 prime pass level</th>
+            <th class="noedit">First Test start date</th>
+            <th class="noedit">Latest test completion date</th>
+            <th class="noedit">Karyotype</th>
+            <th class="noedit">Copy number equals one</th>
+            <th class="noedit">Three prime loxp srpcr</th>
+            <th class="noedit">Five prime loxp lrpcr</th>
+            <th class="noedit">vector integrity</th>
+        </tr>
+   </thead>
+   <tbody> 
+        [% FOREACH qr IN qc_results %]
+       <tr id="[% qr.well_id %]"> 
+            <td>[% qr.well_name %]</td>
+            <td>[% qr.project %]</td>
+            <td>[% qr.priority_count %]</td>
+            <td>[% qr.gene_symbol %]</td>
+            <td>[% qr.vega_gene_id %]</td>
+            <td>[% qr.ensembl_gene_id %]</td>
+            <td>[% qr.design_id %]</td>
+            <td>[% qr.phase %]</td>
+            <td>[% qr.cassette %]</td>
+            <td>[% qr.backbone %]</td>
+            <td>[% qr.distribute_release %]</td>
+            <td>[% qr.distribute %]</td>
+            <td>[% qr.targeted_trap %]</td>
+            <td>[% qr.allele_name %]</td>
+            <td >[% qr.five_lrpcr ? qr.five_lrpcr : ' ' %]</td>
+            <td >[% qr.three_lrpcr %]</td>
+            <td>[% qr.loa %]</td>
+            <td>[% qr.threep_loxp_taqman %]</td>
+            <td>[% qr.vec_int %]</td>
+            <td>[% qr.five_arm_pass_level %]</td>
+            <td>[% qr.loxp_pass_level %]</td>
+            <td>[% qr.three_arm_pass_level %]</td>
+            <td>[% qr.first_test_start_date %]</td>
+            <td>[% qr.latest_test_completion_date %]</td>
+            <td>[% qr.karyotype %]</td>
+            <td>[% qr.copy_number_equals_one %]</td>
+            <td>[% qr.threep_loxp_srpcr %]</td>
+            <td>[% qr.fivep_loxp_lrpcr %]</td>
+            <td>[% qr.vector_integrity %]</td>
+       </tr>
+       [% END -%]
+   </tbody> 
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    var well_table = new TableKit( 'qc_view', {
+       [% IF c.check_user_roles('edit') -%]
+          editAjaxURI: '[% c.uri_for('/plate/update/_update_user_qc_result') %]'
+       [% ELSE -%]
+          editable: false
+       [% END -%]
+    });
+       
+    TableKit.Editable.selectInput('five_lrpcr_column', {}, [
+        ['pass','pass'],
+        ['fail','fail'],
+        ['nd','nd'],
+        ['ambiguous','ambiguous']
+    ]);
+    
+    TableKit.Editable.selectInput('three_lrpcr_column',{}, [
+         ['pass','pass'],
+         ['fail','fail'],
+         ['nd','nd'],
+         ['ambiguous','ambiguous']
+    ]);
+    
+</script>

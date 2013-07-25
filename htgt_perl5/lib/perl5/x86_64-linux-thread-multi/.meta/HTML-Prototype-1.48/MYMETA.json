@@ -1,0 +1,55 @@
+{
+   "abstract" : "Generate HTML and Javascript for the Prototype library",
+   "author" : [
+      "Sascha Kiefer, C<esskar@cpan.org>\nSebastian Riedel, C<sri@oook.de>\nMarcus Ramberg, C<mramberg@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Build version 0.4005, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "HTML-Prototype",
+   "prereqs" : {
+      "runtime" : {
+         "requires" : {
+            "Class::Accessor::Fast" : "0",
+            "HTML::Tree" : "0"
+         }
+      }
+   },
+   "provides" : {
+      "HTML::Prototype" : {
+         "file" : "lib/HTML/Prototype.pm",
+         "version" : "1.48"
+      },
+      "HTML::Prototype::Controls" : {
+         "file" : "lib/HTML/Prototype/Controls.pm"
+      },
+      "HTML::Prototype::DragDrop" : {
+         "file" : "lib/HTML/Prototype/DragDrop.pm"
+      },
+      "HTML::Prototype::Effects" : {
+         "file" : "lib/HTML/Prototype/Effects.pm"
+      },
+      "HTML::Prototype::Helper" : {
+         "file" : "lib/HTML/Prototype/Helper.pm"
+      },
+      "HTML::Prototype::Helper::Tag" : {
+         "file" : "lib/HTML/Prototype/Helper/Tag.pm"
+      },
+      "HTML::Prototype::Js" : {
+         "file" : "lib/HTML/Prototype/Js.pm"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "1.48"
+}

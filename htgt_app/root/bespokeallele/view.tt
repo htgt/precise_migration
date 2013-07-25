@@ -1,0 +1,7 @@
+<div style="margin-top:20px">
+<h1>Bespoke Allele Tracking</h1>
+<a href="http://htgt.internal.sanger.ac.uk:4013/projects/bespoke/issues" class="button link">Issue Tracker</a>
+<a href="[% c.uri_for( "/bespokeallele/status_report" ) %]" class="button link">Status Report</a>
+<a href="[% c.uri_for( "/bespokeallele/languishing_report" ) %]" class="button link">Languishing Report</a>
+<a href="[% c.uri_for( "/bespokeallele/allele_tracker" ) %]" class="button link">Unassigned Genes</a>
+</div>

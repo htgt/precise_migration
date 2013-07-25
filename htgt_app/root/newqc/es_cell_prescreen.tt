@@ -1,0 +1,97 @@
+[% META title = 'Prescreen results' -%]
+<script type="text/javascript">
+    //split a string into an array of substrings of size len
+    function get_parts(str, len) {
+        var res = [];
+        while (str.length) {
+            res.push(str.substring(0, len));
+            str = str.substring(len);
+        }
+        return res;
+    }
+
+    function show_sequence(id) {
+        if( ! $('view_sequence').visible() ) {
+            $('view_sequence').show();
+        }
+
+        //[0] is the name, [1] is the sequence
+        var split = $(id).value.split("\n");
+
+        var id = split[0] + " (length " + split[1].length + ")";
+        var seq = get_parts(split[1], 100).join("\n");
+
+        $('view_sequence').textContent = id + "\n" + seq;
+
+        //scroll back to the top
+        window.scrollTo(0, 0);
+    } 
+</script>
+
+<br/>
+<p>
+  <a href="[% c.uri_for( "/newqc/view_run_files/${qc_run_id}", { view => "csvdl" } ) %]" class="button excel">Download Full Results</a>
+</p>
+<pre id="view_sequence" style="background-color:#E7EDF3; display:none;"></pre>
+<table>
+    <thead>
+        <tr>
+            <th>Plate Name</th>
+            <th>Well Name</th>
+            <th>Primer</th>
+            <th>Score</th>
+            <th>Match Length</th>
+            <th>Chromosome</th>
+            <th>Gene</th>
+            <th>Chromosome Start</th>
+            <th>Chromosome End</th>
+            <th>Query Start</th>
+            <th>Query End</th>
+            <th>Sequence</th>
+            <th>View Alignment</th>
+        </tr>
+    </thead>
+    <tbody>
+        [% FOR project IN projects.keys.sort %]
+            <tr>
+                <td colspan="13" style="text-align:center">[% project %]</td>
+            </tr>
+            [% FOR pair IN projects.$project.pairs %]
+                [% design_id = pair.key %]
+                [% cigar = pair.value %]
+                [% genes = cigar.genes.join(", ") %]
+                <tr>
+                    <td>[% cigar.plate %]</td>
+                    <td>[% cigar.well %]</td>
+                    <td>[% cigar.query_primer %]</td>
+                    <td>[% cigar.score %]</td>
+                    <td>[% cigar.length %]</td>
+                    <td>[% cigar.chromosome %]</td>
+                    <td [% IF genes == "None found" %]style="background-color:#FF8080"[% END %]>[% genes %]</td>
+                    <td>[% cigar.target_start %]</td>
+                    <td>[% cigar.target_end %]</td>
+                    <td>[% cigar.query_start %]</td>
+                    <td>[% cigar.query_end %]</td>
+                    <td><a href="#" onclick="show_sequence('[% design_id %]'); return false;">View Sequence</a></td>
+                    <td>
+                        
+    <form id="UCSC_BLAT" enctype="multipart/form-data" method="post" action="http://genome.ucsc.edu/cgi-bin/hgBlat" name="UCSC_BLAT" target="_blank">
+        <input type="hidden" name="org" value="Mouse" />
+        <input type="hidden" name="db" value="mm10" />
+        <input type="hidden" name="type" value="DNA" />
+        <input type="hidden" name="sort" value="query,score" />
+        <input type="hidden" name="output" value="hyperlink" />
+        <input id="[% design_id %]" type="hidden" name="userSeq" value="[% ">design" _ design_id _ "\n" _ cigar.sequence %]"/>
+        <input type="hidden" name="Lucky" value="I'm feeling lucky" />
+        <input type="submit" value="UCSC BLAT" name="Lucky"/>
+    </form>
+                    </td>
+                </tr>
+            [% END %]
+        [% END %]
+
+        [% UNLESS projects.keys.size %]
+            <tr><td colspan="13">No entries found.</td></tr>
+        [% END %]
+    </tbody>
+</table>

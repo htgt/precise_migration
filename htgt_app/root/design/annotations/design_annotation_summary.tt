@@ -1,0 +1,27 @@
+[% META title = 'Design Annotation Summary' -%]
+<p> Design annotation status summary on assembly [% assemblies.$assembly_id %], build [% build_id %].</p>
+
+[% FOR type IN check_type_order %]
+  <h5>[% check_type_name.$type %] Status</h5>
+  <table id="[% type %]_report" class="report_table">
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Count</th>
+      </tr>
+    </thead>
+    <tbody>
+  [%- FOR status IN results.$type.keys %]
+      <tr>
+        <td>[% status %]</td>
+        <td>
+          <a href="[% c.uri_for("/design/annotations/list_status_designs/$type/$status")%]">
+            [% results.$type.$status %]
+          </a>
+        </td>
+      </tr>
+  [%- END %]
+    </tbody>
+  </table>
+<br />
+[% END %]

@@ -1,0 +1,318 @@
+#!/bin/bash
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/AlleleName.pm ~/work/htgt_migration/schema/HTGTDB/Result/AlleleName.pm > ~/work/htgt_migration/new_schema_files/AlleleName.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/Allele.pm ~/work/htgt_migration/schema/HTGTDB/Result/Allele.pm > ~/work/htgt_migration/new_schema_files/Allele.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/AuthRole.pm ~/work/htgt_migration/schema/HTGTDB/Result/AuthRole.pm > ~/work/htgt_migration/new_schema_files/AuthRole.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/AuthUser.pm ~/work/htgt_migration/schema/HTGTDB/Result/AuthUser.pm > ~/work/htgt_migration/new_schema_files/AuthUser.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/AuthUserRole.pm ~/work/htgt_migration/schema/HTGTDB/Result/AuthUserRole.pm > ~/work/htgt_migration/new_schema_files/AuthUserRole.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/BAC.pm ~/work/htgt_migration/schema/HTGTDB/Result/Bac.pm > ~/work/htgt_migration/new_schema_files/BAC.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/CachedRegeneronStatus.pm ~/work/htgt_migration/schema/HTGTDB/Result/CachedRegeneronStatus.pm > ~/work/htgt_migration/new_schema_files/CachedRegeneronStatus.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/Chromosome.pm ~/work/htgt_migration/schema/HTGTDB/Result/ChromosomeDict.pm > ~/work/htgt_migration/new_schema_files/Chromosome.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/CloneLib.pm ~/work/htgt_migration/schema/HTGTDB/Result/CloneLibDict.pm > ~/work/htgt_migration/new_schema_files/CloneLib.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DaArtificialIntronStatus.pm ~/work/htgt_migration/schema/HTGTDB/Result/DaArtificialIntronStatus.pm > ~/work/htgt_migration/new_schema_files/DaArtificialIntronStatus.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DaDesignQualityStatus.pm ~/work/htgt_migration/schema/HTGTDB/Result/DaDesignQualityStatus.pm > ~/work/htgt_migration/new_schema_files/DaDesignQualityStatus.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DaHumanAnnotation.pm ~/work/htgt_migration/schema/HTGTDB/Result/DaHumanAnnotation.pm > ~/work/htgt_migration/new_schema_files/DaHumanAnnotation.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DaHumanAnnotationStatus.pm ~/work/htgt_migration/schema/HTGTDB/Result/DaHumanAnnotationStatus.pm > ~/work/htgt_migration/new_schema_files/DaHumanAnnotationStatus.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DaOligoStatus.pm ~/work/htgt_migration/schema/HTGTDB/Result/DaOligoStatus.pm > ~/work/htgt_migration/new_schema_files/DaOligoStatus.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DaTargetRegionGene.pm ~/work/htgt_migration/schema/HTGTDB/Result/DaTargetRegionGene.pm > ~/work/htgt_migration/new_schema_files/DaTargetRegionGene.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DaTargetRegionStatus.pm ~/work/htgt_migration/schema/HTGTDB/Result/DaTargetRegionStatus.pm > ~/work/htgt_migration/new_schema_files/DaTargetRegionStatus.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignAnnotation.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignAnnotation.pm > ~/work/htgt_migration/new_schema_files/DesignAnnotation.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignBAC.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignBac.pm > ~/work/htgt_migration/new_schema_files/DesignBAC.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignDesignGroup.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignDesignGroup.pm > ~/work/htgt_migration/new_schema_files/DesignDesignGroup.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignFinderAttempt.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignFinderAttempt.pm > ~/work/htgt_migration/new_schema_files/DesignFinderAttempt.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignFinderGeneStructure.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignFinderGeneStructure.pm > ~/work/htgt_migration/new_schema_files/DesignFinderGeneStructure.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignGroup.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignGroup.pm > ~/work/htgt_migration/new_schema_files/DesignGroup.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignInstanceBAC.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignInstanceBac.pm > ~/work/htgt_migration/new_schema_files/DesignInstanceBAC.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignInstance.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignInstance.pm > ~/work/htgt_migration/new_schema_files/DesignInstance.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignNote.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignNote.pm > ~/work/htgt_migration/new_schema_files/DesignNote.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignNoteTypeDict.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignNoteTypeDict.pm > ~/work/htgt_migration/new_schema_files/DesignNoteTypeDict.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignParameter.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignParameter.pm > ~/work/htgt_migration/new_schema_files/DesignParameter.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/Design.pm ~/work/htgt_migration/schema/HTGTDB/Result/Design.pm > ~/work/htgt_migration/new_schema_files/Design.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignStatusDict.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignStatusDict.pm > ~/work/htgt_migration/new_schema_files/DesignStatusDict.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignStatus.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignStatus.pm > ~/work/htgt_migration/new_schema_files/DesignStatus.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignTaqmanAssay.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignTaqmanAssay.pm > ~/work/htgt_migration/new_schema_files/DesignTaqmanAssay.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignTaqmanPlate.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignTaqmanPlate.pm > ~/work/htgt_migration/new_schema_files/DesignTaqmanPlate.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignUserCommentCategories.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignUserCommentCategory.pm > ~/work/htgt_migration/new_schema_files/DesignUserCommentCategories.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DesignUserComments.pm ~/work/htgt_migration/schema/HTGTDB/Result/DesignUserComment.pm > ~/work/htgt_migration/new_schema_files/DesignUserComments.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DisplayExon.pm ~/work/htgt_migration/schema/HTGTDB/Result/DisplayExon.pm > ~/work/htgt_migration/new_schema_files/DisplayExon.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/DisplayFeature.pm ~/work/htgt_migration/schema/HTGTDB/Result/DisplayFeature.pm > ~/work/htgt_migration/new_schema_files/DisplayFeature.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/EnsemblGeneData.pm ~/work/htgt_migration/schema/HTGTDB/Result/EnsemblGeneData.pm > ~/work/htgt_migration/new_schema_files/EnsemblGeneData.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/ExtUser.pm ~/work/htgt_migration/schema/HTGTDB/Result/ExtUser.pm > ~/work/htgt_migration/new_schema_files/ExtUser.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/FeatureData.pm ~/work/htgt_migration/schema/HTGTDB/Result/FeatureData.pm > ~/work/htgt_migration/new_schema_files/FeatureData.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/FeatureDataType.pm ~/work/htgt_migration/schema/HTGTDB/Result/FeatureDataTypeDict.pm > ~/work/htgt_migration/new_schema_files/FeatureDataType.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/Feature.pm ~/work/htgt_migration/schema/HTGTDB/Result/Feature.pm > ~/work/htgt_migration/new_schema_files/Feature.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/FeatureType.pm ~/work/htgt_migration/schema/HTGTDB/Result/FeatureTypeDict.pm > ~/work/htgt_migration/new_schema_files/FeatureType.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GeneComment.pm ~/work/htgt_migration/schema/HTGTDB/Result/GeneComment.pm > ~/work/htgt_migration/new_schema_files/GeneComment.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GeneInfo.pm ~/work/htgt_migration/schema/HTGTDB/Result/GeneInfo.pm > ~/work/htgt_migration/new_schema_files/GeneInfo.pm
+
+
+# -- GeneRecovery refers to a non existent table
+#perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GeneRecovery.pm ~/work/htgt_migration/schema/HTGTDB/Result/GeneRecovery.pm > ~/work/htgt_migration/new_schema_files/GeneRecovery.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GeneTrapWell.pm ~/work/htgt_migration/schema/HTGTDB/Result/GeneTrapWell.pm > ~/work/htgt_migration/new_schema_files/GeneTrapWell.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GeneUser.pm ~/work/htgt_migration/schema/HTGTDB/Result/GeneUser.pm > ~/work/htgt_migration/new_schema_files/GeneUser.pm
+
+
+#perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GnmExon.pm ~/work/htgt_migration/schema/HTGTDB/Result/GnmExon.pm > ~/work/htgt_migration/new_schema_files/GnmExon.pm
+
+
+#perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GnmGene2GeneBuildGene.pm ~/work/htgt_migration/schema/HTGTDB/Result/GnmGene2GeneBuildGene.pm > ~/work/htgt_migration/new_schema_files/GnmGene2GeneBuildGene.pm
+
+
+#perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GnmGeneBuildGeneName.pm ~/work/htgt_migration/schema/HTGTDB/Result/GnmGeneBuildGeneName.pm > ~/work/htgt_migration/new_schema_files/GnmGeneBuildGeneName.pm
+
+
+#perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GnmGeneBuildGene.pm ~/work/htgt_migration/schema/HTGTDB/Result/GnmGeneBuildGene.pm > ~/work/htgt_migration/new_schema_files/GnmGeneBuildGene.pm
+
+
+#perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GnmGeneBuild.pm ~/work/htgt_migration/schema/HTGTDB/Result/GnmGeneBuild.pm > ~/work/htgt_migration/new_schema_files/GnmGeneBuild.pm
+
+
+#perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GnmGeneName.pm ~/work/htgt_migration/schema/HTGTDB/Result/GnmGeneName.pm > ~/work/htgt_migration/new_schema_files/GnmGeneName.pm
+
+
+#perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GnmGene.pm ~/work/htgt_migration/schema/HTGTDB/Result/GnmGene.pm > ~/work/htgt_migration/new_schema_files/GnmGene.pm
+
+
+#perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GnmLocus.pm ~/work/htgt_migration/schema/HTGTDB/Result/GnmLocus.pm > ~/work/htgt_migration/new_schema_files/GnmLocus.pm
+
+
+#perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GnmTranscript.pm ~/work/htgt_migration/schema/HTGTDB/Result/GnmTranscript.pm > ~/work/htgt_migration/new_schema_files/GnmTranscript.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GRAltClone.pm ~/work/htgt_migration/schema/HTGTDB/Result/GrAltClone.pm > ~/work/htgt_migration/new_schema_files/GRAltClone.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GRCAltCloneAlternate.pm ~/work/htgt_migration/schema/HTGTDB/Result/GrcAltCloneAlternate.pm > ~/work/htgt_migration/new_schema_files/GRCAltCloneAlternate.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GRCAltCloneChosen.pm ~/work/htgt_migration/schema/HTGTDB/Result/GrcAltCloneChosen.pm > ~/work/htgt_migration/new_schema_files/GRCAltCloneChosen.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GRCGateway.pm ~/work/htgt_migration/schema/HTGTDB/Result/GrcGateway.pm > ~/work/htgt_migration/new_schema_files/GRCGateway.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GRCRedesign.pm ~/work/htgt_migration/schema/HTGTDB/Result/GrcRedesign.pm > ~/work/htgt_migration/new_schema_files/GRCRedesign.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GRCReseq.pm ~/work/htgt_migration/schema/HTGTDB/Result/GrcReseq.pm > ~/work/htgt_migration/new_schema_files/GRCReseq.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GRGateway.pm ~/work/htgt_migration/schema/HTGTDB/Result/GrGateway.pm > ~/work/htgt_migration/new_schema_files/GRGateway.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GRGeneStatusHistory.pm ~/work/htgt_migration/schema/HTGTDB/Result/GrGeneStatusHistory.pm > ~/work/htgt_migration/new_schema_files/GRGeneStatusHistory.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GRGeneStatus.pm ~/work/htgt_migration/schema/HTGTDB/Result/GrGeneStatus.pm > ~/work/htgt_migration/new_schema_files/GRGeneStatus.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GRRedesign.pm ~/work/htgt_migration/schema/HTGTDB/Result/GrRedesign.pm > ~/work/htgt_migration/new_schema_files/GRRedesign.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/GRValidState.pm ~/work/htgt_migration/schema/HTGTDB/Result/GrValidState.pm > ~/work/htgt_migration/new_schema_files/GRValidState.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/MGIEnsemblGeneMap.pm ~/work/htgt_migration/schema/HTGTDB/Result/MgiEnsemblGeneMap.pm > ~/work/htgt_migration/new_schema_files/MGIEnsemblGeneMap.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/MGIGeneData.pm ~/work/htgt_migration/schema/HTGTDB/Result/MgiGeneData.pm > ~/work/htgt_migration/new_schema_files/MGIGeneData.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/MGIGeneIdMap.pm ~/work/htgt_migration/schema/HTGTDB/Result/MgiGeneIdMap.pm > ~/work/htgt_migration/new_schema_files/MGIGeneIdMap.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/MGIGene.pm ~/work/htgt_migration/schema/HTGTDB/Result/MgiGene.pm > ~/work/htgt_migration/new_schema_files/MGIGene.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/MGIGeneView.pm ~/work/htgt_migration/schema/HTGTDB/Result/MgiGene.pm > ~/work/htgt_migration/new_schema_files/MGIGeneView.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/MGISanger.pm ~/work/htgt_migration/schema/HTGTDB/Result/MgiSanger.pm > ~/work/htgt_migration/new_schema_files/MGISanger.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/MGIVegaGeneMap.pm ~/work/htgt_migration/schema/HTGTDB/Result/MgiVegaGeneMap.pm > ~/work/htgt_migration/new_schema_files/MGIVegaGeneMap.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/NewWellSummary.pm ~/work/htgt_migration/schema/HTGTDB/Result/NewWellSummary.pm > ~/work/htgt_migration/new_schema_files/NewWellSummary.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/PcPrimerRead.pm ~/work/htgt_migration/schema/HTGTDB/Result/PcPrimerRead.pm > ~/work/htgt_migration/new_schema_files/PcPrimerRead.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/PlateBlob.pm ~/work/htgt_migration/schema/HTGTDB/Result/PlateBlob.pm > ~/work/htgt_migration/new_schema_files/PlateBlob.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/PlateComment.pm ~/work/htgt_migration/schema/HTGTDB/Result/PlateComment.pm > ~/work/htgt_migration/new_schema_files/PlateComment.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/PlateData.pm ~/work/htgt_migration/schema/HTGTDB/Result/PlateData.pm > ~/work/htgt_migration/new_schema_files/PlateData.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/PlatePlate.pm ~/work/htgt_migration/schema/HTGTDB/Result/PlatePlate.pm > ~/work/htgt_migration/new_schema_files/PlatePlate.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/Plate.pm ~/work/htgt_migration/schema/HTGTDB/Result/Plate.pm > ~/work/htgt_migration/new_schema_files/Plate.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/PrimerBandSize.pm ~/work/htgt_migration/schema/HTGTDB/Result/PrimerBandSize.pm > ~/work/htgt_migration/new_schema_files/PrimerBandSize.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/ProjectGeneTrapWell.pm ~/work/htgt_migration/schema/HTGTDB/Result/ProjectGeneTrapWell.pm > ~/work/htgt_migration/new_schema_files/ProjectGeneTrapWell.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/Project.pm ~/work/htgt_migration/schema/HTGTDB/Result/Project.pm > ~/work/htgt_migration/new_schema_files/Project.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/ProjectPubliclyReported.pm ~/work/htgt_migration/schema/HTGTDB/Result/ProjectPubliclyReportedDict.pm > ~/work/htgt_migration/new_schema_files/ProjectPubliclyReported.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/ProjectStatus.pm ~/work/htgt_migration/schema/HTGTDB/Result/ProjectStatus.pm > ~/work/htgt_migration/new_schema_files/ProjectStatus.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/QCRun.pm ~/work/htgt_migration/schema/HTGTDB/Result/QcRun.pm > ~/work/htgt_migration/new_schema_files/QCRun.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/QCRunSeqRead.pm ~/work/htgt_migration/schema/HTGTDB/Result/QcRunSeqRead.pm > ~/work/htgt_migration/new_schema_files/QCRunSeqRead.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/QCSeqRead.pm ~/work/htgt_migration/schema/HTGTDB/Result/QcSeqReads.pm > ~/work/htgt_migration/new_schema_files/QCSeqRead.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/QCSynvec.pm ~/work/htgt_migration/schema/HTGTDB/Result/QcSynvec.pm > ~/work/htgt_migration/new_schema_files/QCSynvec.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/QCTestResultAlignmentMap.pm ~/work/htgt_migration/schema/HTGTDB/Result/QcTestResultAlignmentMap.pm > ~/work/htgt_migration/new_schema_files/QCTestResultAlignmentMap.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/QCTestResultAlignment.pm ~/work/htgt_migration/schema/HTGTDB/Result/QcTestResultAlignment.pm > ~/work/htgt_migration/new_schema_files/QCTestResultAlignment.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/QCTestResultAlignmentRegion.pm ~/work/htgt_migration/schema/HTGTDB/Result/QcTestResultAlignRegion.pm > ~/work/htgt_migration/new_schema_files/QCTestResultAlignmentRegion.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/QCTestResult.pm ~/work/htgt_migration/schema/HTGTDB/Result/QcTestResult.pm > ~/work/htgt_migration/new_schema_files/QCTestResult.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/RepositoryQCResult.pm ~/work/htgt_migration/schema/HTGTDB/Result/RepositoryQcResult.pm > ~/work/htgt_migration/new_schema_files/RepositoryQCResult.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/Result/EPDDump.pm ~/work/htgt_migration/schema/HTGTDB/Result/EpdDump.pm > ~/work/htgt_migration/new_schema_files/EPDDump.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/Sessions.pm ~/work/htgt_migration/schema/HTGTDB/Result/Session.pm > ~/work/htgt_migration/new_schema_files/Sessions.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/UserQCResult.pm ~/work/htgt_migration/schema/HTGTDB/Result/UserQcResult.pm > ~/work/htgt_migration/new_schema_files/UserQCResult.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/VegaGeneData.pm ~/work/htgt_migration/schema/HTGTDB/Result/VegaGeneData.pm > ~/work/htgt_migration/new_schema_files/VegaGeneData.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/WellData.pm ~/work/htgt_migration/schema/HTGTDB/Result/WellData.pm > ~/work/htgt_migration/new_schema_files/WellData.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/WellDesignInstanceJump.pm ~/work/htgt_migration/schema/HTGTDB/Result/WellDesignInstanceJump.pm > ~/work/htgt_migration/new_schema_files/WellDesignInstanceJump.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/WellDetail.pm ~/work/htgt_migration/schema/HTGTDB/Result/WellDetail.pm > ~/work/htgt_migration/new_schema_files/WellDetail.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/Well.pm ~/work/htgt_migration/schema/HTGTDB/Result/Well.pm > ~/work/htgt_migration/new_schema_files/Well.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/WellPrimerReads.pm ~/work/htgt_migration/schema/HTGTDB/Result/WellPrimerReads.pm > ~/work/htgt_migration/new_schema_files/WellPrimerReads.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/WellSummaryByDI.pm ~/work/htgt_migration/schema/HTGTDB/Result/WellSummaryByDI.pm > ~/work/htgt_migration/new_schema_files/WellSummaryByDI.pm
+
+
+perl update_schema_cols.pl ~/svn-checkout/htgtdb-trunk/lib/HTGTDB/WellSummary.pm ~/work/htgt_migration/schema/HTGTDB/Result/WellSummary.pm > ~/work/htgt_migration/new_schema_files/WellSummary.pm

@@ -1,0 +1,109 @@
+[% META title = 'Short Range LoxP Primers' -%]
+
+<form name="find_design_primers" method="post" >
+  <p>
+    EPD well names or Gene Marker Symbols
+  </p>
+  <p>
+    <textarea name="input_data" rows="20" cols="55">[% input_data %]</textarea>
+  </p>
+  <p>
+    <input type="submit" name="get_primers" value="Show Primers" />
+  </p>
+</form>
+
+[% IF report.primers %]
+[%- SET columns = report.columns -%]
+
+<form name="update_used_short_range_loxp_primers" method="post" enctype="multipart/form-data">
+
+    <table id="short_range_loxp_primers" class="report_table tksort">
+        <thead>
+            <tr>
+            [% FOR name IN columns -%]
+              <th>[% name %]</th>
+            [% END %]
+            <th>EPD well name</th>
+            <th>result</th>
+            
+            </tr> 
+        </thead>
+    
+        <tbody>
+            [% FOR primer IN report.primers -%]
+              <tr>
+            
+              [%- FOR name IN columns %]
+                <td class="[% name %]">
+                    [% primer.$name %]
+                </td>
+              [% END %]
+              
+              [% IF primer.epd_well_name %]
+                <td>
+                    [% primer.epd_well_name %]
+                    <input type="hidden" name="epd_well_primer" value="[% primer.epd_well_name %]-[% primer.primer_name %]">
+                    
+                </td>
+                
+                <td class="primer_result">
+                    <select name="primer_result_[% primer.epd_well_name %]-[% primer.primer_name %]">
+                        <option value="not_used" [% UNLESS primer.result %]selected="selected"[% END %]>not used</option>
+                        <option value="pass" [% IF primer.result == 'pass' %]selected="selected"[% END %]>pass</option>
+                        <option value="fail" [% IF primer.result == 'fail' %]selected="selected"[% END %]>fail</option>
+                    </select>
+                </td>
+              [% END %]
+              
+              </tr>
+            [% END %]
+        </tbody>
+    
+    </table>
+    <input type="hidden" name="original_input_data" value="[% input_data %]">
+    <input type="submit" name="update_used_primers" value="Update Used Primers" />
+</form>
+<br>
+<br>
+[% END %]
+
+<fieldset id="find_design_primers" class="toggleable">
+  <legend>How to use this primer search form</legend>
+  <div>
+    <p>
+        This form is used to search for and update the results for short range LoxP primers for individual designs<br>
+    </p>
+
+    <div>
+    <h2>INPUT FORMAT</h2>
+        The form accepts comma and or newline seperated epd well names or gene marker symbols.<br>
+        When gene marker symbols are used all the designs associated with that gene will be shown.<br>
+        <br>
+        Example:
+        <pre>
+            EPD0057_4_A09,HEPD0527_8_H09
+            Cbx1,Serpine1
+        </pre>
+    <h2>OUTPUT FORMAT</h2>
+        The output will be a table listing all the relevant primers for each design.<br>
+        Where a design does not have any of these primers a N/A will be displayed.
+    <h3>Note</h3>
+        An error message will appear if any invalid epd well name or marker symbols are entered.<br>
+    <br>
+    <h2>UPDATING PRIMER RESULTS</h2>
+        If you enter epd well names then an option will come up to enter the results for that primer.<br>
+        You have the following options:
+        <ul>
+        <li>not used (default)</li>
+        <li>pass</li>
+        <li>fail</li>
+        </ul>
+        If you make any updates then a message will pop up if the update was successful or if it failed.
+    </div>
+  </div>
+</fieldset>
+
+<script type="text/javascript" charset="utf-8">
+
+new TableKit('short_range_loxp_primers',  {editable: false } );
+</script>

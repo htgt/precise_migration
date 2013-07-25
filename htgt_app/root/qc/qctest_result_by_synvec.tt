@@ -1,0 +1,126 @@
+<html>
+
+<h1>QC Results List </h1>
+<table>
+<thead>
+<tr>
+<td>Engineered Seq Name</td>
+<td>Clone name , valid primers count & pass level</td>
+</tr>
+</thead>
+<tbody>
+[% FOR r IN synvecs %]   
+   <tr>
+   <td><a id="synvec_[% r.name %]">[% r.name %]</a></td>
+   <script type="text/javascript" charset="utf-8">
+      $('synvec_[% r.name %]').observe('click', function(event){
+         $('test_results_[% r.name %]').toggle();
+         event.stop();
+      });
+   </script>
+   <td> 
+   
+   [% FOR clone IN r.good_clones.slice(0,3) %]
+     [% IF clone %]
+     <a href=[% c.uri_for('/qc/qctest_result_view',{'qctest_result_id'= clone.qctest_result_id}) %]>
+        [[% clone.clone_name %], [% clone.ok_primers_count %], [% clone.pass_status %]]
+        [% IF clone.best_for_design == 1 %]
+        *
+        [% END %]
+      
+     </a>
+     [% END %]
+     &nbsp;
+   [% END %]
+     &nbsp;
+   
+   <div id="more_clone_[% r.name %]" style="display:none;">
+   [% FOR clone IN r.good_clones.slice(4) %]
+     [% IF clone %]
+     <a href=[% c.uri_for('/qc/qctest_result_view',{'qctest_result_id'= clone.qctest_result_id}) %]>
+        [[% clone.clone_name %], [% clone.ok_primers_count %], [% clone.pass_status %]]
+        [% IF clone.best_for_design == 1 %]
+        *
+        [% END %]
+     </a>
+     [% END %]
+   [% END %]
+   </div>
+   <a id="more_link_[% r.name %]" class="show_more" onClick="show_more_clones('more_clone_[% r.name %]','more_link_[% r.name %]')">show more</a>
+   </td>
+   </tr>
+   <tr id="test_results_[% r.name %]" style="display:none;">
+      <td colspan="2">
+            
+            <table>
+            <thead>
+            <tr>
+            <td rowspan=2>QC test result id</td>
+            <td rowspan=2>Pass status</td>
+            <td rowspan=2>Construct Clone</td>
+            <td rowspan=2>Construct Plate</td>
+            <td rowspan=2>Construct Well</td>
+            
+            [% FOR primer_name IN r.available_primers -%]
+            <td colspan="4">
+              [% primer_name %]
+            </td>
+            [% END %]
+            </tr>
+            
+            <tr>
+            [% FOR primer_name IN r.available_primers -%]
+            <td>Primer status</td>
+            <td>Read Length</td>
+            <td>Align Length</td>
+            <td>Loc status</td>
+            [% END %]
+            </tr>
+            </thead>
+            
+            <tbody>
+            [% FOR result IN r.qc_results %]
+               
+                  <tr>
+                  <td>[% result.qctest_result_id %]</td>
+                  <td><a href=[% c.uri_for('/qc/qctest_result_view',{'qctest_result_id'= result.qctest_result_id}) %]>[% result.pass_status %]</a></td>
+                  <td>[% result.construct_clone %]</td>
+   
+                  <td>[% result.clone_plate %]</td>
+                  <td>[% result.clone_well %]</td>
+                  [% FOR primer_name IN r.available_primers;
+                    this_primer = result.primers.$primer_name;
+                  -%]
+                     <td>[% this_primer.primer_status %]</td>
+                     <td>[% this_primer.read_length %]</td>
+                     <td>[% this_primer.align_length %]</td>
+                     <td>[% this_primer.loc_status %]</td>
+                  [% END %]
+               
+               </tr>
+            [% END -%]
+            </tbody>
+            </table>
+      </td>
+   </tr>
+[% END -%]
+</tbody>
+</table>
+</html>
+
+
+<script type="text/javascript" charset="utf-8">
+    /* Function to show/hide the clone (if we have more than 4 per synvec) */
+    function show_more_clones (div_id, link_id) {
+        if ($(div_id).style.display == 'none') {
+            $(link_id).update('hide');
+            $(link_id).setAttribute("class", "hide_more");
+            $(link_id).setAttribute("className", "hide_more");
+      } else {
+            $(link_id).update('show all');
+            $(link_id).setAttribute("class", "show_more");
+            $(link_id).setAttribute("className", "show_more");
+        }
+        Effect.toggle(div_id, 'blind', { duration: '0.1' });
+    }
+</script>

@@ -1,0 +1,100 @@
+[% META title = 'Alter Parent Well' -%]
+
+<table>
+<tr>
+  <td>Child Plate: </td>
+  <td><input id="child_plate" value="[% child_plate %]" disabled="disabled" /></td>
+  <input type="hidden" id="child_well_id" value="[% child_well_id %]" />
+</tr>
+<tr>
+  <td>Child Well: </td>
+  <td><input id="child_well" value="[% child_well %]" disabled="disabled"/></td>
+</tr>
+<tr>
+  <td>Gene:</td>
+  <td>[% gene_symbol %]</td>
+</tr>
+<tr>
+  <td>Design: </td>
+  <td>[% design %]</td>
+</tr>
+<tr>
+  <td>Current Parent Plate: </td>
+  <td>[% current_parent_plate %]</td>
+</tr>
+<tr>
+  <td>Current Parent Well:</td>
+  <td>[% current_parent_well %]</td>
+</tr>
+<tr>
+  <td>New Parent Plate: </td>
+  <td>
+      <div id="plate_search">
+        <input autocomplete="off" id="parent_plate_name" name="parent_plate_name" type="text" />
+        <input type="hidden" id="plate_id" name="plate_id" value="" />
+        <span title="reset!" id="plate_name_reset" class="reset">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <div class="auto_complete" id="plate_name_auto_complete"></div>
+        <span id="indicator1" style="display: none">
+            <img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." />
+        </span>
+      </div>
+   </td>
+</tr>
+<tr>
+  <td>New Parent Well:</td>
+  <td>
+     <div id="new_parent_well_div">
+        [% INCLUDE 'plate/new_parent_well.tt' %]
+     </div>
+   </td>
+</tr>
+<tr>
+  <td>Comment:</td>
+  <td>
+    <input id="comment" name="comment" type="text" />
+  </td>
+</tr>
+<tr> 
+    <td><a href="#" class="button cog_go" onClick="updateParent()" >Update Parent</a></td>
+    <td id="update_status" class="nocol" colspan="3"></td>
+</tr>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    /* Autocompleter function for the parent plate_name input */
+    new Ajax.Autocompleter(
+      'parent_plate_name',
+      'plate_name_auto_complete',
+      '[% c.uri_for('/utils/_suggest_plate_names') %]',
+      {
+        indicator: 'indicator1',
+        afterUpdateElement : getWells
+      }
+    );
+    
+    /* Function to get the parent plate wells upon search */
+    function getWells(text, li) {
+      $('indicator1').show();
+      $('plate_id').value=li.id;
+      
+      new Ajax.Updater('new_parent_well_div', '[% c.uri_for('/plate/_pop_suggest_parent_wells/') %]', {
+          asynchronous: true,
+          evalScripts: true,
+          parameters: $H({ plate_id: li.id })
+      });
+      $('indicator1').hide();
+    }
+   
+   function updateParent() {
+       var answer = confirm("Are you sure you want to do the update?");
+       
+       if (answer==true){
+            var url = '[% c.uri_for('/plate/_do_alter_parent_well_update/') %]?child_well_id=' + $F('child_well_id') + '&new_parent_well_id=' + $F('new_parent_well') + '&comment=' + $F('comment');
+            new Ajax.Updater( 'update_status', url, { 
+                 asynchronous: true
+             });
+             $('update_status').update('<span style=\"color: green;\">[% message %]</span>');
+             new Effect.Highlight('update_status');
+        }
+   }
+</script>

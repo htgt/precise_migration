@@ -1,0 +1,125 @@
+[% META title = 'Update QC Results' -%]
+
+<form name="update_qc_results" method="post" enctype="multipart/form-data">
+    QC Type:
+    <select name="qc_type">
+      [% FOR type = qc_types %]
+      <option value="[% type %]" [% IF type == qc_type %]selected="selected"[% END %]>[% type %]</option>
+      [% END %]
+    </select>
+  <p>  
+    File name: <input type="file" name="datafile" size="40" />
+  </p>
+  <p>
+    <input name="skip_header" value="skip_header" type="checkbox" [% IF skip_header %]checked=true[% END %] />skip CSV header
+  </p>
+  <p>
+    <input type="submit" name="update_qc" value="Update QC" />
+  </p>
+</form>
+
+<fieldset id="update_qc_results" class="toggleable">
+  <legend>How to use this upload facility</legend>
+  <div>
+    <p>
+        This form is used to upload certain qc results into our database.<br> 
+        In general qc results for wells will be overwriten if the new value is better than the current one. <br>
+        For PIQ well qc upload the parent epd well is used as the identifier.<br>
+        PIQ qc spreadsheets must have the correct column headers, see below.<br>
+        For SBDNA / QPCRDNA plate uploads the parent wells must be EPD's.<br>
+    </p>
+
+      <h2>INPUT FORMAT</h2>
+      <h4>Qc Type</h4>
+      List of qc result types you can upload, you must pick a value from the list.
+      <h4>Skip CSV Header</h4>
+      If there is a header column in the csv file tick this option so it can be ignored. (Not used for PIQ qc results)
+      <h3>LOA or LoxP Input File</h3>
+      A CSV file with 2 columns of data, the first column is the well name <br>
+      and the second column is the qc result, for example:
+
+      <pre>
+        LOA00039_A02,FA
+        LOA00039_A03,pass
+        LOA00039_A04,fail
+        LOA00039_A05,fail
+      </pre>
+
+        <h4>Well Name</h4>
+            Valid Well name, a error will be returned if the well does not exist.
+        <h4>QC Result</h4>
+            Result for qc, valid arguments (case sensitive):
+            <ul>
+            <li>fail</li>
+            <li>pass</li>
+            <li>FA</li>
+            <li>NA</li>
+            </ul>
+
+      <h3>SB / QPCR DNA Plate Input File</h3>
+         The CSV must have 3 named columns ( you can't skip the headers for this upload ):
+         <h4>Plate</h4>
+            Name of the target dna plate. ( e.g QPCRDNA000001 )
+         <h4>Well</h4>
+            Name of the target well on the dna plate ( e.g A01 or F10 )
+         <h4>Clone_Name</h4>
+            Name of the EPD clone that is the parent well ( e.g EPD00012_1_A01 )
+
+         <p>For example:</p>
+         <pre>
+            SBDNAB0001,G04,EPD0103_2_B11
+            SBDNAB0001,G05,EPD0103_2_B10
+            SBDNAB0001,G06,EPD0120_2_D08
+            SBDNAB0001,G07,EPD0459_3_A04
+         </pre>
+
+      <h3>PIQ QC Input File</h3>
+      A CSV file which must have the right column headers, the only compulsory column is <strong>epd_clone_name</strong>. <br>
+      The following types of qc results can be uploaded:
+      <pre>
+          loa
+          loxp
+          lacz
+          chr1
+          chr8a
+          chr8b
+          chr11a
+          chr11b
+          chry
+          lrpcr
+      </pre>
+
+      For each of the above types of the following columns are used, fields in bold are compulsory:
+      <pre>
+        <strong>pass</strong>       ( pass result, see QC Result list above for valid arguments )
+        <strong>cn</strong>         (copy number, must be a valid number)
+        <strong>min_cn</strong>     ( minimum copy number, must be a valid number )
+        <strong>max_cn</strong>     ( maximum copy number, must be a valid number )
+        confidence ( confidence value of result )
+      </pre>
+
+      For example, up upload loa results you can have the following columns:
+      <pre>
+        loa_pass
+        loa_cn
+        loa_min_cn
+        loa_max_cn
+        loa_confidence (optional)
+      </pre>
+
+      The following optional columns can also be specified:
+      <pre>
+        targeting_pass  ( see QC Result list for valid arguments )
+        chromosome_fail ( number from 0 to 4 or Y )
+      </pre>
+
+    <div>
+    <h2>NOTE</h2>
+    <p>
+        An error message will appear if any information is entered incorrectly.<br>
+        If this happens none of the results will be updated<br>
+        All errors need to be fixed before any information will be added to the database.
+    </p>
+    </div>    
+  </div>
+</fieldset>

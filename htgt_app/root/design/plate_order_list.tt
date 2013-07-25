@@ -1,0 +1,42 @@
+[% META title = 'Design List' -%]
+
+<h1>Designs: Well sorting info</h1>
+
+<form name="well_sorting_list" method="post" action="[% c.uri_for('list_well_sort_info') %]">
+  <input type=text name=plate value= [% design_list.plate %] >
+</form>
+
+<table border=1 rules=all cellspacing=10>
+<tr>
+<th>GENE</th>
+<th>GBG</th>
+<!--<th>EXON</th>-->
+<th>DESIGN</th>
+<th>SUM</th>
+<th>HP</th>
+<th>SP</th>
+<th>ENS_SP</th>
+<th>TM</th>
+<th>ENS_TM</th>
+<th>ATG</th>
+<th>PHASE</th>
+<th>PROMOTER</th>
+</tr>
+[% FOREACH design IN design_list -%]
+  <tr>
+    <td>[% design.GENE%]</td>
+    <td>[% design.GBG%]</td>
+    <!--<td>[% design.EXON %]</td>-->
+    <td>[% design.DESIGN_ID %]</td>
+    <td>s [% design.SUM %]</td>
+    <td>hp [% design.HP %]</td>
+    <td>sp [% design.SP %]</td>
+    <td>es [% design.ENS_SP %]</td>
+    <td>tm [% design.TM %]</td>
+    <td>et [% design.ENS_TM %]</td>
+    <td>at [% design.ATG %]</td>
+    <td>ph [% design.PHASE %]</td>
+    <td>pr [% design.PROMOTER %]</td>
+  </tr>
+[% END -%]
+</table>

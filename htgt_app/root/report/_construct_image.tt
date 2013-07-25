@@ -1,0 +1,495 @@
+<!--
+[% FOR feat IN image_seq_features %]
+    [% feat.type %]: [% feat.name %] ([% feat.start %]-[% feat.end %])<br />
+[% END %]
+-->
+
+<table class="construct_image">
+    [% 
+        # Sort out the exons first into which region of the construct they lie...
+        
+        start_exons   = [];
+        g5_cass_exons = [];
+        target_exons  = [];
+        lox_g3_exons  = [];
+        end_exons     = [];
+        
+        disp_lar3     = undef;
+        disp_raf5     = undef;
+        disp_pnf      = undef;
+        
+        in_g5_cass_region = undef;
+        in_target_region  = undef;
+        in_lox_g3_region  = undef;
+        in_end_region     = undef;
+        
+        vector_column_count = 0;
+        
+        feature_hash = {};
+    %]
+    
+    [% FOR feat IN image_seq_features %]
+        
+        [% IF feat.type == 'rcmb_primer' %]
+            [% 
+                IF feat.name == 'G5';
+                    in_g5_cass_region = 'true';
+                    feature_hash.G5 = {
+                        type  = 'rcmb_primer',
+                        start = feat.start,
+                        end   = feat.end,
+                        seq   = feat.seq
+                    };
+                ELSIF feat.name == 'G3';
+                    in_end_region = 'true';
+                    feature_hash.G3 = {
+                        type  = 'rcmb_primer',
+                        start = feat.start,
+                        end   = feat.end,
+                        seq   = feat.seq
+                    };
+                ELSIF feat.name == 'U5';
+                    feature_hash.U5 = {
+                        type  = 'rcmb_primer',
+                        start = feat.start,
+                        end   = feat.end,
+                        seq   = feat.seq
+                    };
+                ELSIF feat.name == 'U3';
+                    feature_hash.U3 = {
+                        type  = 'rcmb_primer',
+                        start = feat.start,
+                        end   = feat.end,
+                        seq   = feat.seq
+                    };
+                ELSIF feat.name == 'D5';
+                    feature_hash.D5 = {
+                        type  = 'rcmb_primer',
+                        start = feat.start,
+                        end   = feat.end,
+                        seq   = feat.seq
+                    };
+                ELSIF feat.name == 'D3';
+                    feature_hash.D3 = {
+                        type  = 'rcmb_primer',
+                        start = feat.start,
+                        end   = feat.end,
+                        seq   = feat.seq
+                    };
+                END; 
+            %]
+        [% ELSIF feat.type == 'lrpcr_primer' %]
+            [% 
+                IF feat.name.search('LAR3');
+                    disp_lar3 = 'true';
+                    feature_hash.LAR3 = {
+                        type  = 'lrpcr_primer',
+                        start = feat.start,
+                        end   = feat.end,
+                        seq   = feat.seq
+                    };
+                ELSIF feat.name.search('RAF5');
+                    disp_raf5 = 'true';
+                    feature_hash.RAF5 = {
+                        type  = 'lrpcr_primer',
+                        start = feat.start,
+                        end   = feat.end,
+                        seq   = feat.seq
+                    };
+                ELSIF feat.name.search('GR');
+                    matches = feat.name.match('GR(\d)');
+                    name = 'GR' _ matches.0;
+                    feature_hash.${name} = {
+                        type  = 'lrpcr_primer',
+                        start = feat.start,
+                        end   = feat.end,
+                        seq   = feat.seq
+                    };
+                ELSIF feat.name.search('GF');
+                    matches = feat.name.match('GF(\d)');
+                    name = 'GF' _ matches.0;
+                    feature_hash.${name} = {
+                        type  = 'lrpcr_primer',
+                        start = feat.start,
+                        end   = feat.end,
+                        seq   = feat.seq
+                    };
+                END; 
+            %]
+        [% ELSIF feat.type == 'primer_bind' %]
+            [%
+                IF feat.name.search('NF');
+                    disp_pnf = 'true';
+                    feature_hash.PNF = {
+                        type  = 'primer_bind',
+                        start = feat.start,
+                        end   = feat.end,
+                        seq   = feat.seq
+                    };
+                END;
+            %]
+        [% ELSIF feat.type == 'cassette' %]
+            [% in_target_region = 'true' %]
+        [% ELSIF feat.type == 'loxP' %]
+            [% in_lox_g3_region = 'true' %]
+        [% ELSIF feat.type == 'exon' %]
+            [% 
+                IF in_end_region;           end_exons.push(feat);
+                ELSIF in_lox_g3_region;     lox_g3_exons.push(feat);
+                ELSIF in_target_region;     target_exons.push(feat);
+                ELSIF in_g5_cass_region;    g5_cass_exons.push(feat);
+                ELSE;                       start_exons.push(feat);
+                END; 
+            %]
+        [% END %]
+    [% END %]
+    
+    <!-- Primer/Homology Arm Row -->
+    <tr>
+        [% UNLESS draw_allele_map %]<td></td>[% END %]
+        [% IF ( start_exons.size AND draw_allele_map ) %]<td></td>[% END %]
+        
+        [% FOR feat IN image_seq_features %]
+            
+            [% IF feat.type == 'rcmb_primer' %]
+                
+                [% IF feat.name == 'G5' %]
+                    <td></td>
+                    <td style="text-align:right;"><img src="[% c.uri_for('/static/images/gene_report/homology-arm-left.png') %]" /></td>
+                    <td class="within-homology-arm">
+                        [% five_prime_arm_length = feature_hash.U5.end - feature_hash.G5.start %]
+                        5'&nbsp;homology&nbsp;arm<br />([% five_prime_arm_length %]&nbsp;bp)
+                    </td>
+                    <td style="text-align:left;"><img src="[% c.uri_for('/static/images/gene_report/homology-arm-right.png') %]" /></td>
+                [% ELSIF feat.name == 'G3' %]
+                    <td style="text-align:right;"><img src="[% c.uri_for('/static/images/gene_report/homology-arm-left.png') %]" /></td>
+                    <td colspan="3" class="within-homology-arm">
+                        [%
+                            SET three_prime_arm_length = '';
+                            IF project.design.design_type.search('Del');
+                                three_prime_arm_length = feature_hash.G3.end - feature_hash.D3.start;
+                            ELSE;
+                                three_prime_arm_length = feature_hash.G3.end - feature_hash.U3.start;
+                            END;
+                        %]
+                        3'&nbsp;homology&nbsp;arm<br />([% three_prime_arm_length %]&nbsp;bp)
+                    </td>
+                    <td style="text-align:left;"><img src="[% c.uri_for('/static/images/gene_report/homology-arm-right.png') %]" /></td>
+                [% END %]
+                
+            [% ELSIF feat.type == 'lrpcr_primer' AND draw_allele_map %]
+            
+                [% IF feat.name.search('GF') %]
+                    [% matches = feat.name.match('GF(\d)') %]
+                    <td><img src="[% c.uri_for('/static/images/gene_report/gf'_ matches.0 _'.png') %]" /></td>
+                [% ELSIF feat.name.search('GR') %]
+                    [% matches = feat.name.match('GR(\d)') %]
+                    <td><img src="[% c.uri_for('/static/images/gene_report/gr'_ matches.0 _'.png') %]" /></td>
+                [% END %]
+                
+            [% ELSIF feat.type == 'cassette' %]
+            
+                <td>
+                    [% IF ( draw_allele_map AND disp_lar3 ) %]
+                        <img style="float:left;" src="[% c.uri_for('/static/images/gene_report/5-prime-universal.png') %]" />
+                    [% END %]
+                    [% UNLESS project.cassette.search('_P') %]
+                        [% IF ( draw_allele_map AND disp_raf5 ) %]
+                            <img style="float:right;" src="[% c.uri_for('/static/images/gene_report/3-prime-universal.png') %]" />
+                        [% END %]
+                    [% END %]
+                </td>
+                [% IF project.cassette.search('_P') %]
+                    <td></td>
+                    <td>
+                        [% IF ( draw_allele_map AND disp_pnf ) %]
+                            <img style="float:right;" src="[% c.uri_for('/static/images/gene_report/3-prime-universal.png') %]" />
+                        [% END %]
+                    </td>
+                [% END %]
+                <td></td>
+            [% END %]
+        [% END %]
+        
+        [% IF ( end_exons.size AND draw_allele_map ) %]<td></td>[% END %]
+        [% UNLESS draw_allele_map %]<td></td>[% END %]
+    </tr>
+    
+    <!-- 'Main' Features Row -->
+    <tr class="images">
+        [% UNLESS draw_allele_map %]
+            <td class='corner top-left'><img src="[% c.uri_for('/static/images/gene_report/top-left-corner.png') %]" /></td>
+        [% END %]
+        [% IF ( start_exons.size AND draw_allele_map ) %]
+            <td>
+                [% IF start_exons.size > 4 %]
+                    <img src="[% c.uri_for('/static/images/gene_report/exon-multiple.png') %]" />
+                [% ELSE %]
+                    [% FOR exon IN start_exons %]<a target="_blank" href="http://www.ensembl.org/Mus_musculus/exonview?[% IF exon.name.search('OTTMUS') %]db=vega;[% END %]exon=[% exon.name %]"><img src="[% c.uri_for('/static/images/gene_report/exon.png') %]" /></a>[% END %]
+                [% END %]
+            </td>
+        [% END %]
+        
+        [% FOR feat IN image_seq_features %]
+            
+            [% IF feat.type == 'rcmb_primer' %]
+            
+                [% IF feat.name == 'G5' %]
+                    <td>
+                        [% vector_column_count = vector_column_count + 1 %]
+                        [% UNLESS draw_allele_map %]<img src="[% c.uri_for('/static/images/gene_report/asisi.png') %]" />[% END %]
+                    </td>
+                    <td>[% vector_column_count = vector_column_count + 1 %]</td>
+                [% ELSIF feat.name == 'G3' %]
+                    <td>[% vector_column_count = vector_column_count + 1 %]</td>
+                [% END %]
+                
+            [% ELSIF feat.type == 'lrpcr_primer' AND draw_allele_map %]
+            
+                [% IF feat.name.search('GF') OR feat.name.search('GR') %]  <td></td>
+                [% END %]
+            
+            [% ELSIF feat.type == 'cassette' %]
+            
+                <td>
+                    [% vector_column_count = vector_column_count + 1 %]
+                    [% IF g5_cass_exons.size %]
+                        [% IF g5_cass_exons.size > 4 %]
+                            <img src="[% c.uri_for('/static/images/gene_report/exon-multiple.png') %]" />
+                        [% ELSE %]
+                            [% FOR exon IN g5_cass_exons %]<a target="_blank" href="http://www.ensembl.org/Mus_musculus/exonview?[% IF exon.name.search('OTTMUS') %]db=vega;[% END %]exon=[% exon.name %]"><img src="[% c.uri_for('/static/images/gene_report/exon.png') %]" /></a>[% END %]
+                        [% END %]
+                    [% END %]
+                </td>
+                
+                [% IF project.cassette.search('_P') %]
+                    [% vector_column_count = vector_column_count + 6 %]
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/frt.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/promotor-cassette-1.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/loxp.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img [% IF ( draw_allele_map AND disp_pnf ) %]style="margin-right:20px;"[% END %] src="[% c.uri_for('/static/images/gene_report/promotor-cassette-2.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img [% IF ( draw_allele_map AND disp_pnf ) %]style="margin-left:-10px;"[% END %] src="[% c.uri_for('/static/images/gene_report/frt.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/loxp.png') %]" /></a></td>
+                [% ELSIF project.cassette.search('Norcomm') %]
+                    [% vector_column_count = vector_column_count + 5 %]
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/f3.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/norcomm-cassette-1.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/norcomm-cassette-2.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/norcomm-cassette-3.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/frt.png') %]" /></a></td>
+                [% ELSIF project.cassette.match('ZEN-Ub1') %]
+                    [% vector_column_count = vector_column_count + 4 %]
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/regeneron-cassette-1.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/loxp.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/regeneron-cassette-2.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/loxp.png') %]" /></a></td>
+                [% ELSE %]
+                    [% vector_column_count = vector_column_count + 4 %]
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/frt.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/promotorless-cassette.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/frt.png') %]" /></a></td>
+                    <td><a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/loxp.png') %]" /></a></td>
+                [% END %]
+
+                <td>
+                    [% vector_column_count = vector_column_count + 1 %]
+                    [% IF target_exons.size %]
+                        [% IF target_exons.size > 4 %]
+                            <img src="[% c.uri_for('/static/images/gene_report/exon-multiple.png') %]" />
+                        [% ELSE %]
+                            [% FOR exon IN target_exons %]<a target="_blank" href="http://www.ensembl.org/Mus_musculus/exonview?[% IF exon.name.search('OTTMUS') %]db=vega;[% END %]exon=[% exon.name %]"><img src="[% c.uri_for('/static/images/gene_report/exon.png') %]" /></a>[% END %]
+                        [% END %]
+                    [% END %]
+                </td>
+            
+            [% ELSIF feat.type == 'loxP' %]
+            
+                <td>
+                    [% IF draw_targeted_trap %]
+                    [% ELSE %]                 <a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]"><img src="[% c.uri_for('/static/images/gene_report/loxp.png') %]" /></a>
+                    [% END %]
+                    [% vector_column_count = vector_column_count + 1 %]
+                </td>
+                <td>
+                    [% vector_column_count = vector_column_count + 1 %]
+                    [% IF lox_g3_exons.size %]
+                        [% IF lox_g3_exons.size > 4 %]
+                            <img src="[% c.uri_for('/static/images/gene_report/exon-multiple.png') %]" />
+                        [% ELSE %]
+                            [% FOR exon IN lox_g3_exons %]<a target="_blank" href="http://www.ensembl.org/Mus_musculus/exonview?[% IF exon.name.search('OTTMUS') %]db=vega;[% END %]exon=[% exon.name %]"><img src="[% c.uri_for('/static/images/gene_report/exon.png') %]" /></a>[% END %]
+                        [% END %]
+                    [% END %]
+                </td>
+            
+            [% END %]
+            
+        [% END %]
+        
+        [% IF ( end_exons.size AND draw_allele_map ) %]
+            <td>
+                [% IF end_exons.size > 4 %]
+                    <img src="[% c.uri_for('/static/images/gene_report/exon-multiple.png') %]" />
+                [% ELSE %]
+                    [% FOR exon IN end_exons %]<a target="_blank" href="http://www.ensembl.org/Mus_musculus/exonview?[% IF exon.name.search('OTTMUS') %]db=vega;[% END %]exon=[% exon.name %]"><img src="[% c.uri_for('/static/images/gene_report/exon.png') %]" /></a>[% END %]
+                [% END %]
+            </td>
+        [% END %]
+        [% UNLESS draw_allele_map %]
+            <td class="corner top-right"><img src="[% c.uri_for('/static/images/gene_report/top-right-corner.png') %]" /></td>
+        [% END %]
+    </tr>
+    
+    <!-- Feature Labels Row -->
+    <tr class="labels">
+        [% UNLESS draw_allele_map %]
+            <td class="vspacer left">&nbsp;</td>
+        [% END %]
+        [% IF ( start_exons.size AND draw_allele_map ) %]
+            <td>
+                [% FOR exon IN start_exons %]
+                    <a target="_blank" href="http://www.ensembl.org/Mus_musculus/exonview?[% IF exon.name.search('OTTMUS') %]db=vega;[% END %]exon=[% exon.name %]">[% exon.name %]</a>[% IF exon.name != start_exons.last.name %]<br />[% END %]
+                [% END %]
+            </td>
+        [% END %]
+        
+        [% FOR feat IN image_seq_features %]
+            
+            [% IF feat.type == 'rcmb_primer' %]
+            
+                [% IF feat.name == 'G5' %]
+                    <td></td>
+                    <td></td>
+                [% ELSIF feat.name == 'G3' %]
+                    <td></td>
+                [% END %]
+            
+            [% ELSIF feat.type == 'lrpcr_primer' AND draw_allele_map %]
+            
+                [% IF feat.name.search('GF') OR feat.name.search('GR') %]<td></td>[% END %]
+            
+            [% ELSIF feat.type == 'cassette' %]
+            
+                <td>
+                    [% IF g5_cass_exons.size %]
+                        [% FOR exon IN g5_cass_exons %]
+                            <a target="_blank" href="http://www.ensembl.org/Mus_musculus/exonview?[% IF exon.name.search('OTTMUS') %]db=vega;[% END %]exon=[% exon.name %]">[% exon.name %]</a>[% IF exon.name != g5_cass_exons.last.name %]<br />[% END %]
+                        [% END %]
+                    [% END %]
+                </td>
+                
+                [% IF project.cassette.search('_P') %]
+                    <td colspan="6">
+                        <a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]">
+                            Promotor-Driven Cassette<br />([% project.cassette %])
+                        </a>
+                    </td>
+                [% ELSIF project.cassette.search('Norcomm') %]
+                    <td colspan="5">
+                        <a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]">
+                            Promotorless Cassette<br />([% project.cassette %])
+                        </a>
+                    </td>
+                [% ELSE %]
+                    <td colspan="4">
+                        <a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]">
+                            Promotorless Cassette<br />([% project.cassette %])
+                        </a>
+                    </td>
+                [% END %]
+                
+                [% IF target_exons.size %]
+                    <td>
+                        [% FOR exon IN target_exons %]
+                            <a target="_blank" href="http://www.ensembl.org/Mus_musculus/exonview?[% IF exon.name.search('OTTMUS') %]db=vega;[% END %]exon=[% exon.name %]">[% exon.name %]</a>[% IF exon.name != target_exons.last.name %]<br />[% END %]
+                        [% END %]
+                    </td>
+                [% END %]
+            
+            [% ELSIF feat.type == 'loxP' %]
+            
+                <td></td>
+                <td>
+                    [% IF lox_g3_exons.size %]
+                        [% FOR exon IN lox_g3_exons %]
+                            <a target="_blank" href="http://www.ensembl.org/Mus_musculus/exonview?[% IF exon.name.search('OTTMUS') %]db=vega;[% END %]exon=[% exon.name %]">[% exon.name %]</a>[% IF exon.name != lox_g3_exons.last.name %]<br />[% END %]
+                        [% END %]
+                    [% END %]
+                </td>
+            
+            [% END %]
+            
+        [% END %]
+        
+        [% IF ( end_exons.size AND draw_allele_map ) %]
+            <td>
+                [% FOR exon IN end_exons %]
+                    <a target="_blank" href="http://www.ensembl.org/Mus_musculus/exonview?[% IF exon.name.search('OTTMUS') %]db=vega;[% END %]exon=[% exon.name %]">[% exon.name %]</a>[% IF exon.name != end_exons.last.name %]<br />[% END %]
+                [% END %]
+            </td>
+        [% END %]
+        [% UNLESS draw_allele_map %]
+            <td class="vspacer right">&nbsp;</td>
+        [% END %]
+    </tr>
+    
+    <!-- Vector Backbone Row -->
+    [% UNLESS draw_allele_map %]
+        <tr class="images">
+            <td class="corner bottom-left"><img src="[% c.uri_for('/static/images/gene_report/bottom-left-corner.png') %]" /></td>
+            <td colspan="[% vector_column_count %]">
+                <a href="[% c.uri_for('/backbones') %]#[% project.backbone %]">
+                [% IF project.backbone == 'L3L4_pD223_DTA_spec' %]
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-ori.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-spec-promotor-rev.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-dta.png') %]" />
+                [% ELSIF project.backbone == 'L3L4_pD223_DTA_T_spec' %]
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-ori.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-spec-promotor.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-dta.png') %]" />
+                [% ELSIF project.backbone == 'L4L3_pD223_DTA_spec' %]
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-dta-rev.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-spec-promotor.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-ori.png') %]" />
+                [% ELSIF project.backbone == 'L3L4_pD223_spec' %]
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-ori.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-spec.png') %]" />
+                [% ELSIF project.backbone == 'L3L4_pZero_DTA_kan' %]
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-ori.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-kan-promotor.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-dta-rev.png') %]" />
+                [% ELSIF project.backbone == 'L3L4_pZero_DTA_kan_for_norcomm' %]
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-dta-rev.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-kan-promotor.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-ori.png') %]" />
+                [% ELSIF project.backbone == 'L3L4_pZero_DTA_spec' %]
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-ori.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-spec.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-dta.png') %]" />
+                [% ELSIF project.backbone == 'L3L4_pZero_kan' %]
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-ori.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-kan.png') %]" />
+                [% ELSIF project.backbone == 'R3R4_pBR_DTA+_Bsd_amp' %]
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-amp-promotor.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-ori.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-bsd-promotor-rev.png') %]" />
+                    <img src="[% c.uri_for('/static/images/gene_report/backbone-dta-rev.png') %]" />
+                [% END %]
+                </a>
+            </td>
+            <td class="corner bottom-right"><img src="[% c.uri_for('/static/images/gene_report/bottom-right-corner.png') %]" /></td>
+        </tr>
+        <tr class="labels">
+            <td></td>
+            <td colspan="[% vector_column_count %]">
+                <a href="[% c.uri_for('/backbones') %]#[% project.backbone %]">
+                [% IF project.backbone.search('_DTA') %]
+                    DTA Containing Plasmid Backbone<br />([% project.backbone %])
+                [% ELSE %]
+                    Non-DTA Containing Plasmid Backbone<br />([% project.backbone %])
+                [% END %]
+                </a>
+            </td>
+            <td></td>
+        </tr>
+    [% END %]
+</table>

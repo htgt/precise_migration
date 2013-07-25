@@ -1,0 +1,24 @@
+[% META title = 'High Througput Gene Targeting: Print AOSM Long Range Oligo Order Sheet' -%]
+
+<form 
+  name="print_long_range_order_sheet_form" enctype="multipart/form-data" 
+  method="post" action='[% c.uri_for('/ordersheet/print/print_long_range_oligo_orders') %]'
+>
+
+<table><tr><td>Plate:</td><td><input type="text" name="plate" size="10" value=[% plate %]></td></tr></table>
+<table><td><input type="submit" value="Get Order Sheet"> </td></tr></table>
+
+<br>PLATE,WELL,GF1,GF1,GF2,GF2,EX3,EX3,EX5,EX5,GR1,GR1,GR2,GR2</br>
+[% FOREACH row IN oligo_data %]
+  <br>
+      [% row.PLATE %],[% row.WELL %],
+      [% row.GF1_LABEL %],[% row.GF1 %],
+      [% row.GF2_LABEL %],[% row.GF2 %],
+      [% row.EX3_LABEL %],[% row.EX3 %],
+      [% row.EX5_LABEL %],[% row.EX5 %],
+      [% row.GR1_LABEL %],[% row.GR1 %],
+      [% row.GR2_LABEL %],[% row.GR2 %]
+  </br>
+[% END %]
+
+</form>

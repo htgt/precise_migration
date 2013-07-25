@@ -1,0 +1,4 @@
+EPD Well,ES Cell Line,Symbol,MGI ID,Ensembl,Otter,Target Exon,Design ID,BAC,Allele Map,Cassette,Backbone
+[% FOR key IN es_cell_keys -%]
+[% key %],[% es_cells.${key}.es_cell_line %],[% es_cells.${key}.symbol %],[% es_cells.${key}.mgi_id %],[% es_cells.${key}.ensembl %],[% es_cells.${key}.otter %],[% es_cells.${key}.target %],[% es_cells.${key}.design %],[% es_cells.${key}.bac %],[% es_cells.${key}.allele %],[% es_cells.${key}.cassette %],[% es_cells.${key}.backbone %]
+[% END -%]

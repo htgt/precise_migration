@@ -1,0 +1,45 @@
+{
+   "abstract" : "Parse and format iCal datetime and duration strings",
+   "author" : [
+      "Dave Rolsky <autarch@urth.org> and Flavio Soibelmann Glock\n<fglock@pucrs.br>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Build version 0.4005, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "DateTime-Format-ICal",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Module::Build" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "DateTime" : "0.17",
+            "DateTime::Event::ICal" : "0.03",
+            "DateTime::Set" : "0.1",
+            "DateTime::TimeZone" : "0.22",
+            "Params::Validate" : "0.59"
+         }
+      }
+   },
+   "provides" : {
+      "DateTime::Format::ICal" : {
+         "file" : "lib/DateTime/Format/ICal.pm",
+         "version" : "0.09"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "0.09"
+}

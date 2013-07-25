@@ -1,0 +1,275 @@
+[% META title = 'Gene Targeting Cassettes' -%]
+
+<p>This page displays descriptions of the various gene targeting cassettes that are used in our pipeline.</p>
+
+<h4>Promoter-Containing Targeting Cassettes</h4>
+
+<dl class="cassettes">
+    <dt id="L1L2_Bact_P">L1L2_Bact_P</dt>
+    <dd>
+        <p>
+            The targeting cassette is flanked by L1/L2 Gateway sites for insertion into R1/R2 
+            Gateway sites upstream of the critical exon(s) in the intermediate vector.
+        </p>
+        <table>
+            <tr>
+                <th>Reporter</th>
+                <td>
+                    Reading frame-independent LacZ gene trap cassette:<br />
+                    <span class="emphasise">En2 splice acceptor / ECMV IRES / LacZ / SV40 polyadenylation site</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Selectable Marker</th>
+                <td>
+                    Human &beta;-actin promoter driving the wild-type neoR gene:<br />
+                    <span class="emphasise">human &beta;-actin promoter / neomycin phosphotransferase (neoR) gene / SV40 polyA</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Plasmid</th>
+                <td>
+                    High copy number, ClonNAT resistant (25ug/ml).  No restrictions on 
+                    <em>E. Coli</em> host strain. Also weakly Kan resistant(20ug/ml), presumably 
+                    from a cryptic bacterial promoter.
+                </td>
+            </tr>
+        </table>
+    </dd>
+    <dt id="L1L2_PGK_P">L1L2_PGK_P</dt>
+    <dd>
+        <p>
+            The targeting cassette is flanked by Gateway L1/L2 Gateway sites for insertion into 
+            R1/R2 Gateway sites upstream of the critical exon(s) in the intermediate vector.
+        </p>
+        <table>
+            <tr>
+                <th>Reporter</th>
+                <td>
+                    Reading frame-independent LacZ gene trap cassette:<br />
+                    <span class="emphasise">En2 splice acceptor / ECMV IRES /LacZ / SV40 polyadenylation site</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Selectable Marker</th>
+                <td>
+                    Phosphoglycerate Kinase 1 (PGK1) promoter driving the wild-type neoR gene:<br />
+                    <span class="emphasise">PGK promoter / neomycin phosphotransferase (neoR) gene / SV40 polyA</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Plasmid</th>
+                <td>
+                    High copy number, ClonNAT resistant (25ug/ml). Kan resistant(100ug/ml) 
+                    from bacterial EM7 promoter upstream of neo.  No restrictions on <em>E. Coli</em> 
+                    host strain.
+                </td>
+            </tr>
+        </table>
+    </dd>
+</dl>
+
+<div class="clearbig"></div>
+
+<h4>Promoterless Targeting Cassettes</h4>
+
+<dl class="cassettes">
+    <dt id="L1L2_gt0">L1L2_gt0</dt>
+    <dd>
+        <p>
+            The targeting cassette is flanked by L1/L2 Gateway sites for insertion into R1/R2 
+            Gateway sites upstream of the critical exon(s) in the intermediate vector.
+        </p>
+        <table>
+            <tr>
+                <th>Reporter / Selectable Marker</th>
+                <td>
+                    Promoterless, (reading frame 0) gene trap cassette. LacZ reporter gene 
+                    and WT neomycin phosphotranferase (neoR) gene are translated from T2A 
+                    oligopeptides<sup><a href="#fn:1" rel="footnote">1</a></sup> 
+                    as discreet proteins, not as fusions:<br />
+                    <span class="emphasise">En-2 splice acceptor (frame 0) / T2A / LacZ / T2A / neoR / SV40 polyadenylation site</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Plasmid</th>
+                <td>
+                    High copy number, ClonNAT resistant (25ug/ml). No restrictions on <em>E. Coli</em> host strain.
+                </td>
+            </tr>
+        </table>
+    </dd>
+    <dt id="L1L2_gt1">L1L2_gt1</dt>
+    <dd>
+        <p>
+            The targeting cassette is flanked by L1/L2 Gateway sites for insertion into R1/R2 
+            Gateway sites upstream of the critical exon(s) in the intermediate vector.
+        </p>
+        <table>
+            <tr>
+                <th>Reporter / Selectable Marker</th>
+                <td>
+                    Promoterless, (reading frame 1) gene trap cassette. LacZ reporter gene 
+                    and WT neomycin phosphotranferase (neoR) gene are translated from T2A 
+                    oligopeptides<sup><a href="#fn:1" rel="footnote">1</a></sup> 
+                    as discreet proteins, not as fusions:<br />
+                    <span class="emphasise">En-2 splice acceptor (frame 1) / T2A / LacZ / T2A / neoR / SV40 polyadenylation site</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Plasmid</th>
+                <td>
+                    High copy number, ClonNAT resistant (25ug/ml). No restrictions on <em>E. Coli</em> host strain.
+                </td>
+            </tr>
+        </table>
+    </dd>
+    <dt id="L1L2_gt2">L1L2_gt2</dt>
+    <dd>
+        <p>
+            The targeting cassette is flanked by L1/L2 Gateway sites for insertion into R1/R2 
+            Gateway sites upstream of the critical exon(s) in the intermediate vector.
+        </p>
+        <table>
+            <tr>
+                <th>Reporter / Selectable Marker</th>
+                <td>
+                    Promoterless, (reading frame 2) gene trap cassette. LacZ reporter gene 
+                    and WT neomycin phosphotranferase (neoR) gene are translated from T2A 
+                    oligopeptides<sup><a href="#fn:1" rel="footnote">1</a></sup> 
+                    as discreet proteins, not as fusions:<br />
+                    <span class="emphasise">En-2 splice acceptor (frame 2) / T2A / LacZ / T2A / neoR / SV40 polyadenylation site</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Plasmid</th>
+                <td>
+                    High copy number, ClonNAT resistant (25ug/ml). No restrictions on <em>E. Coli</em> host strain.
+                </td>
+            </tr>
+        </table>
+    </dd>
+    <dt id="L1L2_gtK">L1L2_gtK</dt>
+    <dd>
+        <p>
+            The targeting cassette is flanked by L1/L2 Gateway sites for insertion into R1/R2 
+            Gateway sites upstream of the critical exon(s) in the intermediate vector.
+        </p>
+        <table>
+            <tr>
+                <th>Reporter / Selectable Marker</th>
+                <td>
+                    Promoterless gene trap cassette containing an initiating ATG and optimal Kozak 
+                    translation sequence. To be used as first coding exon downstream of untranslated exons 
+                    lacking an initiating ATG.  LacZ reporter gene and WT neomycin phosphotranferase (neoR) 
+                    gene are translated from T2A oligopeptides1 as discreet proteins, not as fusions:<br />
+                    <span class="emphasise">En-2 splice acceptor (Kozak/ATG)/ T2A / LacZ / T2A / neoR / SV40 polyadenylation site</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Plasmid</th>
+                <td>
+                    High copy number, ClonNAT resistant (25ug/ml). No restrictions on <em>E. Coli</em> host strain.
+                </td>
+            </tr>
+        </table>
+    </dd>
+    <dt id="L1L2_st0">L1L2_st0</dt>
+    <dd>
+        <p>
+            The targeting cassette is flanked by L1/L2 Gateway sites for insertion into R1/R2 
+            Gateway sites upstream of the critical exon(s) in the intermediate vector.
+        </p>
+        <table>
+            <tr>
+                <th>Reporter / Selectable Marker</th>
+                <td>
+                    Promoterless (reading frame 0) secretory trap cassette<sup><a href="#fn:2" rel="footnote">2</a></sup> 
+                    containing rat CD4 transmembrane (Tm) domain fused to N terminus of a 
+                    lacZ reporter. WT neomycin phosphotranferase (neoR) gene is translated from a T2A 
+                    oligopeptide<sup><a href="#fn:1" rel="footnote">1</a></sup> 
+                    as a discreet protein, not as a fusion protein:<br />
+                    <span class="emphasise">En-2 splice acceptor (frame 0) / ratCD4 Tm domain / LacZ / T2A / neoR / SV40 polyadenylation site</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Plasmid</th>
+                <td>
+                    High copy number, ClonNAT resistant(25ug/ml).  No restrictions on 
+                    <em>E.Coli</em> host strain.
+                </td>
+            </tr>
+        </table>
+    </dd>
+    <dt id="L1L2_st1">L1L2_st1</dt>
+    <dd>
+        <p>
+            The targeting cassette is flanked by L1/L2 Gateway sites for insertion into R1/R2 
+            Gateway sites upstream of the critical exon(s) in the intermediate vector.
+        </p>
+        <table>
+            <tr>
+                <th>Reporter / Selectable Marker</th>
+                <td>
+                    Promoterless (reading frame 1) secretory trap cassette<sup><a href="#fn:2" rel="footnote">2</a></sup> 
+                    containing rat CD4 transmembrane (Tm) domain fused to N terminus of a 
+                    lacZ reporter. WT neomycin phosphotranferase (neoR) gene is translated from a T2A 
+                    oligopeptide<sup><a href="#fn:1" rel="footnote">1</a></sup> 
+                    as a discreet protein, not as a fusion protein:<br />
+                    <span class="emphasise">En-2 splice acceptor (frame 1) / ratCD4 Tm domain / LacZ / T2A / neoR / SV40 polyadenylation site</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Plasmid</th>
+                <td>
+                    High copy number, ClonNAT resistant(25ug/ml).  No restrictions on 
+                    <em>E.Coli</em> host strain.
+                </td>
+            </tr>
+        </table>
+    </dd>
+    <dt id="L1L2_st2">L1L2_st2</dt>
+    <dd>
+        <p>
+            The targeting cassette is flanked by L1/L2 Gateway sites for insertion into R1/R2 
+            Gateway sites upstream of the critical exon(s) in the intermediate vector.
+        </p>
+        <table>
+            <tr>
+                <th>Reporter / Selectable Marker</th>
+                <td>
+                    Promoterless (reading frame 2) secretory trap cassette<sup><a href="#fn:2" rel="footnote">2</a></sup> 
+                    containing rat CD4 transmembrane (Tm) domain fused to N terminus of a 
+                    lacZ reporter. WT neomycin phosphotranferase (neoR) gene is translated from a T2A 
+                    oligopeptide<sup><a href="#fn:1" rel="footnote">1</a></sup> 
+                    as a discreet protein, not as a fusion protein:<br />
+                    <span class="emphasise">En-2 splice acceptor (frame 2) / ratCD4 Tm domain / LacZ / T2A / neoR / SV40 polyadenylation site</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Plasmid</th>
+                <td>
+                    High copy number, ClonNAT resistant(25ug/ml).  No restrictions on 
+                    <em>E.Coli</em> host strain.
+                </td>
+            </tr>
+        </table>
+    </dd>
+</dl>
+
+<div class="clearbig"></div>
+
+<div class="footnotes">
+    <ol>
+        <li id="fn:1">
+            <a href="http://www.ncbi.nlm.nih.gov/pubmed/15064769?ordinalpos=4&amp;itool=EntrezSystem2.PEntrez.Pubmed.Pubmed_ResultsPanel.Pubmed_RVDocSum">Szymczak AL, Workman CJ, Wang Y, Vignali KM, Dilioglou S, Vanin EF, Vignali DA.</a>
+            Correction of multi-gene deficiency in vivo using a single 'self-cleaving' 2A peptide-based retroviral vector.
+            <em>Nat Biotechnol.</em> 2004 May;<strong>22</strong>(5):589-94.
+        </li>
+        <li id="fn:2">
+            <a href="http://www.ncbi.nlm.nih.gov/pubmed/7604039?ordinalpos=3&amp;itool=EntrezSystem2.PEntrez.Pubmed.Pubmed_ResultsPanel.Pubmed_RVDocSum">Skarnes WC, Moss JE, Hurtley SM, Beddington RS.</a>
+            Capturing genes encoding membrane and secreted proteins important for mouse development.
+            <em>Proc Natl Acad Sci USA.</em> 1995 Jul 3;<strong>92</strong>(14):6592-6.
+        </li>
+    </ol>
+</div>

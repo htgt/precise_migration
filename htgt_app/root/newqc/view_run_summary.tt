@@ -1,0 +1,32 @@
+<h1>View Run (Summary)</h1>
+
+<p>
+  Sequencing project: [% qc_run.sequencing_project %]<br />
+  Template plate: <a href="[% c.uri_for( "/plate/view", { plate_id => qc_run.template_plate_id } ) %]">[% qc_run.template_plate.name %]</a><br />
+  Profile: [% qc_run.profile %]<br />
+  Date: [% qc_run.qc_run_date %]
+</p>
+<p>
+  <a href="[% c.uri_for( "/newqc/view_run/${qc_run.qc_run_id}", { view => "csvdl" } ) %]" class="button excel">Download Full Results</a>
+  <a href="[% c.uri_for( "/newqc/view_run_summary/${qc_run.qc_run_id}", { view => "csvdl" } ) %]" class="button excel">Download Summary Results</a> 
+  <a href="[% c.uri_for( "/newqc/create_plates/${qc_run.qc_run_id}" ) %]" class="button link">Create Plates and Load QC</a>
+</p>
+
+<table>
+  <thead>
+    <tr>
+      [% FOR c IN columns -%]
+        <th>[% c %]</th>
+      [% END -%]
+    </tr>
+  </thead>
+  <tbody>
+    [% FOR r IN results -%]
+      <tr>
+      [% FOR c IN columns -%]
+        <td>[% r.$c %]</td>
+      [% END -%]
+      </tr>
+    [% END -%]
+  </tbody>
+</table>

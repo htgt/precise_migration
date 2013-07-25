@@ -1,0 +1,4 @@
+Eucomm,Komp,Norcomm,MGP,Regeneron,Eucomm-Tools,Eucomm-Tools-Cre,Switch,TPP,MGP-Bespoke,Gene,Status,Design,Cassette,Backbone
+[% FOR project IN projects -%]
+[% project.is_eucomm %],[% project.is_komp_csd %],[% project.is_norcomm %],[% project.is_mgp %],[% project.is_komp_regeneron %],[% project.is_eucomm_tools %],[% project.is_eucomm_tools_cre %],[% project.is_switch %],[% project.is_tpp %],[% project.is_mgp_bespoke %],[% project.mgi_gene.marker_symbol %],[% project.status.name %],[% project.design_id %],[% project.cassette %],[% project.backbone %]
+[% END -%]

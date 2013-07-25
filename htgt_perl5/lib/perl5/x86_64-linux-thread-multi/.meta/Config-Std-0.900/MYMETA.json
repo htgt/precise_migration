@@ -1,0 +1,65 @@
+{
+   "abstract" : "Load and save configuration files in a standard format",
+   "author" : [
+      "Damian Conway <DCONWAY@cpan.org>",
+      "Bill Ricker <BRICKER@cpan.org>",
+      "Tom Metro <tmetro@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Build version 0.4005, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Config-Std",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.36"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "Test::Distribution" : "0",
+            "Test::Pod" : "0"
+         },
+         "requires" : {
+            "Class::Std" : "0",
+            "Test::More" : "0",
+            "perl" : "v5.7.3",
+            "version" : "0"
+         }
+      }
+   },
+   "provides" : {
+      "Config::Std" : {
+         "file" : "lib/Config/Std.pm",
+         "version" : "0.900"
+      },
+      "Config::Std::Block" : {
+         "file" : "lib/Config/Std.pm"
+      },
+      "Config::Std::Comment" : {
+         "file" : "lib/Config/Std.pm"
+      },
+      "Config::Std::Gap" : {
+         "file" : "lib/Config/Std.pm"
+      },
+      "Config::Std::Hash" : {
+         "file" : "lib/Config/Std.pm"
+      },
+      "Config::Std::Keyval" : {
+         "file" : "lib/Config/Std.pm"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "0.900"
+}

@@ -1,0 +1,43 @@
+<table id="distribute_counts_by_design_plate" class="report_table tksort">
+    <thead>
+        <tr>
+
+            <th id='plate' class="noedit">Marker Symbol</th>
+            <th id='plate' class="noedit">Ensembl Gene</th>
+            <th id='plate' class="noedit">Vega Gene</th>
+            <th id='plate' class="noedit">Design Plate</th>
+            <th id='plate' class="noedit">Design Well</th>
+            <th id='plate' class="noedit">Targvec Plate</th>
+            <th id='plate' class="noedit">Targvec Well</th>
+            <th id='plate' class="noedit">Cassette</th>
+            <th id='plate' class="noedit">Backbone</th>
+            <th id='plate' class="noedit">EP Plate</th>
+            <th id='plate' class="noedit">EP Well</th>
+        </tr>
+    </thead>
+    <tbody>
+        [% FOR row IN rows -%]
+          <tr>
+            <td>[% row.MARKER_SYMBOL %]</a></td>
+            <td>[% row.ENSEMBL_GENE_ID %]</a></td>
+            <td>[% row.VEGA_GENE_ID %]</a></td>
+            <td>[% row.DESIGN_PLATE_NAME %]</a></td>
+            <td>[% row.DESIGN_WELL_NAME %]</a></td>
+            <td>[% row.PGDGR_PLATE_NAME %]</a></td>
+            <td>[% row.PGDGR_WELL_NAME %]</a></td>
+            <td>[% row.CASSETTE %]</a></td>
+            <td>[% row.BACKBONE %]</a></td>
+            <td>[% row.EP_PLATE_NAME %]</a></td>
+            <td>[% row.EP_WELL_NAME %]</a></td>
+          </tr>
+        [% END %]
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    var well_table =
+        new TableKit(
+            'distribute_counts_by_design_plate',
+            { editable: false, }
+        );
+</script>

@@ -1,0 +1,21 @@
+[% META title = 'Downloads' -%]
+
+<p>Complete data export of gene targeting vector and allele data, and of EUCOMM gene trap data.</p>
+
+<h4>Gene Targeting</h4>
+<UL>
+<LI><a href='[% c.uri_for('/static/vectors.csv.gz') %]'> Vectors </a></LI>
+<LI><a href='[% c.uri_for('/static/synthetic_vectors.gbk.gz') %]'> Synthetic vector maps </a></LI>
+<LI><a href='[% c.uri_for('/static/alleles.csv.gz') %]'> Alleles </a></LI>
+<LI><a href='[% c.uri_for('/static/synthetic_alleles.gbk.gz') %]'> Synthetic allele maps </a></LI>
+<LI><a href='[% c.uri_for('/static/lrpcr_bands.csv.gz') %]'> Expected LR-PCR band sizes </a></LI>
+</UL>
+
+<h4>Gene Traps</h4>
+<UL>
+<LI><a href='[% c.uri_for('/static/gene_trap/all_clone_summary.csv.tgz') %]'> Clone summary </a></LI>
+<LI><a href='[% c.uri_for('/static/gene_trap/geneTrapSequenceTags.fasta.tgz') %]'> Sequence tags </a></LI>
+<LI><a href='[% c.uri_for('/static/gene_trap/vector_sequence.fasta') %]'> Vector sequence </a></LI>
+</UL>
+
+

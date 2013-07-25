@@ -1,0 +1,74 @@
+<h1>QC Results List </h1>
+
+[% qctest_results_rs.count ;%] rows.
+
+[%
+SET cols = [ 'qctest_run_id', 'qctest_result_id', 'construct_clone_id', 'is_best_for_construct_in_run', 'engineered_seq_id', 'pass_status', 'toxin_pass','chosen_status', 'comment'];
+%]
+
+[%
+IF c.req.params.show_primers;
+IF NOT primers; #cope with a controller no providing primers....
+  SET primers = qctest_results_rs.related_resultset('constructClone').related_resultset('qcSeqreads').search_rs({},{'columns'=['oligo_name'],'distinct'=1}).get_column('oligo_name').all;
+END;
+#primers.join(", ");
+END;
+%] 
+
+<table id="qcresults_list" class="report_table ">
+  <thead>
+    <tr>
+      <td rowspan=2>qctestRun.stage</td>
+      <td rowspan=2>is_public</td>
+      <td rowspan=2>
+      [% cols.join('</td><td rowspan=2>'); %]
+      </td>
+      <td rowspan=2>constructClone.name</td>
+      <td rowspan=2>matchedEngineeredSeq.name</td>
+      [% IF c.req.params.show_primers %]
+      <td colspan=3>
+      [% primers.join('</td><td colspan=3>') %]
+      </td>
+      [% END %]
+    </tr>
+    <tr>
+    [% IF c.req.params.show_primers; FOREACH col IN primers%]
+      <td>status</td>
+      <td>align</td>
+      <td>read</td>
+    [% END; END %]
+    </tr>
+  </thead>
+  <tbody>
+[% SET rall = qctest_results_rs.search_rs({},{'order_by'='constructClone.name'}).all;
+   FOREACH r IN rall ;
+     SET run = r.qctestRun %]
+    <tr>
+      <td>[% run.stage%]</td>
+      <td>[% run.is_public%]</td>
+[% FOREACH col IN cols %]
+      <td>
+[% IF col=='qctest_result_id'%]
+<a href='[% c.uri_for('/qc/seq_view',{'notart'=1,'qctest_result_id'=r.qctest_result_id}) %]'>[% r.$col %]</a>
+[% ELSIF col=='pass_status' %]
+<a href=[% c.uri_for('/qc/qctest_result_view',{'qctest_result_id'= r.qctest_result_id}) %]>[% r.$col %]</a>
+[% ELSE %]
+[% r.$col %]
+[% END %]
+      </td>
+[% END %]
+      <td>[% r.constructClone.name %]</td>
+      <td>[% r.matchedEngineeredSeq.name %]</td>
+[% IF c.req.params.show_primers;
+     SET qctestPrimers = r.related_resultset('qctestPrimers') ; 
+       FOREACH col IN primers; 
+         SET primer = qctestPrimers.search_rs({'primer_name'=col}).first; %]
+         <td>[% primer.primer_status %]</td>
+         <td>[% IF primer.seq_align_id ; primer.seqAlignFeature.align_length ; END %]</td>
+         <td>[% primer.qcSeqread.quality_length %]</td>
+[%     END; 
+   END %]
+    </tr>
+[% END %]
+  </tbody>
+</table>

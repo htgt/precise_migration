@@ -1,0 +1,74 @@
+[% IF mgi_gene.gene_user_links.size > 0 %]
+    <table class="resizable tksort editable" id="priority[% timestamp %]">
+        <thead>
+            <tr>
+                <th id="gene_user" [% UNLESS c.check_user_roles("edit") %]class='noedit'[% END %]>External User?</th>
+                <th id="edit_user" class="noedit">User</th>
+                <th id="edit_date" class="sortfirstasc noedit date-oracle">Date</th>
+                <th id="priority_type" [% UNLESS c.check_user_roles("edit") %]class='noedit'[% END %]>Priority Type</th>
+                <th class="noedit nosort nocol"></th>
+            </tr>
+        </thead>
+        <tbody>
+            [% FOR gene_user IN mgi_gene.gene_user_links %]
+                [% IF new_gene_user_id && (new_gene_user_id == gene_user.gene_user_id) %]
+                    [% SET rowclass = 'new' %]
+                [% ELSE %]
+                    [% SET rowclass = '' %]
+                [% END %]
+                <tr class="[% rowclass %]" id="[% gene_user.gene_user_id %]">
+                    <td [% IF c.check_user_roles("edit") %]class="edit"[% END %]>[% gene_user.ext_user.email_address %]</td>
+                    <td>[% gene_user.edited_user %]</td>
+                    <td>[% gene_user.edited_date %]</td>
+                     <td [% IF c.check_user_roles("edit") %]class="edit"[% END %] id="priority_type">[% gene_user.priority_type %]</td>
+                    <td class="nocol">
+                        [%# IF c.check_user_roles("edit") %]
+                        [% IF c.user.id == gene_user.edited_user %]
+                          <a class="delete" onclick="deletePriority([% gene_user.gene_user_id %],[% mgi_gene.mgi_gene_id %]); return false;">delete</a>
+                        [% END %]
+                    </td>
+                </tr>
+            [% END %]
+        </tbody>
+    </table>
+[% ELSE %]
+    <table id="priority[% timestamp %]">
+      <thead>
+        <tr>
+          <th class="noedit">External User?</th>
+          <th class="noedit">User</th>
+          <th class="noedit">Date</th>
+          <th class="noedit">Priority Type</th>
+          <th class="nocol noedit"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="4" class="no_data nocol">No Priority Requests</td>
+        </tr>
+      </tbody>
+    </table>
+[% END %]
+[% IF c.check_user_roles("edit") %]
+    <a class="add" onclick="addPriority([% mgi_gene.mgi_gene_id %]); return false;">Add a new priority request</a>
+[% END %]
+
+
+<script type="text/javascript" charset="utf-8">
+    [% IF mgi_gene.gene_user_links.size > 0 %]
+        var gene_users_table = new TableKit( 'priority[% timestamp %]', {
+            [% IF c.check_user_roles("edit") %]
+               editAjaxURI: '[% c.uri_for('/gene/update/_gene_users_update/') %]',
+               editable: true
+            [% ELSE %]
+               editable: false
+            [% END %]
+        });
+    [% END %]
+
+    TableKit.Editable.selectInput('priority_type', {}, [
+        ['user_request','user_request'],
+        ['material_ordered','material_ordered']
+    ]);
+</script>
+   

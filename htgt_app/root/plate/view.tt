@@ -1,0 +1,412 @@
+[% META title = 'Plate Details' -%]
+<h5>Plate [% plate.name %]  [% IF plate.name.match('EPD') %]<a id="qc_view" class="link" style="font-size:11px;" href="[% c.uri_for('/plate/qc_view', { plate_id = plate.plate_id }) %]">View QC Result</a>
+[% ELSIF plate.name.match('GRD') %]<a id="grd_plate_view" class="link" style="font-size:11px;" href="[% c.uri_for('/plate/grd_plate_view', { plate_name = plate.name }) %]">QC view</a>
+[% END %]</h5>
+
+[% IF style == 'EUCOMM' %]
+    <!--[if IE]>
+        <style type="text/css" media="screen">
+            #naked_content {
+                margin-left: 13em;
+            }
+        </style>
+    <![endif]-->
+[% END %]
+
+[% IF c.check_user_roles("edit") -%]
+[% UNLESS plate.child_plates %]
+<div id="delete_plate">
+<form name="delete_plate" action="[% c.uri_for('/plate/delete/delete_plate') %]">
+<input type="hidden" name="plate_id" value="[% plate.id %]" />
+<button id="delete_plate_button" type="button" name="delete_plate">Delete Plate</button>
+</form>
+<script type="text/javascript">
+$("delete_plate_button").observe("click", function() {
+	if( confirm( "Delete plate [% plate.name %] ([% plate.wells.size %] wells)?" ) ) {
+		document.delete_plate.submit();
+	} 
+} );
+</script>
+</div>
+[% END %]
+<div id="rename_plate">
+<form name="rename_plate" action="[% c.uri_for('/plate/rename/rename_plate') %]">
+<input type="hidden" name="plate_id" value="[% plate.id %]" />
+<input type="text" id="new_plate_name"  name="new_plate_name" class="default-value" autocomplete="off" title="New name" />
+<button id="rename_plate_button" type="button" name="rename_plate">Rename Plate</button>
+<div id="invalid_plate_name" style="display:none" class="failure">
+Please enter a valid plate name
+</div>
+</form>
+<script type="text/javascript">
+$("rename_plate_button").observe("click", function() {
+	var new_name = $("new_plate_name").value; 
+	if ( new_name == "New name" || new_name.length == 0 ) {
+		$("invalid_plate_name").show();
+	}
+	else if ( confirm("Rename plate [% plate.name %] to " + new_name + "?" ) ) {
+		document.rename_plate.submit();
+    }
+} );
+</script> 
+</div>
+[% END %]
+
+<div id="plate_details_and_inheritance_wrapper" class="yui-g">
+     <div id="details_div" [% IF style == 'EUCOMM' %]class="yui-u first"[% ELSE %]style="width:49%;float:left;"[% END %]>
+         <h6>Plate Details</h6>
+         <table>
+            <tr>
+                <th>Description</th>
+                <td>[% plate.description %]</td>
+            </tr>
+            <tr>
+                <th>Plate Type</th>
+                <td>[% IF plate.type == 'PGD' %]PGS[% ELSE %][% plate.type %][% END %]</td>
+            </tr>
+            [% IF qcoriginplates.size  %]
+            <tr>
+                <th>QC Origin Plates</th>
+                <td>[% qcoriginplates.join(", ") %]</td>
+            </tr>
+            [% END %]
+        </table>
+    </div>
+    [% IF hide_plate_inheritance == 'true' %]
+        <div [% IF style == 'EUCOMM' %]class="yui-u"[% ELSE %]style="width:49%;float:right;"[% END %]>
+            <h6>Plate Inheritance</h6>
+            <p>
+                Plate Inheritance Data Hidden, to view click this 
+                <a href="[% c.uri_for('/plate/view', { plate_id = plate.plate_id }) %]">link</a>
+            </p>
+        </div>
+    [% ELSE %]
+        <div [% IF style == 'EUCOMM' %]class="yui-u"[% ELSE %]style="width:49%;float:right;"[% END %]>
+            <h6>Plate Inheritance</h6>
+            <div id="inheritance_div">
+                [% PROCESS 'plate/_plate_tree.tt' %]
+            </div>
+        </div>
+    [% END %]
+</div>
+
+<div class="clear"></div>
+
+<div id="plate_comments_and_data_wrapper" class="yui-g">
+    <div id="comments_wrapper" [% IF style == 'EUCOMM' %]class="yui-u first"[% ELSE %]style="width:49%;float:left;"[% END %]>
+        <h6>Comments</h6>
+        <div id="comments_div">
+            [% INCLUDE 'plate/_plate_comment_table.tt' %]
+        </div>
+    </div>
+    <div [% IF style == 'EUCOMM' %]class="yui-u"[% ELSE %]style="width:49%;float:right;"[% END %]>
+        <h6>Plate Data</h6>
+        <div id="data_div">
+            [% INCLUDE 'plate/_plate_data_table.tt' %]
+        </div>
+    </div>
+</div>
+
+<div class="clear"></div>
+
+<div id="plate_attachments_wrapper">
+    <div id="plate_attachments">
+        <h6>File Attachments</h6>
+        [% INCLUDE 'plate/_plate_attachments.tt' %]
+    </div>
+</div>
+
+<div class="clear"></div>
+
+<div id="well_editing_and_pqc_wrapper" class="yui-g">
+    [% IF c.check_user_roles("edit") && plate.type != 'DESIGN' %]
+        <div id="well_editing_wrapper" [% IF style == 'EUCOMM' %]class="yui-u first"[% ELSE %]style="width:55%;float:left;"[% END %]>
+            <div>
+                <h6>Cassette &amp; Backbone Editing (All Wells)</h6>
+                <table>
+                  [% IF plate.type != 'PCS' %]
+                    <tr>
+                        <th>Cassette (Non phase matched): </th>
+                        <td>
+                            <select name="cassette_selection" id="cassette_selection">
+                                <option value="-" selected="yes">-</option>
+                                [% FOR cassette IN non_phase_cassettes.sort %]
+                                <option value="[% cassette %]">[% cassette %]</option>
+                                [% END %]
+                            </select>
+                        </td>
+                        <td class="nocol">
+                            <a class="button save" onClick="updateAllWellData([% plate.plate_id %],'cassette',$F('cassette_selection'),'gene_name','design_instance_id'); return false;">Apply</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Cassettes (phase matched): </th>
+                        <td>
+                            <form name="add_phase_matched_cassette" action="[% c.uri_for('/plate/update/add_phase_matched_cassettes') %]">
+                                <input type="hidden" name="plate_id" value="[% plate.id %]" />
+                                <select id="phase_matched_cassette"  name="phase_matched_cassette">
+                                    <option value="-" selected="yes">-</option>
+                                    [% FOR cassette IN phase_cassettes.sort %]
+                                    <option value="[% cassette %]">[% cassette %]</option>
+                                    [% END %]
+                                </select>
+                            </form>
+                        </td>
+                        <td class="nocol">
+                            <a class="button save" onClick="addPhaseMatchedCassette($F('phase_matched_cassette')); return false;">Apply</a>
+                        </td>
+                    </tr>
+                  [% END %]
+                    <tr>
+                        <th>Backbone: </th>
+                        <td>
+                            <select name="backbone_selection" id="backbone_selection">
+                                <option value="-" selected="yes">-</option>
+                                [% FOR backbone IN backbones.keys.sort %]
+                                <option value="[% backbone %]">[% backbone %]</option>
+                                [% END %]
+                            </select>
+                        </td>
+                        <td class="nocol">
+                            <a class="button save" onClick="updateAllWellData([% plate.plate_id %],'backbone',$F('backbone_selection'),'gene_name','design_instance_id'); return false;">Apply</a>
+                        </td>
+                    </tr>
+                    <tr class="nocol">
+                        <td id="edit_status" colspan="3"></td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <!-- This script block is for the above table - please don't move it -->
+            <script type="text/javascript" charset="utf-8">
+                function addPhaseMatchedCassette (cassette) {
+                    if ( cassette == "-" ) {
+                        alert('You must pick a phase matched cassette first');
+                    } else if ( confirm("Add " + cassette + " phase matched cassette to [% plate.name %]? Warning: will replace any cassettes wells currently have!" ) ) {
+                        document.add_phase_matched_cassette.submit();
+                    }
+                }
+                
+                function updateAllWellData (plate, type, value, check, check_in_db) {
+                    var answer = confirm('This will update the '+type+' value for every well entry.\n\nAre you sure you want to do this?');
+                    if (answer) {
+                        $('edit_status').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Working...');
+
+                        /* First, update the data in the well table */
+
+                        // We need to find the column of the well data we're interested in
+                        var headings = $$('table#wells thead tr th');
+                        var regexp = new RegExp(type, "i");
+                        var column;
+
+                        // Use this variable to allow the freedom to check for the presence of 
+                        // another well_data entry before doing the update...
+                        if (check) { 
+                            var check_regexp = new RegExp(check, "i");
+                            var check_column;
+                        }
+
+                        for (var i=0; i < headings.size(); i++) {
+                            if (regexp.exec(headings[i].id)) { column = i; }
+                            if (check) {
+                                if (check_regexp.exec(headings[i].id)) { check_column = i; }
+                            }
+                        }
+
+                        // Then move through the table and update the cells
+                        var rows = $$('table#wells tbody tr');
+                        for (var j=0; j < rows.size(); j++) {
+                            var cols = rows[j].select('td');
+                            if (check) {
+                                if (cols[check_column].innerHTML != (null || '-')) { cols[column].update(value); }
+                            } else {
+                                cols[column].update(value);
+                            }
+                        };
+
+                        /* Finally, update the data in the database */
+                        new Ajax.Updater('edit_status', '[% c.uri_for('/plate/update/_update_all_well_data') %]', 
+                            {
+                                asynchronous: true,
+                                evalScripts: false,
+                                parameters: $H({
+                                    plate_id: plate,
+                                    data_type: type,
+                                    data_value: value,
+                                    check_for: check_in_db
+                                }),
+                                onComplete: function() {
+                                    new Effect.Highlight('edit_status');
+                                }
+                            }
+                        );
+                    }
+                }
+            </script>
+        </div>
+        
+    [% END %]
+    
+    [% IF c.check_user_roles("edit") && ( plate.type == 'GRD' || plate.type == 'GRQ' ) %]
+        <div id="reload_qc_wrapper" [% IF style == 'EUCOMM' %]class="yui-u"[% ELSE %]style="width:44%;float:right;"[% END %]>
+            [% 
+                SET is_three_eight_four = 0;
+                FOR pd IN plate.plate_data;
+                    IF pd.data_type == 'is_384' AND pd.data_value == 'yes';
+                        is_three_eight_four = 1;
+                    END;
+                END;
+            %]
+            <h6>Re-Load QC Data onto Plate</h6>
+            <form action="[% c.uri_for('/plate/update/load_qc_data_to_plate') %]" method="post" accept-charset="utf-8">
+                <table>
+                    <tr>
+                        <th><label for="qctest_run_id">QC Test Run ID:</label></th>
+                        <td><input type="text" name="qctest_run_id" value="" /></td>
+                    </tr>
+                    <tr>
+                        <th><label for="override">Ignore Current Data:</label></th>
+                        <td>
+                            <input type="radio" name="override" value="1" /> Yes
+                            <input type="radio" name="override" value="0" checked /> No
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="nocol" style="text-align:right">
+                            <input type="hidden" name="plate_id" value="[% plate.plate_id %]" />
+                            <input type="hidden" name="is_384" value="[% is_three_eight_four %]" />
+                            <input type="submit" value="Submit" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    [% END %]
+    
+    [% IF c.check_user_roles("edit") && well_data_types.grep('potential_QC').size() %]
+        <div id="pqc_wrapper" [% IF style == 'EUCOMM' %]class="yui-u"[% ELSE %]style="width:49%;float:right;"[% END %]>
+            <div id="potentialQC_selection" class="float_box">
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr><td colspan="3"><strong>QC Selection Update (via Regular Expression)</strong></td></tr>
+                    <tr>
+                        <td><input type="text" name="manual_selection" value="" id="qc_regexp_selection" /></td>
+                        <td><a class="button refresh" onClick="update_QC_selections('qc_regexp_selection')">Update</a></td>
+                        <td>
+                            <form name='QC_assignments' method='POST' action='[% c.uri_for('/plate/update/update_or_create_well') %]'>
+                                <input type='hidden' name='plate_name' value='[%plate.name||platename%]'/>
+                                <input type='hidden' name='data' id='QC_assignments_data'/>
+                                <input type='submit' id='QC_assignments_submit' value='Save' class='button save' />
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+                <small><a id="float_toggle" onClick="float_box('potentialQC_selection','float_toggle')">float</a></small>
+            </div>
+            
+            <!-- This script block is for the above table - please don't move it -->
+            <script type="text/javascript" charset="utf-8">
+                function float_box (box_id, toggle_id) {
+                    if ( $(toggle_id).innerHTML == 'fixed' ) {
+                        $(box_id).setStyle({
+                            position: 'relative',
+                            top: 0,
+                            right: 0,
+                            'margin-top': '25px'
+                        });
+                        $(toggle_id).update('float');
+                    } else {
+                        $(box_id).setStyle({
+                            position: 'fixed',
+                            top: '10px',
+                            right: '10px',
+                            margin: 0
+                        });
+                        $(toggle_id).update('fixed');
+                    }
+                }
+
+                function update_QC_selections (textfield_id) {
+                    var regexp = new RegExp( $(textfield_id).value );
+                    var forms = $$('table#wells td.potential_QC form');
+
+                    for (var i=0; i < forms.length; i++) {
+                        // Extract the radio buttons
+                        var inputs = forms[i].getInputs('radio','update');
+                        var matches = $A();
+
+                        // Fetch all the radio buttons that match the regexp
+                        for (var j=0; j < inputs.length; j++) {
+                            if ( inputs[j].value.length > 1 ) {
+                                var json = inputs[j].value.evalJSON();
+                                //if ( $H(json).values().find(function(val,ind){return regexp.exec(val)}) ) {
+                                if ( regexp.exec($H(json).values().toJSON()) ) {
+                                    json.element = j;
+                                    json['element'] = j;
+                                    matches.push(json);
+                                }
+                            }
+                        };
+
+                        // Now select the latest QC result that matches the regexp
+                        if ( matches.size() > 0 ) {
+                            var pos = matches.sortBy(function(s){ return s['qctest_result_id'] }).last()['element'];
+                            inputs[pos].checked = 1;
+                        }
+                    };
+                }
+
+                function get_potential_QC_assignments() {
+                    return $$('table#wells td.potential_QC form ').map(
+                        function(e){
+                            return e.serialize(getHash=true);
+                        }
+                    ).map(
+                        function(e){
+                            if (e['update']) { 
+                                e['well_data'] = eval('('+e['update']+')');
+                                delete e['well_data']['design_instance'];
+                                delete e['well_data']['qc_assignment'];
+                                delete e['well_data']['qctest_run_id'];
+                                delete e['update'];
+                                return e;
+                            }
+                            return null;
+                        }
+                    ).compact();
+                }
+
+                $('QC_assignments_submit').observe('click',function () { $('QC_assignments_data').value=get_potential_QC_assignments().toJSON();} );
+            </script>
+        </div>
+    [% ELSE %]
+      <div [% IF style == 'EUCOMM' %]class="yui-u"[% ELSE %]style="width:49%;float:right;"[% END %]>
+      [% IF c.check_user_roles("edit") %]
+        <form name='AnnotateQC' method='GET' action='[% c.uri_for('/plate/view') %]'>
+            <input type='hidden' name='PQC' value='true' />
+            <input type='hidden' name='plate_id' value=[% plate.plate_id %] />
+            <input type='hidden' name='plate_name' value='[%plate.name||platename%]'/>
+            <input type='text' name='qctest_run_id' />
+            <input type='submit' name='annotate_qc' value='Annotate QC' />
+        </form>
+        <!-- <a href="[% c.uri_for('/plate/view') %]?plate_id=[% plate.plate_id %]&PQC=true" class="button pencil_go" id="switch_to_pqc" title="QC annotation mode">Annotate QC</a> -->
+      [% END %]
+      </div>
+    [% END %]
+    
+
+     
+</div>
+
+<div class="clear"></div>
+
+<div class="clear"></div>
+
+[%# this is the part that determines how we will handle the wells - pass out to second template here%]
+[% IF well_data_types #Only display well data if we've been given the columns to show %]
+  <h6>Wells and Associated Data</h6>
+    [% view_page = 1 %]
+    [% INCLUDE 'plate/wells.tt' %]
+[% ELSIF recombineering == 'true' %]
+  [% INCLUDE 'plate/_recombineering.tt' %]
+[% END %]

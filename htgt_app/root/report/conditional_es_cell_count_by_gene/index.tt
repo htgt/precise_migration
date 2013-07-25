@@ -1,0 +1,36 @@
+[% META title = "Report Number of Conditional ES Cells by Gene" %]
+
+<form id="conditional_es_cell_count_by_gene" name="conditional_es_cell_count_by_gene"
+  method="post" action="[% c.uri_for('/report/conditional_es_cell_count_by_gene') %]" accept-charset="utf-8">
+
+  <p>
+    Enter upto [% max_gene_ids %] gene identifiers: <br />
+    <textarea name="gene_identifiers" id="gene_identifiers" rows="12" cols="20">[%- c.req.param('gene_identifiers') -%]</textarea>
+  </p>
+  <p>
+    <input type="checkbox" name="view" value="csvdl" [%- IF c.req.param('view') == 'csvdl' %]checked="checked"[% END %] />
+    Download CSV
+  </p> 
+  <p>
+    <input type="submit" name="show_results" value="Show results" />
+  </p>
+</form>
+[% IF data %]
+<hr />
+<table id="conditional_es_cell_counts">
+  <thead>
+    [%- FOR col_name IN columns %]
+    <th>[% col_name %]</th>
+    [%- END %]
+  </thead>
+  <tbody>
+    [%- FOR row IN data %]
+    <tr>
+    [%- FOR col IN row %]
+      <td>[% col %]</td>
+    [%- END %]
+    </tr>
+    [%- END %]
+  </tbody>
+</table>
+[%- END %]

@@ -1,0 +1,93 @@
+HTGT Migration
+
+HTGT currently runs on an old version of Linux (etch or lenny). In order to provide resilience and the ability to support
+over an extended timelscale, we need to have HTGT run on a more recent version of Ubuntu, which is precise (v12.04).
+
+Bringing up the HTGT system in a development environment.
+
+
+Start with HTGT-db
+
+Contents of /etc/lsb-release:
+
+dp10@htgt3:~/svn-checkout/htgt-webapp-trunk[Devel]$ more /etc/lsb-release 
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=12.04
+DISTRIB_CODENAME=precise
+DISTRIB_DESCRIPTION="Ubuntu 12.04.2 LTS"
+
+
+Current Perl and htgt related environment:
+
+dp10@htgt3:~[Devel]$ which perl
+/software/perl-5.8.9/bin/perl
+dp10@htgt3:~[Devel]$ set | grep -i htgt
+HOSTNAME=htgt3
+HTGT_CACHE_ROOT=/var/tmp/htgt-cache.dp10
+HTGT_DB=eucomm_vector_esmt
+HTGT_DBCONNECT=/software/team87/brave_new_world/conf/dbconnect.cfg
+HTGT_ENSEMBL_HOST=ensembldb.ensembl.org
+HTGT_ENSEMBL_USER=anonymous
+HTGT_ENV=Devel
+HTGT_QC_CONF=/software/team87/brave_new_world/conf/qc.conf
+HTGT_QC_DIST_LOGIC_CONF=/software/team87/brave_new_world/conf/qc-dist-logic.conf
+HTGT_SUBMITQC_FORCE_RUN=
+PS1='\u@\h:\w[$HTGT_ENV]\$ '
+    htgt-build.pl build "$@"
+htgt-install () 
+        echo 'Usage: htgt-install MODULE-VERSION.tar.gz' 1>&2;
+    svn ls "svn+ssh://svn.internal.sanger.ac.uk/repos/svn/htgt/projects/$1/branches"
+    svn ls "svn+ssh://svn.internal.sanger.ac.uk/repos/svn/htgt/projects"
+    svn ls "svn+ssh://svn.internal.sanger.ac.uk/repos/svn/htgt/projects/$1/tags"
+    svn cp "svn+ssh://svn.internal.sanger.ac.uk/repos/svn/htgt/projects/${project}/trunk" "svn+ssh://svn.internal.sanger.ac.uk/repos/svn/htgt/projects/${project}/branches/${branch}" "$@"
+    exec htgt-env.pl --$1
+    htgt-build.pl tag "$@"
+
+INSTALL local::lib
+
+Copy the tar and follow the instructions to install in the usual place.
+
+export PERL_LOCAL_LIB_ROOT="$PERL_LOCAL_LIB_ROOT:/nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5";
+export PERL_MB_OPT="--install_base /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5";
+export PERL_MM_OPT="INSTALL_BASE=/nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5";
+export PERL5LIB="/nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5:$PERL5LIB";
+export PATH="/nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/bin:$PATH";
+
+PATH Specification
+
+/nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/bin:/bin:/usr/bin
+
+PERL5LIB Specification
+
+/nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5:
+
+Checkpoint: 16 July 2013
+
+module: htgtdb-trunk
+
+10-htgt-utils-pass-level.t  All tests complete 
+30-design.t - cannot load the dbfactory so need to skip to that module.
+
+module: htgt-dbconnect-trunk
+
+t/01-dbconnect.t all tests pass
+t/30-dbfactory.t all tests pass - but skipped tests that require loading of HTGTDB model 
+
+
+Now, can go back to continue testing of htgtdb-trunk...
+
+Created a directory to hold all the local htgt created modules. Then created soft links in that directory
+to the checkouts in svn-checkout. This will be a concise and bounded directory of all the required local
+HTGT modules.
+
+export PERL5LIB=~/work/htgt_migration/htgt_lib:$PERL5LIB
+
+
+SETUP - source  $HTGT_MIGRATION/setup_shell to set the environment correctly for this installation of perl and its modules.
+
+Also, need a script or makefile to create symlinks in a $HTGT_HOME directory, which is where all the
+modules of the local HTGT system will be installed.
+
+The first attemp is:
+
+$HTGT_MIGRATION/create_symlinks

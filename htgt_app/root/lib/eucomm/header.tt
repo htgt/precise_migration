@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>[% template.title or site.title %] &bull; EUCOMM</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="author" content="Wellcome Trust Sanger Institute" />
+        <meta name="description" content="The EUCOMM integrated project is funded by the European Union Framework 6 programme. The goal of EUCOMM is to generate collection of up to 20,000 mutated genes in mouse embryonic stem (ES) cells using conditional gene trapping and gene targeting approaches." />
+        <meta name="keywords" content="EUCOMM,mouse mutants,gene trap,ES cells,EURExpress,EMAGE,PRIME,FunGenEs,EUMORPHIA,EMMA" />
+
+        <link rel="icon" href="http://www.eucomm.org/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="http://www.eucomm.org/favicon.ico" type="image/x-icon" />
+
+        <style type="text/css" media="screen, projector">
+            /*<![CDATA[*/
+                @import "/css/yui-reset-fonts-grid-base.css";
+                @import "/htgt/static/css/common.css";
+                @import "/css/eucomm.css";
+                @import "/css/jquery.treeview.css";
+            /*]]>*/
+        </style>
+        <style type="text/css" media="print">
+            /*<![CDATA[*/
+                @import "/css/yui-reset-fonts-base.css";
+                @import "/css/eucomm-print.css";
+            /*]]>*/
+        </style>
+
+        <!-- Prototype -->
+        <script src="/htgt/static/javascript/prototype.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/htgt/static/javascript/scriptaculous.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/htgt/static/javascript/tablekit.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/htgt/static/javascript/validation.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/htgt/static/javascript/htgt.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- jQuery -->
+        <script src="/javascript/jquery-1.2.6.min.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" charset="utf-8">
+            //<![CDATA[
+                jQuery.noConflict();
+            //]]>
+        </script>
+        <script src="/javascript/jquery.treeview.min.js" type="text/javascript" charset="utf-8"></script>
+        
+        <!-- Custom -->
+        <script src="/javascript/eucomm.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body>
+        <div id="doc3" class="yui-t2">
+            <div id="nav-search" class="yui-g">
+                <div class="yui-u first">
+                    [% PROCESS 'eucomm/small-navigation.tt' position='header' %]
+                </div>
+                <div class="yui-u">
+                    <fieldset>
+                        <form id="gene_search" method="get" action="/htgt/report/gene_search">
+                            <p>
+                                <img id="gene_search_spinner" src="/htgt/static/images/indicator.gif" alt="Working..." style="display:none;" />
+                                <input class="default-value" type="text" id="gene_name" name="query" title="Search for a gene or product" />
+                                <span title="reset" id="gene_search_reset" class="reset">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            </p>
+                        </form>
+                    </fieldset>
+                </div>
+            </div>
+            <div id="hd">
+                <h1><a href='/'><img src="/images/header.png" alt="European Conditional Mouse Mutagenesis Program" /></a></h1>
+            </div>
+            <div id="bd">
+                <div id="yui-main">
+                    <div id="content" class="yui-b">
+                        <div id="site_wide_search_results"></div>
+                        <div id="naked_content">
+                            <h2>
+                                [% UNLESS template.display == 'false' %][% template.heading or template.title or site.title %][% END %]
+                            </h2>

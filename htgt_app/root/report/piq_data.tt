@@ -1,0 +1,21 @@
+[% META title = "PIQ Data" %]
+
+<table>
+  <thead>
+    <tr>
+      [%- header = piq_data.shift %]
+      [% FOR h IN header -%]
+      <td>[% h %]</td>
+      [% END -%]
+    </tr>
+  </thead>
+  <tbody>
+  [% FOR r IN piq_data %]
+    <tr>
+    [% FOR v IN r -%]
+      <td>[% v %]</td>
+    [% END -%]
+    </tr>
+  [% END -%]
+  </tbody>
+</table>

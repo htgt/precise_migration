@@ -1,0 +1,28 @@
+[% META title = "Create Plates and Load QC Results" -%]
+
+<form method="POST">
+  <fieldset>
+    <legend>Create plates for QC run [% qc_run.qc_run_id %]</legend>
+    <p>
+      Plates are normally named identically to the sequencing
+      project. If you wish to override this (for example, if the
+      sequencing project was incorrectly named), please enter the
+      desired plate names below.
+    </p>
+  [% FOR plate IN qc_run.plates -%]
+    [% SET rename_plate = "rename_plate_${plate}" -%]
+    [% SET rename_to = c.request.param( rename_plate ) -%]
+    <label for="[% rename_plate %]">Create plate [% plate %] as</label>
+    <input name="[% rename_plate %]" id="[% rename_plate %]" type="text" value="[% rename_to.length ? rename_to : plate %]" />
+     <br />
+  [% END -%]
+    <label for="plate_type">Plate type</label>
+    <select name="plate_type" id="plate_type">
+      <option>-</option>
+      [% SET selected = c.request.param( 'plate_type' ) -%]
+    [% FOR type IN plate_types -%]
+      <option[% IF type == selected %] selected="selected"[% END %]>[% type %]</option>
+    [% END %]
+    <input name="create_plates" id="create_plates" type="submit" value="Create Plates" />
+  </fieldset>  
+</form>

@@ -1,0 +1,70 @@
+[% META title = 'Insert Plate Shipping Dates' -%]
+
+<form name="insert_plate_shipping_dates" method="post" enctype="multipart/form-data">
+  <p>
+    Shipping Date:<br>
+    <input type="text" name="shipping_date" size="20" value="[% shipping_date %]" />
+     (yyyy-mm-dd)
+  </p>
+  <p>
+    Shipping Center:<br>
+    <select name="shipping_center">
+      [% FOR center = shipping_centers %]
+      <option value="[% center.value %]" [% IF center.value == shipping_center %]selected="selected"[% END %]>[% center.name %]</option>
+      [% END %]
+    </select> 
+  </p>
+  <p>
+    Plate Names:<br>
+    <textarea name="shipping_plates" rows="20" cols="30">[% shipping_plates %]</textarea>
+  </p>
+  <p>
+    <input type="submit" name="update_shipping" value="Create Shipping Label(s)" />
+  </p>
+</form>
+
+<fieldset id="plate_shipping_dates" class="toggleable">
+  <legend>How to use this upload facility</legend>
+  <div>
+    <p>
+        This form is used to upload plate shipping dates into the database.<br>
+        Each plate will be given a shipping date for the appropriate center. 
+    </p>
+
+    <ol>
+        <li>Input a shipping date in the required format.</li>
+        <li>Pick the appropriate shipping center.</li>
+        <li>Enter a list of plate names.</li>
+        <li>Press Create Shipping Label(s)</li>
+    </ol> 
+    <div>
+        <h3>SHIPPING DATE</h3>
+        <p>
+            Enter the shipping date in this format: yyyy-mm-dd<br>
+            e.g. 2001-01-12 or 2010-10-09
+        </p>
+        <h3>SHIPPING CENTER</h3>
+        <p>
+            Pick the appropriate shipping center<br>
+        </p>
+        <h3>PLATE NAMES</h3>
+        <p>
+            Enter a list of plate names, each plate name on a seperate line.
+            <pre>
+              PG00084_Z_1
+              PG00084_Z_2
+              PG00101_W_1
+              PG00101_W_2
+            </pre>
+        </p>
+    </div>
+    <div>
+    <h2>NOTE</h2>
+    <p>
+        An error message will appear if any information is entered incorrectly.<br>
+        If this happens none of the plate shipping dates will be entered into the database,<br>
+        all errors need to be fixed before any information will be added to the database.
+    </p>
+    </div>
+  </div>
+</fieldset>

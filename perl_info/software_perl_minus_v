@@ -1,0 +1,49 @@
+Summary of my perl5 (revision 5 version 16 subversion 2) configuration:
+   
+  Platform:
+    osname=linux, osvers=3.2.0-32-virtual, archname=x86_64-linux
+    uname='linux precise-dev64 3.2.0-32-virtual #51-ubuntu smp wed sep 26 21:53:42 utc 2012 x86_64 x86_64 x86_64 gnulinux '
+    config_args='-de -Dprefix=/software/perl-5.16.2'
+    hint=recommended, useposix=true, d_sigaction=define
+    useithreads=undef, usemultiplicity=undef
+    useperlio=define, d_sfio=undef, uselargefiles=define, usesocks=undef
+    use64bitint=define, use64bitall=define, uselongdouble=undef
+    usemymalloc=n, bincompat5005=undef
+  Compiler:
+    cc='cc', ccflags ='-fno-strict-aliasing -pipe -fstack-protector -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64',
+    optimize='-O2',
+    cppflags='-fno-strict-aliasing -pipe -fstack-protector -I/usr/local/include'
+    ccversion='', gccversion='4.6.3', gccosandvers=''
+    intsize=4, longsize=8, ptrsize=8, doublesize=8, byteorder=12345678
+    d_longlong=define, longlongsize=8, d_longdbl=define, longdblsize=16
+    ivtype='long', ivsize=8, nvtype='double', nvsize=8, Off_t='off_t', lseeksize=8
+    alignbytes=8, prototype=define
+  Linker and Libraries:
+    ld='cc', ldflags =' -fstack-protector -L/usr/local/lib'
+    libpth=/usr/local/lib /lib/x86_64-linux-gnu /lib/../lib /usr/lib/x86_64-linux-gnu /usr/lib/../lib /lib /usr/lib
+    libs=-lnsl -ldb -ldl -lm -lcrypt -lutil -lc
+    perllibs=-lnsl -ldl -lm -lcrypt -lutil -lc
+    libc=, so=so, useshrplib=false, libperl=libperl.a
+    gnulibc_version='2.15'
+  Dynamic Linking:
+    dlsrc=dl_dlopen.xs, dlext=so, d_dlsymun=undef, ccdlflags='-Wl,-E'
+    cccdlflags='-fPIC', lddlflags='-shared -O2 -L/usr/local/lib -fstack-protector'
+
+
+Characteristics of this binary (from libperl): 
+  Compile-time options: HAS_TIMES PERLIO_LAYERS PERL_DONT_CREATE_GVSV
+                        PERL_MALLOC_WRAP PERL_PRESERVE_IVUV USE_64_BIT_ALL
+                        USE_64_BIT_INT USE_LARGE_FILES USE_LOCALE
+                        USE_LOCALE_COLLATE USE_LOCALE_CTYPE
+                        USE_LOCALE_NUMERIC USE_PERLIO USE_PERL_ATOF
+  Built under linux
+  Compiled at Nov 14 2012 12:08:49
+  %ENV:
+    PERL5LIB=""
+    PERL_MM_OPT="INSTALL_BASE=/nfs/users/nfs_d/dp10"
+  @INC:
+    /software/perl-5.16.2/lib/site_perl/5.16.2/x86_64-linux
+    /software/perl-5.16.2/lib/site_perl/5.16.2
+    /software/perl-5.16.2/lib/5.16.2/x86_64-linux
+    /software/perl-5.16.2/lib/5.16.2
+    .

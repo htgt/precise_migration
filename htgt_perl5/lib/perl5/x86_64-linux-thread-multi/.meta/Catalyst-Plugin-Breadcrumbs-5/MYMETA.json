@@ -1,0 +1,31 @@
+{
+   "abstract" : "Breadcrumb information for your templates.",
+   "author" : [
+      "Danial Pearce <cpan@tigris.id.au>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Build version 0.4005, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Catalyst-Plugin-Breadcrumbs",
+   "prereqs" : {
+      "runtime" : {
+         "requires" : {
+            "Catalyst" : "5.2"
+         }
+      }
+   },
+   "provides" : {
+      "Catalyst::Plugin::Breadcrumbs" : {
+         "file" : "lib/Catalyst/Plugin/Breadcrumbs.pm",
+         "version" : "5"
+      }
+   },
+   "release_status" : "stable",
+   "version" : "5"
+}

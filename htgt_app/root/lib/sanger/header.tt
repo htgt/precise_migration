@@ -1,0 +1,108 @@
+<!-- BEGIN site/header -->
+
+<div id="header">
+     [% UNLESS c.engine.env.HTTP_HOST.search( '^www.sanger.ac.uk' ) %]
+        <div id="model_info">
+            <table>
+                <tbody>
+                    [% FOREACH model IN ['ConstructQC', 'HTGTDB'] %]
+                        <tr>
+                            <td>[%model%]</td>
+                            <td>[%c.model(model).storage.dbh.Username%]</td>
+                            <td>[%c.model(model).storage.dbh.Name%]</td>
+                        </tr>
+                    [% END %]
+                        <tr>
+                            <td colspan="3"><pre>$Id: header.tt 6045 2011-09-23 14:43:26Z rm7 $</pre></td>
+                        </tr>
+                        <tr>
+			    <td>[%server_username%]</td>
+                            <td colspan="2">[%server_fqdn%]</td>
+                        </tr>
+                        <tr>
+                           <td>Authenticated username</td>
+                           <td colspan="2">[% c.user.id %]</td>
+                        </tr>
+                        <tr>
+                           <td>Roles</td>
+                           <td colspan="2">[% c.user.roles.join( ", " )%]</td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+    [% END %]        
+
+    <!-- This link allows a jump up the page after closing the nice inheritance box.  Don't delete -->
+    <a name='top'></a>
+
+    [% IF style == 'EUCOMM' -%]
+        [%# No breadcrumb for eucomm %]
+    [% ELSE %]
+        <p class="breadcrumb">
+          [% FOREACH item IN c.breadcrumbs %]
+            [% IF loop.last %]
+                [% IF link_last_breadcrumb %]
+                  <a href="[% c.uri_for(item.path) %]">[% item.label %]</a>
+                [% ELSE %]
+                  [% item.label %]
+                [% END %]              
+            [% ELSE %]
+                <a href="[% c.uri_for(item.path) %]">[% item.label %]</a> &gt;
+            [% END %]
+          [% END %]
+        </p>
+    [% END %]
+
+    <div id="alerts">
+        [% IF status_msg || c.flash.status_msg %]
+            <div class="clear"></div>
+            <div class="message">
+                [% IF status_msg %][% status_msg %]<br />[% END %]
+                [% c.flash.status_msg %]
+            </div>
+            <div class="clear"></div>
+        [% END %]
+        [% IF error_msg || c.flash.error_msg %]
+            <div class="clear"></div>
+            <div class="error">
+                [% IF error_msg %][% error_msg %]<br />[% END %]
+                [% c.flash.error_msg %]
+            </div>
+            <div class="clear"></div>
+        [% END %]
+    </div>
+
+    <noscript>
+        <div class="warn">
+            Your browser does not seem to have Javascript support turned on.  This site has many features that rely on Javascript, and will not function correctly without it.<br /><br />
+            Please follow the instructions <a href="[% c.uri_for('/enable_js') %]">here</a> to enable Javascript support in your browser.
+        </div>
+    </noscript>
+
+    [% UNLESS c.user OR style == 'EUCOMM'  -%]
+        [% UNLESS do_not_show_login == 'true' %]
+            <div class="notloggedin">
+                You are not logged in, please <a href="[% IF style == 'EUCOMM' %]https://www.eucomm.org[% ELSE %]https://enigma.sanger.ac.uk[% END %]/sso/login">login</a> to be able to edit data or create designs.
+            </div>
+        [% END %]
+    [% END %]
+
+
+    [% IF status_msg_array.size %]
+    <div class="clear"></div>
+    <div id="userMsgs">
+        <h6>User Messages:</h6>
+        <dl>
+            [% FOR msg IN status_msg_array %]
+                <dt>[%msg.1%]</dt>
+                <dd>[%msg.0%]</dd>
+            [% END %]
+        </dl>
+    </div>
+    [% END %]
+</div>
+<!-- END site/header -->
+[% UNLESS style == 'EUCOMM'  -%]
+<div id="site_wide_search_results"></div>
+[% END %]
+

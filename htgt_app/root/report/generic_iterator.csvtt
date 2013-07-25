@@ -1,0 +1,6 @@
+[% USE CSV -%]
+[% CSV.set_columns( report.columns ) -%]
+[% CSV.header %]
+[% WHILE report.has_next -%]
+[% CSV.data( report.next_record ) %]
+[% END -%]

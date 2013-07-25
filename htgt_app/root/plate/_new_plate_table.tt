@@ -1,0 +1,47 @@
+<table id="new_plate_table">
+  <thead>
+    <tr>
+      <th>Well</th>
+      <th>Well Name</th>
+      <th>Parent Plate</th>
+      <th>Parent Well</th>
+      <th class="nocol"></th>
+      <th class="nocol"></th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOR well IN wells %]
+      <tr id="[% well %]">
+        <td class="new">[% well %]</td>
+        <td>[% well_info.${well}.well_name %]</td>
+        <td id="[% well_info.${well}.parent_plate_id %]">[% well_info.${well}.parent_plate %]</td>
+        <td id="[% well_info.${well}.parent_well_id %]">[% well_info.${well}.parent_well %]</td>
+        <td class="nocol">
+          <a 
+            onClick="makeWellABlank('[% well %]')" 
+            title="insert a blank well: ([% well %])"
+            style="cursor:pointer;">
+            <img src="/icons/silk/shading.png" alt="blank" />
+          </a>
+        </td>
+        <td class="nocol">
+          <a 
+            onClick="deleteSingleFromPlate('[% well %]')" 
+            title="clear this row: [% well %]"
+            style="cursor:pointer;">
+            <img src="/icons/silk/delete.png" alt="delete" />
+          </a>
+        </td>
+      </tr>
+    [% END %]
+  </tbody>
+</table>
+
+<div id="new_plate_details">
+    [% IF plate %]
+        <h4>Plate Data</h4>
+        <div id="data_div">[% INCLUDE 'plate/_plate_data_table.tt' %]</div>
+        <h4>Plate Comments</h4>
+        <div id="comments_div">[% INCLUDE 'plate/_plate_comment_table.tt' %]</div>
+    [% END %]
+</div>

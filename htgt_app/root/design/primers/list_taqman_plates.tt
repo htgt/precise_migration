@@ -1,0 +1,23 @@
+[% META title = 'List TaqMan Plates' %]
+<div id="report_area"></div>
+
+<script type="text/javascript" charset="utf-8">
+    //<![CDATA[
+
+    Event.observe('report_area', 'load', generateReport(1));
+
+    function generateReport (page_num) {
+        $('report_area').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        new Ajax.Updater(
+            'report_area',
+            '[% c.uri_for('/design/primers/_list_taqman_plates') %]',
+            {
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({ page: page_num })
+            }
+        );
+    }
+    
+    //]]>
+</script>

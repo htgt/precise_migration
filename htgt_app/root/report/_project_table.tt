@@ -1,0 +1,88 @@
+
+[% IF projects.size > 0 %]
+  <table id="projects[% timestamp %]" class="report_table project_search_results" [% IF called_elsewhere %]width="100%"[% END %]>
+      <thead>
+          <tr>
+              <th width="10px"><abbr title="EUCOMM">E</abbr></th>
+              <th width="10px"><abbr title="KOMP-CSD">K</abbr></th>
+              [% IF c.check_user_roles("edit") %]<th width="10px"><abbr title="MGP">M</abbr></th>[% END %]
+              <th width="10px"><abbr title="NorCOMM">N</abbr></th>
+              <th width="10px"><abbr title="EuTRACC">ET</abbr></th>
+              <th width="10px"><abbr title="KOMP-Regeneron">R</abbr></th>
+              <th width="10px"><abbr title="EUCOMM-Tools">ETs</abbr></th>
+              <th width="10px"><abbr title="EUCOMM-Tools-Cre">ETCs</abbr></th>
+              <th width="10px"><abbr title="SWITCH">S</abbr></th>              
+              <th width="10px"><abbr title="TPP">TPP</abbr></th>              
+              <th width="10px"><abbr title="MGP-Bespoke">MB</abbr></th>              
+              <th>Gene</th>
+              [% IF c.user %]<th>Chromosome</th>[% END %]
+              <th><a href="[% c.uri_for('/report/pipeline_status_explanations') %]">Status</a></th>
+              <th>Design</th>
+              <th><a href="[% c.uri_for('/cassettes') %]">Cassette</a></th>
+              <th><a href="[% c.uri_for('/backbones') %]">Backbone</a></th>
+              <th width="25px" class="nocol"></th>
+          </tr>
+      </thead>
+      <tbody>
+          [% SET row = 0 -%]
+          [% FOR project IN projects %]
+            [% row = row + 1 -%]
+            <tr class="[% IF row % 2 %]rowodd[% ELSE %]roweven[% END %]">
+                <td>[% IF project.is_eucomm %]<abbr title="Eucomm">E</abbr>[% END %]</td>
+                <td>[% IF project.is_komp_csd %]<abbr title="Komp">K</abbr>[% END %]</td>
+                [% IF c.check_user_roles("edit") %]<td>[% IF project.is_mgp %]<abbr title="MGP">M</abbr>[% END %]</td>[% END %]
+                <td>[% IF project.is_norcomm %]<abbr title="Norcomm">N</abbr>[% END %]</td>
+                <td>[% IF project.is_eutracc %]<abbr title="EuTRACC">ET</abbr>[% END %]</td>
+                <td>[% IF project.is_komp_regeneron %]<abbr title="Komp:Regeneron">R</abbr>[% END %]</td>
+                <td>[% IF project.is_eucomm_tools %]<abbr title="Eucomm-Tools">ETs</abbr>[% END %]</td>
+                <td>[% IF project.is_eucomm_tools_cre %]<abbr title="Eucomm-Tools-Cre">ETCs</abbr>[% END %]</td>
+                <td>[% IF project.is_switch %]<abbr title="Switch">S</abbr>[% END %]</td>
+                <td>[% IF project.is_tpp %]<abbr title="TPP">TPP</abbr>[% END %]</td>
+                <td>[% IF project.is_mgp_bespoke %]<abbr title="MGP-Bespoke">MB</abbr>[% END %]</td>
+                <td><a href="[% c.uri_for('/report/gene_report', { mgi_accession_id = project.mgi_gene.mgi_accession_id }) %]">[% project.mgi_gene.marker_symbol %]</a></td>
+
+                [% IF c.user %]
+                <td>[% project.mgi_gene.representative_genome_chr %]</td>
+                [% END %]
+
+                [% IF project.status.code.match('ESC-GT') %]
+                    <td><a href="[% c.uri_for('/report/pipeline_status_explanations') %]#[% project.status.name %]">ES cells - Conditional Gene Trap</a></td>
+                [% ELSE %]
+                    <td><a href="[% c.uri_for('/report/pipeline_status_explanations') %]#[% project.status.name %]">[% project.status.name %]</a></td>
+                [% END %]
+
+                <td><a href="[% c.uri_for('/design/designedit/refresh_design',{ design_id = project.design_id }) %]">
+                    [% project.design_id %]</a>[% IF project.design_id %]&nbsp;([% project.design_plate_name %]_[% project.design_well_name %])
+                    [% ELSE %] 
+                        [% IF project.status.code.match('ESC-GT') %]
+                            Not Applicable
+                        [% END %]
+                    [% END %]
+                </td>
+                <td>
+                    <a href="[% c.uri_for('/cassettes') %]#[% project.cassette %]">[% project.cassette %]</a>
+                    [% IF project.cassette %]
+                      [% UNLESS project.is_eutracc %]
+                        &nbsp;<small>([% IF project.cassette.match('_P') %]promoter[% ELSE %]promoterless[% END %])</small>
+                      [% END %]
+                    [% ELSE %]
+                       <!--  Don't want to hack at the code too much so a second block is used -->
+                       [% IF project.status.code.match('ESC-GT') %]
+                            <a href="http://www.eucomm.org/information/trapping/">FlpROSABetaGeo</a>
+                       [% END %]
+                    [% END %]
+                </td>
+                <td><a href="[% c.uri_for('/backbones') %]#[% project.backbone %]">[% project.backbone %]</a></td>
+                [% IF  project.status.code.match('ESC-GT') %]
+                    <td class="nocol"><a id="project-link-[% project.project_id %]" class="link trap-link" href="[% c.uri_for('/report/gene_report', { project_id = project.project_id }) %]">view</a></td>
+                [% ELSE %]
+                    <td class="nocol"><a id="project-link-[% project.project_id %]" class="link project-link" href="[% c.uri_for('/report/gene_report', { project_id = project.project_id }) %]">view</a></td>
+                [% END %]
+            </tr>
+          [% END %]
+      </tbody>
+  </table>
+[% ELSE %]
+  <small><em>no projects</em></small>
+[% END %]
+

@@ -1,0 +1,77 @@
+<h5>How To Enable JavaScript In Your Browser</h5>
+
+<p>&nbsp;</p>
+<p>If you have any problems with the following instructions, please contact your local systems administrator for assistance.</p>
+<p>&nbsp;</p>
+
+<fieldset>
+  <legend>Internet Explorer 6 and 7</legend>
+  <ul>
+    <li>Select <strong>Tools</strong> | <strong>Internet Options…</strong> menu item from the main menu.</li>
+    <li>Change to the <strong>Security</strong> tab at the top of the Internet Options window that pops up.</li>
+    <li>From the list of zones at the top of the Security options select the internet icon.</li>
+    <li>Select the button near the bottom that reads <strong>Custom Level</strong>.</li>
+    <li>In the new window that pops up, scroll down to the item that reads <strong>Active Scripting</strong>.</li>
+    <li>Select the option marked <strong>Enable</strong>.</li>
+  </ul>
+</fieldset>
+<p>&nbsp;</p>
+
+<fieldset>
+  <legend>Mozilla Firefox 1.5 and 2.0</legend>
+  <ul>
+    <li>Select <strong>Tools</strong> | <strong>Options...</strong> from the main menu.</li>
+    <li>Select <strong>Content</strong> button from the top row of options.</li>
+    <li>Select "Enable JavaScript." (You do not need to enable Java, but it is OK if you do.)</li>
+    <li><em>Note: You may wish to install the <a href="https://addons.mozilla.org/firefox/722/">NoScript extension for Firefox</a> to control which sites can run JavaScript.</em></li>
+  </ul>
+</fieldset>
+<p>&nbsp;</p>
+
+<fieldset>
+  <legend>Safari</legend>
+  <ul>
+    <li>Select <strong>Preferences</strong> from the <strong>Safari</strong> menu.</li>
+    <li>Select <strong>Security</strong> tab at the top.</li>
+    <li>Make sure "Enable JavaScript" is checked.</li>
+  </ul>
+</fieldset>
+<p>&nbsp;</p>
+
+<fieldset>
+  <legend>Opera 8 and 9</legend>
+  <ul>
+    <li>Select <strong>Tools</strong> | <strong>Quick Preferences ...</strong> from the main menu.</li>
+    <li>Make sure "Enable JavaScript" is checked.</li>
+  </ul>
+</fieldset>
+<p>&nbsp;</p>
+
+<fieldset>
+  <legend>Opera 6 and 7</legend>
+  <ul>
+    <li>Select <strong>File</strong> | <strong>Preferences...</strong> from the main menu.</li>
+    <li>Click <strong>Multimedia</strong>.</li>
+    <li>Under the "JavaScript" heading, select "Enable JavaScript."</li>
+  </ul>
+</fieldset>
+<p>&nbsp;</p>
+
+<fieldset>
+  <legend>Konqueror</legend>
+  <ul>
+    <li>Select <strong>Configure Konqueror</strong> from the <strong>Settings</strong> menu.</li>
+    <li>Make sure "Enable JavaScript globally" is checked under the <strong>Java &amp; Javascript</strong> tab.</li>
+  </ul>
+</fieldset>
+<p>&nbsp;</p>
+
+<fieldset>
+  <legend>Netscape 6.x and 7.x (Mozilla 1.0)</legend>
+  <ul>
+    <li>Select <strong>Edit</strong> | <strong>Preferences…</strong> menu item from the main menu.</li>
+    <li>Click on the <strong>Advanced</strong> label displayed in the list of options on the left hand side of the Preferences window that pops up.</li>
+    <li>On the right hand side select the checkbox marked <strong>Enable Javascript for Navigator</strong>.</li>
+  </ul>
+</fieldset>
+<p>&nbsp;</p>

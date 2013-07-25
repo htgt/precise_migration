@@ -1,0 +1,22 @@
+<h2>[% title %]</h2>
+<p>
+<a class='button csv' href="[% csv_uri %]" title="Export the table as a CSV file">Export to CSV</a>
+</p>
+<table id="distribute_counts_by_design_plate" class="report_table">
+    <thead>
+        <tr>
+        	[%- FOR col IN columns %]
+        	<th id='plate' class='noedit'>[% col %]</th>
+        	[%- END %]
+        </tr>
+    </thead>
+    <tbody>
+        [%- FOR row IN rows %]
+          <tr>
+          [%- FOR col IN columns %]
+            <td>[% row.$col %]</td>
+          [%- END %]
+          </tr>
+        [%- END %]
+    </tbody>
+</table>

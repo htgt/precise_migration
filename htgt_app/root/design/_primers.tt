@@ -1,0 +1,55 @@
+<!--
+<table>
+    [% IF primer_error %]
+        <td class='nocol'><h6 style='color:red;'>Error:</h6>The melting point, amplicon size and 5'/3' flanks <strong>must be integers</strong></td>
+    [% ELSE %]
+      <tr>
+          <th>Forward Primer</th>
+          <td>[% forward %]</td>
+          <th>Reverse Primer </th>
+          <td>[% backward %]</td>      
+      </tr>
+
+      [% IF ! forward.match('PRIMERS') || ! backward.match('PRIMERS') %]
+      <tr>
+          <th>Wild Type Product Size</th>
+          <td>[% wt_product_size %]</td>
+          <th>Mutant Product Size</th>      
+          <td>[% mt_product_size %]</td>
+      </tr>
+      [% END %]
+  [% END %]
+</table>
+-->
+
+<table>
+    [% IF primer_error %]
+        <td class='nocol'><h6 style='color:red;'>Error:</h6>The melting point, amplicon size and 5'/3' flanks <strong>must be integers</strong></td>
+    [% ELSIF no_design_id_error %]
+        <td class='nocol'><h6 style='color:red;'>Error: The project has no design yet.</td>
+    [% ELSE %]
+
+    [% forward_primers  = primers.forward     %]
+    [% backward_primers = primers.backward    %]
+    [% product_size     = primers.product     %]
+    [% wt_product_size  = primers.wt_product  %]
+    [% counter          = 0                   %]
+    
+    [% FOR i IN forward_primers %]
+        <tr> 
+            <th>Forward</th>            <td>[% forward_primers.$counter %] </td>
+            <th>Reverse</th>            <td>[% backward_primers.$counter %]</td>
+            <!--
+                <th>Mt Product Size</th>    <td>[% product_size.$counter %]   </td>
+                <th>Wt Product Size</th>    <td>[% wt_product_size.$counter %] </td>
+            -->
+        
+        </tr>
+        
+        [% counter = counter + 1 %]
+    [% END %]
+    
+      
+  [% END %]
+  
+</table>

@@ -1,0 +1,30 @@
+---
+name: HTGT
+
+using_frontend_proxy: 1
+
+session:
+  expires: 3600
+  dbi_dbh: HTGTDB
+  dbi_table: sessions
+
+design_home: '/lustre/scratch109/sanger/team87/designs'
+
+designurl:
+  migp_ha: 'http://migsrv1a.internal.sanger.ac.uk:8083'
+  migt: 'http://migsrv1a.internal.sanger.ac.uk:8082'
+
+# Think this forces everything below root/static to be served statically
+#  as well as the default of all .png .gif .css below root/
+# Should ensure consistent behaviour between a perl server and an apache server 
+#  with a <Location /{htgt/,}static> SetHandler default-handler config
+static:
+  dirs:
+    - static
+
+banned_hosts:
+  - .search.msn.com
+  - .googlebot.com
+  - .cuil.com
+  - .crawl.yahoo.net
+  - 94.185.156.187

@@ -1,0 +1,57 @@
+{
+   "abstract" : "A Logging Role for Moose based on Log::Log4perl",
+   "author" : [
+      "Roland Lammel <lammel@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Install version 1.06, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "MooseX-Log-Log4perl",
+   "no_index" : {
+      "directory" : [
+         "inc",
+         "t"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.59",
+            "IO::Scalar" : "0",
+            "Moose" : "0.65",
+            "Test::More" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.57"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "Moose" : "0.65"
+         },
+         "requires" : {
+            "Any::Moose" : "0.12",
+            "Log::Log4perl" : "1.13",
+            "perl" : "5.008"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "url" : "https://github.com/lammel/moosex-log-log4perl"
+      }
+   },
+   "version" : "0.46"
+}

@@ -1,0 +1,127 @@
+<p>
+    [% count %] available ES Cells found for [% gene %].
+</p>
+
+<table id="es_cells_for_gene[% timestamp %]" class="report_table editable resizable tksort">
+    <thead>
+        <tr>
+            <th id='gene' class="noedit">Gene</th>
+            <th id='epd_well' class="noedit">EPD Well</th>
+            <th id='fp_well' class="noedit">FP Well</th>
+            [% IF (c.check_user_roles("eucomm_edit") OR c.check_user_roles("edit")) %]
+                <th class='noedit' id="strain">Strain</th>                
+                <th class='noedit' id="pass_level">QC Pass</th>                
+                <th class='noedit' id="distribute">Distribute</th>
+                <th class='noedit' id="five_arm">5'Arm</th>
+                <th class='noedit' id="loxp">Loxp</th>
+                <th class='noedit' id="three_arm">3'Arm</th>
+                <th class='noedit' id="targeted_trap">Targeted Trap</th>
+                <th class='sortfirstasc date-oracle noedit' id="date">Date Assigned</th>
+                <th id="cnr_status">CNR Status</th>
+                <th id="gsf_status">GSF Status</th>
+                <th id="sng_status">SNG Status</th>
+                <th id="ics_status">ICS Status</th>
+                <th id="mrc_status">MRC Status</th>                      
+                <th id="assignment_comment">Comment</th>
+            [% ELSE %]
+                <th class='noedit' id="strain">Strain</th>                
+                <th class='sortfirstasc date-oracle noedit' id="cnr_status">Date Assigned</th>
+                <th class='noedit' id="cnr_status">CNR Status</th>
+                <th class='noedit' id="gsf_status">GSF Status</th>
+                <th class='noedit' id="sng_status">SNG Status</th>
+                <th class='noedit' id="ics_status">ICS Status</th>
+                <th class='noedit' id="mrc_status">MRC Status</th>                      
+                <th class='noedit' id="assignment_comment">Comment</th>
+            [% END %]
+        </tr>
+    </thead>
+    <tbody> 
+            [% FOR epd_well IN epd_wells %]
+                <tr id="[% epd_well.id %]_[% epd_well.gene_id %]">
+                    <td>[% gene %]</td>
+                    <td><a href="[% c.uri_for('/plate/view') %]?well_id=[% epd_well.id %]">[% epd_well.name %]</a></td>
+                    <td><a href="[% c.uri_for('/plate/view') %]?well_id=[% epd_well.fp_well_id %]" >[% epd_well.fp_well_name %] </a></td>
+                    <td>[% epd_well.strain %]</td>
+                    [% IF (c.check_user_roles("eucomm_edit") OR c.check_user_roles("edit")) %]
+                        <td>[% epd_well.pass_level %]</td>
+                        <td>[% epd_well.distribute %]</td>
+                        <td>[% epd_well.five_prime_arm %]</td>
+                        <td>[% epd_well.loxp %]</td>
+                        <td>[% epd_well.three_prime_arm %]</td>
+                        <td>[% epd_well.targeted_trap %]</td>
+                    [% END %]
+                    [% matches = epd_well.date.match('(\d{2})-(\w+)-(\d{4})') %]
+                        [% IF matches %]
+                            <td>[% matches.0 %]-[% matches.1 FILTER upper %]-[% matches.2.substr(2, 2) %]</td>
+                        [% ELSE %]
+                            <td>[% epd_well.date %]</td>
+                    [% END %]
+                                            
+                    <td>[% epd_well.cell_cnr_status %]</td>                            
+                    <td>[% epd_well.cell_gsf_status %]</td>                                                        
+                    <td>[% epd_well.cell_sng_status %]</td>                                                        
+                    <td>[% epd_well.cell_ics_status %]</td>                                                        
+                    <td>[% epd_well.cell_mrc_status %]</td>                                                        
+                                                
+                    [% IF epd_well.comment %]
+                        <td>[% epd_well.comment %]</td>
+                    [% ELSE %]
+                        <td>-</td>
+                    [% END %]
+                                                                   
+                </tr>
+                [% counter = counter + 1 %]
+            [% END %]
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+
+    var well_table =
+        new TableKit('es_cells_for_gene[% timestamp %]', {
+            editable: true,
+            [% IF c.check_user_roles("eucomm_edit") %]
+                editAjaxURI: '[% c.uri_for('/report/_update_unassigned_es_cell_status')%]'
+            [% ELSE %]
+                editable: false
+            [% END %]
+        });
+
+    TableKit.Editable.multiLineInput('assignment_comment');
+
+    TableKit.Editable.selectInput('mrc_status', {}, [
+       ['-','-'],
+       ['Interest','interest'],
+       ['Assigned','assigned'],
+       ['Injected','injected']
+    ]);
+
+    TableKit.Editable.selectInput('gsf_status', {}, [
+       ['-','-'],
+       ['Interest','interest'],
+       ['Assigned','assigned'],
+       ['Injected','injected']
+    ]);
+
+    TableKit.Editable.selectInput('sng_status', {}, [
+       ['-','-'],
+       ['Interest','interest'],
+       ['Assigned','assigned'],
+       ['Injected','injected']
+    ]);
+
+    TableKit.Editable.selectInput('cnr_status', {}, [
+       ['-','-'],
+       ['Interest','interest'],
+       ['Assigned','assigned'],
+       ['Injected','injected']
+    ]);
+
+    TableKit.Editable.selectInput('ics_status', {}, [
+       ['-','-'],
+       ['Interest','interest'],
+       ['Assigned','assigned'],
+       ['Injected','injected']
+    ]);
+    
+</script>

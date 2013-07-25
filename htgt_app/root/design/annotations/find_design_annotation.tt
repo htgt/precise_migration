@@ -1,0 +1,108 @@
+[% META title = 'Find Design Annotation information by Gene or Design' -%]
+
+<form name="get_design_annotation" method="post" >
+  <p>
+    Design IDs or Gene Marker Symbols
+  </p>
+  <p>
+    <textarea name="input_data" rows="20" cols="55">[% input_data %]</textarea>
+    <br>
+    <table>
+      <tr>
+        <td>Assembly</td>
+        <td>
+          <select name="assembly_id">
+            [% FOREACH assembly IN assemblies.keys %]
+            <option value="[% assembly %]" [% IF assembly == assembly_id %]selected="selected"[% END %]>[% assemblies.$assembly %]</option>
+            [% END %]
+          </select> 
+        </td>
+      </tr>
+      <tr>
+        <td>Build</td>
+        <td>
+          <select name="build_id">
+            [% FOREACH build IN builds %]
+            <option value="[% build %]" [% IF build_id == build %]selected="selected"[% END %]>[% build %]</option>
+            [% END %]
+          </select> 
+        </td>
+      </tr>
+    </table>
+  </p>
+  <p>
+    <input type="submit" name="get_design_annotations" value="Get Design Annotations" />
+  </p>
+</form>
+
+[% IF design_annotations.size %]
+
+  <table id="design_annotations" class="report_table tksort">
+      <thead>
+          <tr>
+            <th>Design ID</th>
+            <th>Gene</th>
+            <th>Oligo Status</th>
+            <th>Design Quality Status</th>
+            <th>Target Region Status</th>
+            <th>Artificial Intron Status</th>
+            <th>Final Status</th>
+            <th>Link</th>
+          </tr> 
+      </thead>
+
+      <tbody>
+          [% FOR da IN design_annotations -%]
+            <tr>
+              <td>[% da.design_id %]</td>
+              <td>[% da.gene %]</td>
+              <td>[% da.oligo_status_id %]</td>
+              <td>[% da.design_quality_status_id %]</td>
+              <td>[% da.target_region_status_id %]</td>
+              <td>[% da.artificial_intron_status_id %]</td>
+              <td>[% da.final_status_id %]</td>
+              <td>
+                 <a href="[% c.uri_for('/design/annotations/view_design_annotation',{ design_id = da.design_id, assembly_id = da.assembly_id, build_id = da.build_id }) %]">
+                   [% da.design_id %]
+                 </a>
+              </td>
+            </tr>
+          [% END %]
+      </tbody>
+  </table>
+  <br>
+  <br>
+[% END %]
+
+<fieldset id="find_design_annotations" class="toggleable">
+  <legend>How to use this design annotation search form</legend>
+  <div>
+    <p>
+        This form is used to search for design annotation information linked to designs in our system<br>
+    </p>
+
+    <div>
+    <h2>INPUT FORMAT</h2>
+        The form accepts comma, space or newline seperated design ids or gene marker symbols.<br>
+        When gene marker symbols are used all the designs associated with that gene will be shown.<br>
+        Example:
+        <pre>
+            33693 356
+            Cbx1,Serpine1
+        </pre>
+        <br>
+        You can also specify a assembly and or build you are interested in, it defaults to the current
+        assembly and build.
+    <h2>OUTPUT FORMAT</h2>
+        The output will be a table listing the available design annotation data for the searched for designs
+        along with links to more detailed information.<br>
+    <h3>Note</h3>
+        An error message will appear if any invalid design id or marker symbols are entered.<br>
+    <br>
+    </div>
+  </div>
+</fieldset>
+
+<script type="text/javascript" charset="utf-8">
+new TableKit('design_annotations',  {editable: false } );
+</script>

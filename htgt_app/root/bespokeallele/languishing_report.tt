@@ -1,0 +1,25 @@
+<div style="margin-top:20px">
+<h1>Bespoke Allele Languishing Report</h1>
+
+<table>
+  <thead>
+    <tr align="center">
+      <th></th>
+      [% FOREACH d IN durations -%]
+      <th>[% d %]</th>
+      [% END -%]
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH s IN statuses -%]
+    <tr>
+      <td>[% s %]</td>
+      [% FOREACH d IN durations -%]
+      <td><a href="[% c.uri_for( "/bespokeallele/languishing_report_list/${s}___${d}" ) %]/[% issues.$s.$d %]">[% counts.$s.$d %]</a></td>
+      [% END -%]
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+
+</div>

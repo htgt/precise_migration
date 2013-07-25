@@ -1,0 +1,6 @@
+[% USE CSV -%]
+[% CSV.set_columns( columns ) -%]
+[% CSV.header %]
+[% FOR well IN taqman_plate -%]
+[% CSV.data( well ) %]
+[% END -%]

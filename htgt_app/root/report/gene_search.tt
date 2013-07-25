@@ -1,0 +1,112 @@
+<style type="text/css" media="screen">
+    [% IF centre %]
+        #search_results_table { margin: 0 auto; }
+        .no_data { text-align: center; }
+        div.paginatecontainer { margin-bottom: 8px; }
+    [% ELSE %]
+        h3 { text-align: left !important; }
+        .no_data { text-align: left !important; }
+    [% END %]
+</style>
+
+[% IF called_elswhere AND ! centre %]<a id="clear_search_results" onClick="resetGeneSearch();">Clear Results</a>
+[% ELSIF called_elswhere AND centre %]<a id="clear_search_results" onClick="resetMainGeneSearch();">Clear Results</a>
+[% END %]
+
+[% IF style == 'EUCOMM' %]
+    <h2>Search Results for '[% search_term %]'</h2>
+[% ELSE %]
+    <h3>Search Results for '[% search_term %]'</h3>
+[% END %]
+
+[% IF page_info.total_entries > 0 %]
+    <p>Your query returned [% page_info.total_entries %] [% IF page_info.total_entries > 1 %]genes[% ELSE %]gene[% END %].</p>
+    [% IF page_info.last_page > 1 %]
+        <div class="paginatecontainer">
+            <div class="paginatetitle">
+                Showing page [% page_info.current_page %] of [% page_info.last_page %]. ([% page_info.entries_per_page %] genes per page)
+            </div>
+            <div class="paginate">
+                [% IF called_elswhere AND centre %]
+                    <ul>
+                        <li><a onClick="$('search_results').update(''); runMainGeneSearch( [% page_info.first_page %], '[% search_term %]' ); return false;">&lt;&lt; First</a></li>
+                        <li><a onClick="$('search_results').update(''); runMainGeneSearch( [% page_info.previous_page %], '[% search_term %]' ); return false;">&lt; Previous</a></li>
+                        [% FOR page IN page_info.pages_in_set %]
+                            <li [% IF page == page_info.current_page %]class="current_page"[% END %]><a onClick="$('search_results').update(''); runMainGeneSearch( [% page %], '[% search_term %]' ); return false;">[% page %]</a></li>
+                        [% END %]
+                        <li><a onClick="$('search_results').update(''); runMainGeneSearch( [% page_info.next_page %], '[% search_term %]' ); return false;">Next &gt;</a></li>
+                        <li><a onClick="$('search_results').update(''); runMainGeneSearch( [% page_info.last_page %], '[% search_term %]' ); return false;">Last &gt;&gt;</a></li>
+                    </ul>
+                [% ELSIF called_elswhere %]
+                    <ul>
+                        <li><a onClick="$('site_wide_search_results').update(''); runGeneSearch( [% page_info.first_page %], '[% search_term %]' ); return false;">&lt;&lt; First</a></li>
+                        <li><a onClick="$('site_wide_search_results').update(''); runGeneSearch( [% page_info.previous_page %], '[% search_term %]' ); return false;">&lt; Previous</a></li>
+                        [% FOR page IN page_info.pages_in_set %]
+                            <li [% IF page == page_info.current_page %]class="current_page"[% END %]><a onClick="$('site_wide_search_results').update(''); runGeneSearch( [% page %], '[% search_term %]' ); return false;">[% page %]</a></li>
+                        [% END %]
+                        <li><a onClick="$('site_wide_search_results').update(''); runGeneSearch( [% page_info.next_page %], '[% search_term %]' ); return false;">Next &gt;</a></li>
+                        <li><a onClick="$('site_wide_search_results').update(''); runGeneSearch( [% page_info.last_page %], '[% search_term %]' ); return false;">Last &gt;&gt;</a></li>
+                    </ul>
+                [% ELSE %]
+                    <ul>
+                        <li><a href="[% c.uri_for( '/report/gene_search' ) %]?query=[% search_term %]&page=[% page_info.first_page %]">&lt;&lt; First</a></li>
+                        <li><a href="[% c.uri_for( '/report/gene_search' ) %]?query=[% search_term %]&page=[% page_info.previous_page %]">&lt; Previous</a></li>
+                        [% FOR page IN page_info.pages_in_set %]
+                            <li [% IF page == page_info.current_page %]class="current_page"[% END %]><a href="[% c.uri_for( '/report/gene_search' ) %]?query=[% search_term %]&page=[% page %]">[% page %]</a></li>
+                        [% END %]
+                        <li><a href="[% c.uri_for( '/report/gene_search' ) %]?query=[% search_term %]&page=[% page_info.next_page %]">Next &gt;</a></li>
+                        <li><a href="[% c.uri_for( '/report/gene_search' ) %]?query=[% search_term %]&page=[% page_info.last_page %]">Last &gt;&gt;</a></li>
+                    </ul>
+                [% END %]
+            </div>
+        </div>
+    [% END %]
+    
+    <table id="search_results_table">
+        [% FOR result IN search_results.keys.sort %]
+            [% SET gene = search_results.${result}.gene %]
+            [% SET projects = search_results.${result}.projects %]
+            <tr class="nocol">
+                <td width="30%" valign="top">
+                    [%
+                        SET project_count = 0;
+                        SET project_status = '';
+                        SET gene_build_gene = '';
+                        
+                        FOR proj IN projects;
+                            IF proj.project_id; project_count = project_count + 1; END;
+                            IF project_count == 1;
+                                project_status = proj.status.name;
+                                gene_build_gene = proj.ws_by_di_entries.build_gene.primary_name;
+                            END;
+                        END;
+                    %]
+                    <strong><a href="[% c.uri_for('/report/gene_report') %]?mgi_accession_id=[% gene.mgi_accession_id %]" title="View gene details">[% gene.marker_symbol %]</a></strong>
+                    &nbsp;&nbsp;<small>[% gene.mgi_accession_id %]</small>
+                    [% IF project_count > 0 %]
+                        &nbsp;&nbsp;<small>[% gene_build_gene %]</small>
+                    [% END %]
+                    <br />
+                    <div class="mgi_marker_name">[% gene.marker_name %]</div>
+                    [% IF project_count > 0 %]
+                        <div class="project_status">[% project_status %]</div>
+                    [% END %]
+                </td>
+                <td width="70%" valign="middle">
+                    [% IF project_count > 0 %]
+                        [% PROCESS 'report/_project_table.tt' called_elsewhere='1' %]
+                    [% ELSE %]
+                        <small><em>no projects</em></small>
+                    [% END %]
+                </td>
+            </tr>
+        [% END %]
+    </table>
+    
+[% ELSE %]
+    
+    <div class="clearbig"><br /></div>
+    <p class="no_data">Sorry, no genes related to your search have been found in our pipeline</p>
+    
+[% END %]
+

@@ -1,0 +1,181 @@
+<br />
+<input id="edit_rec_button" type="button" value="Start Editing" onclick="toggle_edit(this)">
+
+[% headers = [
+            'well',
+            'gene name'
+            'design',
+            'PCR_U',
+            'PCR_D',
+            'PCR_G',
+            'REC_u',
+            'REC_D',
+            'REC_G',
+            'REC_NS',
+            'PostCre',
+            'Comment',
+            'Rec-Result',
+            ] 
+%]
+
+<!-- this is so we can dump out the headers after every 12 rows -->
+[% header_count = 0 %]
+
+<table id="recomb_table" class="report_table">
+    [% PROCESS display_headers %]
+    
+    [% FOR well IN plate.wells %]
+        <tr id="[% well.well_id %]">
+            <td>[% well.well_name %]</td>
+            <td>[% well.mgi_gene( c ) %]</td>
+            <td>[% well.design_instance.design_id %]</td>
+            [% PROCESS processCell int=3,  header='pcr_u' %]
+            [% PROCESS processCell int=4,  header='pcr_d' %]
+            [% PROCESS processCell int=5,  header='pcr_g' %]
+            [% PROCESS processCell int=6,  header='rec_u' %]
+            [% PROCESS processCell int=7,  header='rec_d' %]
+            [% PROCESS processCell int=8,  header='rec_g' %]
+            [% PROCESS processCell int=9,  header='rec_ns' %]            
+            [% PROCESS processCell int=10, header='postcre' %]                
+            <td class="comment edit">[% rec_well_data.${well.well_id}.${'comment'}%]</td>
+            [% PROCESS processCell int=12, header='rec-result' %]           
+        </tr>
+    [% PROCESS reprint_headers %]    
+    
+    [% END %]
+    
+</table>
+
+[% BLOCK processCell%]
+    [% IF rec_well_data.${well.well_id}.${header} == 'fail' %]
+    <td id="[% headers.${int}%]:[% well.well_id %]" style="cursor: pointer;"     class="warning cellupdate">
+        [% rec_well_data.${well.well_id}.${header} %]                                                  
+    </td>                                                                                              
+    [% ELSIF rec_well_data.${well.well_id}.${header} == 'weak' %]                                      
+        <td id="[% headers.${int}%]:[% well.well_id %]" style="cursor: pointer;" class="weak cellupdate">
+            [% rec_well_data.${well.well_id}.${header} %]                                                  
+        </td>                                                                                              
+    [% ELSE %]                                                                                         
+    <td id="[% headers.${int}%]:[% well.well_id %]" style="cursor: pointer;"     class="pass cellupdate">pass</td>
+    [% END %]
+[% END %]
+
+[% BLOCK reprint_headers %]
+    [% header_count = header_count + 1 %]
+    [% IF header_count == 12 %]
+        [% header_count = 0 %]
+        [% PROCESS display_headers %]
+    [% END %]
+[% END %]
+
+[% BLOCK display_headers %]
+    <tr>
+    [% FOR header IN headers %]
+        [% IF header == "Comment" %]
+            <th id="comment" class="editable">[% header FILTER upper %]</th>  
+        [% ELSIF header == 'REC_NS'%]
+            <th id="[%header%]" class="noedit">REC_T</th>
+        [% ELSE %]
+            <th id="[%header%]" class="noedit">[% header FILTER upper %]</th>
+        [% END %]
+    [% END %]
+    </tr>
+[% END %]
+
+<script type="text/javascript" charset="utf-8">
+
+
+var comments_table = new TableKit( 'recomb_table', {
+    editAjaxURI: '[% c.uri_for('/plate/update/_plate_well_data_update') %]',
+    sortable: false
+});
+
+TableKit.Editable.multiLineInput('comment');
+
+
+// Create the listener on the table - access the clicked element via Event.element(event)
+$('recomb_table').observe( 'click', function(event) {
+    var id = Event.element(event).id;
+    ary = id.split(":");
+    var header = ary[0];
+    var well_id = ary[1];
+    
+    var edit = $('edit_rec_button').value.toLowerCase();
+    if ( edit.match('start editing') && Event.element(event).hasClassName("cellupdate") ){
+        alert("To edit data please click the 'Start Editing' button.");
+        return 0;
+    } else {
+        if ( Event.element(event).hasClassName("cellupdate") ) {
+            cellupdate( Event.element(event), header, well_id );
+        } else {
+            return 0;
+        }
+    }
+} );
+
+// Control if edititing is allowed or not
+function toggle_edit( b ) {
+    var state = $(b).value.toLowerCase();
+    if ( state.match('start editing') ) {
+        $(b).value = "Stop Editing";
+    }
+    else if ( state.match('stop editing') ) {
+        $(b).value = "Start Editing";
+    }
+}
+
+
+// Cell update via shader.
+function cellupdate(cell, data_type, well_id) {
+    var v= $(cell).innerHTML.replace(/^\s*|\s*$/g,'');
+    data_type = data_type.toLowerCase();
+    if ( v == 'pass' || v == '' ) {
+        $(cell).update("fail");
+        update_cell(cell, data_type, well_id, 'fail');           
+    }
+    else if ( v == 'fail' ) {
+        $(cell).update("weak");
+        update_cell( cell, data_type, well_id, 'weak');           
+            
+    } else if ( v == 'weak' ) {
+        $(cell).update("pass");
+        update_cell( cell, data_type, well_id, 'pass');           
+    }
+
+}
+
+/* Called by the cellupdate fuction - this actually does the update. */
+function update_cell(cell, data_type, well_id, data_value ) {
+    new Ajax.Request(
+        '[% c.uri_for('/plate/update/_plate_well_data_update') %]',
+        {
+            method: 'post',
+            parameters: $H(
+                {
+                    id:    well_id,
+                    field: data_type,
+                    value: data_value
+                }
+            ),
+            onSuccess: function() {
+                var va= $(cell).innerHTML.replace(/^\s*|\s*$/g,'');
+                if ( va == 'pass' ) {
+                    $(cell).removeClassName('weak');
+                    $(cell).addClassName('pass'); 
+                } else if ( va == 'fail' ) {
+                    $(cell).removeClassName('pass');
+                    $(cell).addClassName('warning'); 
+                } else if ( va == 'weak' ) {
+                    $(cell).removeClassName('warning');
+                    $(cell).addClassName('weak');                     
+                }
+            },
+            onFailure: function() {
+                $(cell).addClassName('failed_update');
+                $(cell).removeClassName( ['pass', 'warning', 'weak'] );
+                alert('An update to the database failed!  Please refresh the page and try again.');
+            }
+        }
+    );
+}
+</script>

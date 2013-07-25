@@ -1,0 +1,36 @@
+
+<table>
+    <th>Automatic Success %</th>
+    <td>[% ens_pct_success %]</td>
+    <th>Manual Success %</th>
+    <td>[% ott_pct_success %]</td>
+</table>
+
+<table id='auto_vs_manual'>    
+    <th>Plate</th>
+    <th>% Automatic success</th>
+    <th># Automatic design instances</th>
+    <th>% Manual success</th>
+    <th># Manual design instances</th>
+        
+    [% FOR plate IN counts_hash.keys.sort %]
+        <tr>
+            <td>[% plate %]</td>
+            <td>[% counts_hash.${plate}.0 %]</td>
+            <td>[% counts_hash.${plate}.1 %]</td>
+            <td>[% counts_hash.${plate}.2 %]</td>
+            <td>[% counts_hash.${plate}.3 %]</td>
+        </tr>
+    
+    [% END %]
+        
+</table>
+
+
+<script type="text/javascript" charset="utf-8">
+    var well_table =
+        new TableKit(
+            'auto_vs_manual',
+            { editable: false, }
+        );
+</script>

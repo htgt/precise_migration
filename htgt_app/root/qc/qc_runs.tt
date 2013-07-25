@@ -1,0 +1,34 @@
+[% META title = 'QC Runs' -%]
+
+<p>
+    Click on a stage to view a list of the QC runs: 
+    <a class="button load" onClick="load_table('post_cre')">Post Cre</a>
+    <a class="button load" onClick="load_table('post_gateway')">Post Gateway</a>
+    <a class="button load" onClick="load_table('allele')">Allele</a>
+    <a class="button load" onClick="load_table('allele_tronly')">Allele - Target Region</a>
+    <a class="button load" onClick="load_table('allele_tponly')">Allele - 3' Region</a>
+    <a class="button load" onClick="load_table('allele_fponly')">Allele - 5' Region</a>
+
+</p>
+<p>&nbsp;</p>
+<div id="qcruns_area">
+[%IF c.req.params.stage; INCLUDE qc/_qc_runs_table.tt ; END %]
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    // load the different tables in via Ajax
+    function load_table (qcstage) {
+        $('qcruns_area').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+        new Ajax.Updater(
+            'qcruns_area',
+            '[% c.uri_for('/qc/_qc_runs_table') %]',
+            {
+                asynchronous: true,
+                evalScripts: true,
+                parameters: $H({
+                    stage: qcstage
+                })
+            }
+        );
+    }
+</script>

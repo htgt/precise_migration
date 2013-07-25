@@ -1,0 +1,7 @@
+[% META title = 'Well Relations' -%]
+<h5>Well [% well.well_name %]</h5>
+
+<h6>Deepest ancestor [%rootwell.plate.name%] [%rootwell.well_name%] </h6>
+
+
+[%table%]

@@ -1,0 +1,149 @@
+[% META title = "Submit QC Job" %]
+
+<form method="POST">
+<table>
+    <tr>
+        <td><label for="epd_plate_name">EPD Plate Name</label></td>
+        
+        <td><input name="epd_plate_name" id="epd_plate_name" type="text" autocomplete="off"
+            [%- IF c.request.param( 'epd_plate_name' ).defined %] value="[% c.request.param( 'epd_plate_name' ) %]" [% END %]
+            [%- IF sequencing_projects %] class="form-readonly" readonly="readonly" [% END -%] 
+        />
+            <br/>
+            <div class="auto_complete" id="epd_plate_suggestions"></div>
+        </td>
+    </tr>
+
+    <tr>
+        <td><label for="profile">Profile</label></td>
+        <td>
+        [% IF sequencing_projects %]
+            <input name="profile" id="profile" readonly="readonly" class="form-readonly" size="50" value="[% c.request.param( 'profile' ) %]" />
+        [% ELSE %]
+            <select name="profile" id="profile">
+                [%- SET selected_profile = c.req.param( 'profile' ) %]
+                    <option>-</option>
+                [% FOR p IN profiles -%]
+                    <option [% IF p == selected_profile %] selected="selected" [% END %]>[% p %]</option>
+                [% END -%]
+            </select>
+            <span id="qc_job_submit_indic" style="display:none;">
+                <img src="[% c.uri_for( "/static/images/indicator.gif" ) %]" alt="Working..." />
+            </span>
+        [% END %]
+        </td>
+    </tr>
+
+    [% IF template_plate %]
+        <tr>
+            <td><label for="template_plate">Template Plate</label></td>
+            <td><input name="template_plate" id="template_plate" readonly="readonly" class="form-readonly" size="50" value="[% template_plate %]" /></td>
+        </tr>
+    [% END %]
+
+    [% IF sequencing_projects %]
+        <tr>
+            <td>Sequencing Projects</td>
+            <td>
+                [% IF sequencing_projects.size > 0 %]
+                    <select name="sequencing_projects" id="sequencing_projects" size="[% sequencing_projects.size %]" multiple="yes">
+                        [% FOR p IN sequencing_projects %]
+                            <option value="[% p %]" selected="selected">[% p %]</option>
+                        [% END %]
+                    </select><br/>
+                    <button id="selectAllButton">Select All</button>
+                    <button id="clearAllButton">Clear All</button><br/>
+                    <span style="font-size: 0.7em;">Use ctrl+click to select multiple options.</span>
+                [% ELSE %]
+                    No Sequencing projects Available for this plate; please choose a different plate.
+                [% END %]
+            </td>
+        </tr>
+        <tr>
+            <td><label for="big_memory">Large Memory Job</label></td>      
+            <td><input name="big_memory" id="big_memory" type="checkbox" /></td>
+        </tr>
+    [% END %]
+
+    <tr>
+        <td colspan="2" style="text-align: center">
+            [% IF sequencing_projects %]
+                [% IF sequencing_projects.size > 0 %]
+                    <input name="submit_job" id="submit" type="submit" value="Submit ES Cell QC - step 2" />
+                [% END %]
+            [% ELSE %]
+                [% IF active_es_runs.size < 3 %]
+                    <input name="submit_initial_info" id="submit" type="submit" value="Submit ES Cell QC - step 1" />
+                [% ELSE %]
+                    <span style="color:#FF2020; font-weight: bold;">
+                        The limit on simultaneous ES Cell jobs has been reached - please come back later.
+                    </span>
+                [% END %]
+            [% END %]
+        </td>
+    </tr>
+</table></br>
+</form>
+
+[% IF ! sequencing_projects.size %]
+<h3>Active ES Cell runs: [% active_es_runs.size %]</h3>
+[% END %]
+[% IF active_es_runs.size > 0 %]
+<table>
+  <thead>
+    <tr>
+      <th>QC Run ID</th>
+      <th>Run Inititated</th>
+      <th>Profile</th>
+      <th>Sequencing Projects</th>
+      <th>Template Plate</th>
+      <th>Last Stage</th>
+      <th>Last Stage Executed</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH l IN active_es_runs -%]
+    <tr style="background-color:[% IF l.ended and not l.failed %]#80FF80[% ELSIF l.failed %]#FF8080[% END %]">
+      <td>
+        <a href="[% c.uri_for( "/newqc/view_run_files/${l.qc_run_id}" ) %]">[% l.qc_run_id %]</a>
+      </td>
+      <td>[% l.created %]</td>
+      <td>[% l.profile %]</td>
+      <td>[% l.seq_projects %]</td>
+      <td>[% l.template_plate %]</td>
+      <td>
+          <a 
+            href="[%c.uri_for( "/newqc/qc_farm_error_rpt/${l.qc_run_id}___${l.last_stage}" ) %]" 
+          >[% l.last_stage %]</a><br/>
+      </td>
+      <td>[% l.last_stage_time %]</td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+[% END %]
+
+<script type="text/javascript" charset="utf-8">
+    Event.observe(window, 'load', function() {
+      new Ajax.Autocompleter(
+        "epd_plate_name",
+        "epd_plate_suggestions",
+        "[% c.uri_for('/newqc/suggest_epd_plates') %]",
+        { indicator: "qc_job_submit_indic" }
+      );
+    });
+    [% IF sequencing_projects %]
+        Event.observe("selectAllButton", 'click', function(e) {
+            $$('select#sequencing_projects option').each(function(el) {
+                el.selected = true;
+            });
+            e.stop(); //dont submit the form (the default action)
+        });
+        Event.observe("clearAllButton", 'click', function(e) {
+            $$('select#sequencing_projects option').each(function(el) {
+                el.selected = false;
+            });
+            e.stop();
+        });
+    [% END %]
+</script>

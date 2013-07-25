@@ -1,0 +1,36 @@
+[% META title = 'Annotations' -%]
+[% SET pages = [
+   {
+        name => 'Design Annotation Summary',
+        path => '/design/annotations/design_annotation_summary',
+   },
+   {
+        name => 'Find Design Annotation',
+        path => '/design/annotations/find_design_annotation',
+   },
+   {
+        name => 'View Designs With Changed Genes',
+        path => '/design/annotations/projects_with_changed_gene_report',
+   }
+]
+%]
+<table id="reports_available" class="report_table tksort">
+  <thead>
+    <tr>
+      <th>Links</th>
+    </tr>
+  </thead>
+  <tbody>
+[%- FOR p IN pages %]
+    <tr>
+      <td>
+        <a href="[% c.uri_for( p.path ) %]">[% p.name %]</a>
+      </td>
+    </tr>
+[%- END %]
+  </tbody>
+</table>
+<script type="text/javascript" charset="utf-8">
+      var reports_available_table = new TableKit( 'reports_available', { editable: false } );
+</script>
+

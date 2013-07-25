@@ -1,0 +1,159 @@
+[% META title = 'Allocate Design To Plate' -%]
+
+<script language='JavaScript'>
+function ListDesign() {
+  document.list_design.action="[% c.uri_for('/design/design/list') %]";
+  document.list_design.submit;
+}
+
+function AssignPlate() {
+   document.list_design.action="[% c.uri_for('/design/design/assign_plate') %]";
+   document.list_design.submit;   
+}
+
+function AssignWell() {
+   document.list_design.action="[% c.uri_for('/design/design/assign_well') %]";
+   document.list_design.submit;    
+}
+
+function MakePlate() {
+   document.list_design.action="[% c.uri_for('/design/design/make_plate') %]";
+   document.list_design.submit;
+}
+
+function DownloadOrder() {
+  document.list_design.action="[% c.uri_for('/design/design/print_ordersheet' ) %]";
+  document.list_design.submit;
+}
+
+</script>
+
+<form name="list_design" method="post" action='[% c.uri_for('/design/design/list') %]'>
+<table>
+  <tr>
+     <td>Program:</td>
+     <td><select name="project">
+         [% FOREACH project IN projects -%]
+         <option [% IF project == filter_info.project %] selected [% END %]>[% project %]</option>
+         [% END -%]
+	 <option [% IF filter_info.project == "All" %] selected [% END %]>All</option>
+         </select>
+     </td>
+
+     <td>Design Type:</td>
+     <td><select name="design_type" id="design_type">
+         <option [% IF filter_info.design_type == "Knockout first" %] selected [% END %]>Knockout first</option>
+         <option [% IF filter_info.design_type == "Deletion" %] selected [% END %]>Deletion</option>
+         <option [% IF filter_info.design_type == "Insertion" %] selected [% END %]>Insertion</option>
+         <option [% IF filter_info.design_type == "All" %] selected [% END %]>All</option>
+         </select>
+     </td>
+
+     <td>Artificial Intron:</td>
+     <td><select name="art_intron_status" id="art_intron_status">
+        <option [% IF filter_info.art_intron_status == "No" %] selected [% END %]>No</option>         
+        <option [% IF filter_info.art_intron_status == "Yes" %] selected [% END %]>Yes</option>
+              
+         </select>
+     </td>
+
+     <td>Existing Plate:</td>
+     <td><select name="plate_number" id="plate_number">
+         <option [% IF filter_info.plate == "Null" %] selected [% END %]>Null</option>
+         [% FOREACH plate IN plates -%]
+         <option [% IF plate == filter_info.plate %] selected [% END %]>[% plate %]</option>
+         [% END -%]
+         <option [% IF filter_info.plate == "All" %] selected [% END %]>All</option>
+         </select>
+      </td>
+      <td>Planning final plate:</td>
+      <td><input type="text" name="final_plate" id="final_plate" [% IF filter_info.plate == "Null" %] value=[% filter_info.final_plate %] [% END %]>
+      </td>
+  </tr>
+  </table>
+  <table>
+  <tr>
+      <td><input type=submit value="List Designs" name=submit_search onClick='ListDesign()'>
+      </td>
+      <td><input type=submit value="Assign Plate" name=submit_assign_plate onClick='AssignPlate()'>
+      </td>
+      <td><input type=submit value="Assign Well Loc" name=submit_assign_well id=assignsubmit onClick='AssignWell()'>
+      </td>
+      <td><input type=submit value="Create Design Instance" name=submit_make_plate id=makeplatesubmit onClick='MakePlate()'>
+      </td>
+      <td><input type=submit value="Download Order Sheet" name=submit_download id=downloadsubmit onClick='DownloadOrder()'>
+      </td>
+  </tr>
+</table>
+</form>
+
+<table id="design_list" class="sortable resizable editable">
+  <thead>
+    <tr>
+       <td>Total number of records: </td><td>[% number_of_rows %]</td>
+    </tr>
+    <tr>
+       <th class="noedit">Create_Date</th>
+       <th class="noedit">Design ID</th>
+       <th class="noedit">Gene</th>
+       <th class="noedit">Program</th>
+       <th class="noedit">Design Type</th>
+       <th class="noedit">Target</th>
+       <th class="noedit">Phase</th>
+       <th [% IF exist_plate == 1 %]class="noedit" [% END %] id="final_plate">Final_plate</th>
+       <th [% IF exist_plate == 1 %]class="noedit" [% END %] id="well_loc">Well_Loc</th>
+       <th class="noedit">Regeneron Status</th>
+    </tr>
+  </thead>
+  <tbody>
+      [% FOREACH design IN designs %]
+      <tr id="[% design.design_id %]"> 
+          <td>[% design.created_date %]</td>
+          <td><a href=[% c.uri_for('/design/designedit/refresh_design')%]?design_id=[% design.design_id %]>[% design.design_id %]</a></td>
+          <td>[% design.gene %]</td>
+          <td>[% design.project %]</td>
+          <td>[% IF design.design_type == '' || design.design_type == 'KO' || design.design_type == 'KO_Location' %]
+                Knockout first
+              [% ELSIF design.design_type == 'Del_Block' || design.design_type == 'Del_Location' %]
+                Deletion
+              [% ELSIF design.design_type == 'Ins_Block' || design.design_type == 'Ins_Location' %]
+                Insertion
+              [% END %]
+          </td>
+          <td>[% design.target %]</td>
+          <td>[% IF design.phase != 'Null' %] [% design.phase %] [% END %]</td>
+          <td>[% IF design.final_plate != 'Null' %] [% design.final_plate %] [% END %]</td>
+          <td>[% IF design.well_loc != 'Null' %] [% design.well_loc %] [% END %]          </td>
+          <td>[% IF design.regeneron_status != 'Null' %] [% design.regeneron_status%] [% END %] </td>
+      </tr>
+      [% END %]
+   </tbody>
+</table>
+
+<script type="text/javascript">
+    var design_table = new TableKit('design_list', {
+    [% IF c.check_user_roles('edit') -%]
+    editAjaxURI: '[%c.uri_for('/design/design/_update_design') %]'
+    [% ELSE -%]  
+    editable: false
+    [% END -%] 
+  });
+</script> 
+
+<script>
+   $('plate_number').observe(
+    'change',
+    function(e){
+
+        if ($('plate_number').selectedIndex != 0 ) {
+           $('final_plate').disable();
+        } else {
+          $('final_plate').enable();
+        }
+   }
+  );
+</script>
+
+
+
+

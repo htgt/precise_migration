@@ -1,0 +1,40 @@
+[% META title = 'Plate Lists' -%]
+
+<form id="plate_list_form" action="[% c.uri_for('/plate/list') %]" method="get" accept-charset="utf-8">
+    <table>
+        <tr class="nocol">
+            <td>Plate Type:</td>
+            <td>
+                <select name="type" id="type" size="1">
+                    [% FOR type IN plate_types.keys.sort %]
+                        <option value="[% plate_types.$type %]" [% IF plate_type == type %]selected="yes"[% END %]>[% type %]</option>
+                    [% END %]
+                </select>
+            </td>
+        </tr>
+        <tr class="nocol">
+            <td>Order:</td>
+            <td>
+                <select name="order" id="order" size="1">
+                    <option value="asc" [% IF query_order == 'asc' %]selected="yes"[% END %]>A-Z (Ascending)</option>
+                    <option value="desc" [% IF query_order == 'desc' %]selected="yes"[% END %]>Z-A (Descending)</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="nocol">
+            <td><input type="submit" value="Load"></td>
+            <td></td>
+        </tr>
+    </table>
+</form>
+
+<div class="clearbig"></div>
+
+<div id="plate_list">
+    [% IF plates %][% PROCESS 'plate/_list.tt' %][% END %]
+</div>
+
+<!-- TODO: Make the form submission ajaxified to save full page reloads -->
+<script type="text/javascript" charset="utf-8">
+    
+</script>

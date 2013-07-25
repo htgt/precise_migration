@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>[% plate.name %] - Distribute Printout</title>
+        <style type="text/css" media="all">
+            body {
+                font-size: 0.8em;
+            }
+            table {
+                border-collapse: collapse;
+                border: 2px solid #000;
+            }
+            th {
+                background-color: #000;
+                color: #FFF;
+                border: 1px solid #000;
+                border-bottom: 2px solid #000;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            td {
+                border: 1px solid #000;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            tr.pass td {
+                font-weight: bold;
+                color: red;
+                background: silver;
+            }
+        </style>
+        <style type="text/css" media="print">
+            th {
+                color: #000;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>[% plate.name %]</h2>
+
+        <table id="epd_print" class="report_table" border="0" cellspacing="0" cellpadding="3">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Symbol</th>
+                    <th>Well Name</th>
+                    <th>QC Result</th>
+                    <th>Distribute</th>
+                </tr>
+            </thead>
+            <tbody>
+                [% FOR well IN wells -%]
+                    [% SET class_name = 'fail' %]
+                    [% IF well_data.${well}.pass_level.match('pass1|pass2|pass3') %][% class_name = 'pass' %][% END %]
+                    <tr class="[% class_name %]">
+                        <td>
+                            [% FOR project IN well_data.${well}.projects %]
+                                [% project %][% UNLESS project == well_data.${well}.projects.last %]<br />[% END %]
+                            [% END %]
+                        </td>
+                        <td>[% well_data.${well}.symbol %]</td>
+                        <td>[% well_data.${well}.name %]</td>
+                        <td>[% well_data.${well}.pass_level %]</td>
+                        <td>
+                            [% well_data.${well}.distribute %]
+                        </td>
+                    </tr>
+                [% END -%]
+            </tbody>
+        </table>
+    </body>
+</html>

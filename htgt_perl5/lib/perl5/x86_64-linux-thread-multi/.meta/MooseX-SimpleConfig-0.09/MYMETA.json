@@ -1,0 +1,62 @@
+{
+   "abstract" : "A Moose role for setting attributes from a simple configfile",
+   "author" : [
+      "Brandon L. Black, <blblack@gmail.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Install version 0.99, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "MooseX-SimpleConfig",
+   "no_index" : {
+      "directory" : [
+         "inc",
+         "t"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.42",
+            "Test::More" : "0.88"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.42"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Config::Any" : "0.13",
+            "Moose" : "0.35",
+            "MooseX::ConfigFromFile" : "0.02",
+            "Test::More" : "0.88"
+         }
+      }
+   },
+   "provides" : {
+      "MooseX::SimpleConfig" : {
+         "file" : "lib/MooseX/SimpleConfig.pm",
+         "version" : "0.09"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "type" : "git",
+         "url" : "git://git.moose.perl.org/MooseX-SimpleConfig.git"
+      },
+      "x_IRC" : "irc://irc.perl.org/#moose",
+      "x_MailingList" : "http://news.gmane.org/gmane.comp.lang.perl.moose"
+   },
+   "version" : "0.09"
+}

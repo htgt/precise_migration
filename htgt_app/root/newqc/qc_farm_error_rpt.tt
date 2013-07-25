@@ -1,0 +1,6 @@
+<div style="margin-top:20px">
+<h1>Error report for [% run_id %] - [% last_stage %]</h1>
+
+[% FOREACH e IN error_content -%]
+[% e %]</br>
+[% END -%]

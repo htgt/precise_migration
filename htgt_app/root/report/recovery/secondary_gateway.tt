@@ -1,0 +1,6 @@
+<form>
+  Plate name: <input name="plate_name" type="text" /> <input name="submit" type="submit" value="Go" />
+</form>
+[% IF report -%]
+[% PROCESS 'report/generic_iterator.tt' -%]
+[% END %]

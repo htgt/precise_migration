@@ -1,0 +1,136 @@
+<table>
+  <tr class="nocol"><td><a id="refresh_design[% timestamp %]" class="button refresh">Refresh</a></td></tr>
+</table>
+
+[% IF design_info_list.size > 0 %]
+  <table class="resizable tksort editable" id="designs_table[% timestamp %]">
+    <thead>
+      <tr>
+        <th class="sortfirstdesc noedit">Design</th>
+        <th class="noedit">Start Exon</th>
+        <th class="noedit">End Exon</th>
+        [% IF c.check_user_roles("design") %]
+            <th class="noedit">Status</th>
+            <th id="fulfills">Fulfills Request</th>
+            <th class="noedit">Last Comment</th>
+            <th class="noedit">Created By</th>
+        [% END %]
+      </tr>
+    </thead>
+    <tbody>
+      [% FOREACH design_info IN design_info_list %]
+        [% IF c.check_user_roles("design") %]
+            <tr id="[% design_info.design_id %]">
+              <td class="noedit"><a href="[% c.uri_for('/design/designedit/refresh_design')%]?design_id=[% design_info.design_id %]" target="_blank">[% design_info.design_id %]</a></td>
+              <td class="noedit">[% design_info.start_exon %]</td>
+              <td class="noedit">[% design_info.end_exon %]</td>
+              <td class="noedit">[% design_info.design_status %]</td>
+              <td class="edit">[% design_info.fulfills %]</td>
+              <td class="noedit">[% design_info.comment %]</td>
+              <td class="noedit">[% design_info.created_user %]</td>
+              [% IF design_info.display_run_button == 1 %]
+                 <td class="nocol"><a id="run_design_id_[% design_info.design_id %]" class="button cog_go run_design">Run Design</a></td>
+              [% END %]
+            </tr>
+        [% ELSE %]
+            [% IF design_info.design_instance == 1 %]
+                [% IF design_info.fulfills == 1 %]
+                    <tr>
+                      <td><a href=[% c.uri_for('/design/designedit/refresh_design')%]?design_id=[% design_info.design_id %] target="_blank">[% design_info.design_id %]</a></td>
+                      <td>[% design_info.start_exon %]</td>
+                      <td>[% design_info.end_exon %]</td>
+                    </tr>
+                [% END %]
+            [% END %]
+        [% END %]
+      [% END %]
+    </tbody>
+  </table>
+[% ELSE %]
+  <table>
+    <thead>
+      <tr>
+        <th class="sortfirstdesc noedit">Design</th>
+        <th class="noedit">Start Exon</th>
+        <th class="noedit">End Exon</th>
+        [% IF c.check_user_roles("design") %]
+            <th class="noedit">Status</th>
+            <th id="fulfills" class="edit">Fulfills Request</th>
+            <th class="noedit">Last Comment</th>
+        [% END %]
+      </tr>
+    </thead>
+    <tbody>
+      <tbody>
+         <tr>
+           <td colspan="3" class="nocol">No Designs</td>
+         </tr>
+       </tbody>
+    </tbody>
+  </table>
+[% END %]
+
+<script type="text/javascript" charset="utf-8">
+  [% IF design_info_list.size > 0 %]
+    var designs_table = new TableKit('designs_table[% timestamp %]',{
+      [% IF c.check_user_roles("design") %]
+        editAjaxURI: '[% c.uri_for('/gene/update/_design_fulfills_update/') %]?project_id=[% project_id %]',
+        editable: true
+      [% ELSE %]
+        editable: false
+      [% END %]
+    });
+
+    TableKit.Editable.selectInput('fulfills', {}, [
+      ['1','1'],
+      [' ',' ']
+    ]);
+  [% END %]
+  
+  function RunDesign(design_id) {
+    var timestamp = new Date().getTime();
+    var new_table = 'designs_table' + timestamp;
+    var url = '[% c.uri_for('/gene/update/_runDesign/') %]?design_id='+ design_id +'&project_id='+ [% project_id %] + '&timestamp='+timestamp;
+    
+    new Ajax.Updater( 'design_div', url, { 
+      asynchronous: true,
+      evalScripts: true,
+      onComplete: function() {
+        new TableKit( new_table, {
+          editAjaxURI: '[% c.uri_for('/gene/update/_design_fulfills_update/') %]?project_id=[% project_id %]'
+        })
+      }
+    });
+  }
+  
+  // Function for making 'RunDesign' observers...
+  function loadRunDesignObservers () {
+    // on every link with the css class 'run_design'
+    $$('a.run_design').each( function (s) {
+      $(s).observe('click', function(){
+        var design_id = $(s).id.replace( /run_design_id_/, '' );
+        RunDesign(design_id);
+      });
+      
+    });
+  }
+  // Call the above function...
+  loadRunDesignObservers();
+  
+  // Observer to refresh the design table...
+  $('refresh_design[% timestamp %]').observe('click', function () {
+    var timestamp = new Date().getTime();
+    var new_table = 'designs_table'+timestamp;
+    var url = '[% c.uri_for('/gene/update/_refreshdesign/') %]?project_id=' + [% project_id %]+'&timestamp=' + timestamp;
+    
+    new Ajax.Updater('design_div', url, {
+        asynchronous: true,
+        evalScripts: true,
+        onComplete: function () {
+          new TableKit( new_table, {
+            editAjaxURI: '[% c.uri_for('/gene/update/_design_fulfills_update/') %]?project_id=[% project_id %]'
+          });
+        }
+    });
+  });
+</script>

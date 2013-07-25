@@ -1,0 +1,93 @@
+#!/bin/bash
+#
+# Please source setup_shell before running this script
+# script to cp the htgt modules and scripts to a single location
+# D J Parry-Smith July 2013
+# HTGT Migration
+
+printf "==> Welcome to the HTGT installer\n\n"
+HTGT_MIGRATION_ROOT=~/work/htgt_migration
+HTGT_LIB_HOME=~/work/htgt_migration/htgt_lib
+HTGT_SOURCE_SVN=~/svn-checkout
+HTGT_SOURCE_GIT=~/git-checkout
+
+
+# Clear out the old files...
+printf "==> Clearing out the old HTGT installation files\n"
+rm -rf $HTGT_LIB_HOME
+
+# Create a list of files to be copied...
+svn_file_list=(
+    'htgtdb-trunk/lib/'
+    'htgt-dbconnect-trunk/lib/'
+    'htgt-constants-trunk/lib/'
+    'HTGT-QC-trunk/lib/' 
+    'htgt-trunk/lib/'
+    'kermits-db-trunk/lib/'
+    'htgt-utils-design-trunk/lib/'
+    'htgt-utils-ensembl-trunk/lib/'
+    'TargetedTrap-trunk/lib/' # deprecated
+    'bio-cigarseq-trunk/lib/'
+    'construct-qc-db-trunk/lib/'
+    'catalyst-authentication-credential-sangersso-trunk/lib/Catalyst'
+    'htgt-utils-report-qc-results-and-primers-trunk/lib/'
+    'HTGT-Utils-BadgerRepository-trunk/lib/'
+    'htgt-utils-recovery-trunk/lib/'
+    'htgt-utils-upload-qc-results-trunk/lib/'
+    'htgt-utils-plate-trunk/lib/'
+    'htgt-utils-taqman-trunk/lib/'
+    'htgt-utils-design-qc-reports-trunk/lib/'
+    'htgt-utils-design-check-trunk/lib/'
+    'htgt-utils-engseqparams-trunk/lib/'
+    'Eng-Seq-Builder-trunk/lib/'
+    'htgt-utils-southernblot-trunk/lib/'
+    'htgt-utils-targrep-trunk/lib/'
+    'htgt-utils-mutagenesis-prediction-trunk/lib/'
+)
+
+git_file_list=(
+    'HTGT-QC-Common/lib/'
+)
+
+# We don't want hidden files, hence the exclude pattern
+module_counter=0
+for source in ${svn_file_list[*]}
+do
+    printf "\n==> Module No. %d: %s\n\n" `expr $module_counter + 1` $source
+    rsync -aq --exclude=".*" $HTGT_SOURCE_SVN/$source $HTGT_LIB_HOME
+    let module_counter++
+done
+
+for source in ${git_file_list[*]}
+do
+    printf "\n==> Module No. %d: %s\n\n" `expr $module_counter + 1` $source
+    rsync -aq --exclude=".*" $HTGT_SOURCE_GIT/$source $HTGT_LIB_HOME
+    let module_counter++
+done
+
+printf "\n\n"
+module_strings=(
+    'module'
+    'modules'
+)
+
+if ((module_counter>1))
+then
+    mod_index=1
+else
+    mod_index=0
+fi
+#printf "++> mod_index = %d\n" $mod_index
+printf "==> %d %s copied to installation directory\n\n" $module_counter ${module_strings[$mod_index]}
+
+printf "==> Clearing out script, root and configuration files\n\n"
+
+rm -rf $HTGT_MIGRATION_ROOT/htgt_app
+
+printf "==> Copying webapp script, root and configuration files\n\n"
+
+rsync -aq --exclude=".*" $HTGT_SOURCE_SVN/htgt-trunk/script $HTGT_MIGRATION_ROOT/htgt_app
+rsync -aq --exclude=".*" $HTGT_SOURCE_SVN/htgt-trunk/root $HTGT_MIGRATION_ROOT/htgt_app
+cp $HTGT_SOURCE_SVN/htgt-trunk/htgt.yml $HTGT_MIGRATION_ROOT/htgt_app
+
+printf "Done.\n"

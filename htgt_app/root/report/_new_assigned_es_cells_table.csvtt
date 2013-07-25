@@ -1,0 +1,8 @@
+[% IF c.check_user_roles("eucomm_edit")-%]
+gene,epd well,fp well,cnr status,gsf status,sng status,ics status,mrc status, comment
+[% ELSE -%]
+gene,epd well,fp well
+[% END -%]
+[% FOR gene IN genes.keys %][% FOR epd_well IN genes.${gene} %][% IF epd_well.children.size > 0 %][% counter = 0 -%]
+[% FOR fp_well IN epd_well.children %][% gene %],[% epd_well.name %],[% fp_well.name %],[% IF c.check_user_roles("eucomm_edit") %][% IF epd_well.type.match('cnr') %]Assigned,[% ELSE %]-,[% END %][% IF epd_well.type.match('gsf') %]Assigned,[% ELSE %]-,[% END %][% IF epd_well.type.match('sng') %]Assigned,[% ELSE %]-,[% END %][% IF epd_well.type.match('ics') %]Assigned,[% ELSE %]-,[% END %][% IF epd_well.type.match('mrc') %]Assigned,[% ELSE %]-,[% END %][% IF epd_well.comment.${counter} %][% epd_well.comment.${counter} %][% ELSE %]-[% END %][% END %]
+[% counter = counter + 1 %][% END %][% ELSE %][% gene %][% epd_well.name %]-[% IF c.check_user_roles("eucomm_edit") %][% END %][% END %][% END %][% END -%]

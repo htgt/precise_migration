@@ -1,0 +1,75 @@
+[% META title = "Generated Mouse Lines"-%]
+
+<p>[% attempts.size %] mutant mouse lines have been generated</p>
+
+<table id="glt_mice_table" class="report_table tksort">
+    <thead>
+        <tr>
+            <th class="sortfirstdesc">Production Centre</th>
+            <th>Project Status</th>            
+            <th>Allele Name</th>
+            <th>Clone Name</th>
+            <th>Mutant Allele Structure</th>
+            <th>Express Interest</th>
+        </tr>
+    </thead>
+    <tbody>
+        [% FOR attempt IN attempts %]
+            <tr>
+                <td>
+                    [% IF attempt.attempt.event.centre.name.match('GSF') %] HMGU
+                    [% ELSE %][% attempt.attempt.event.centre.name %]
+                    [% END %]
+                </td>
+                
+                <td>
+                  [% IF attempt.project_status %]
+                    [% attempt.project_status %]
+                  [% ELSE %]
+                    Mice - Germline transmission
+                  [% END %]
+                </td>
+                
+                <td>
+                    [% IF attempt.allele_name %]
+                        [% attempt.allele_name %] 
+                    [%ELSE%]
+                        [% attempt.kermits_gene %]<sup><em>not yet available</em></sup>
+                    [%END%]
+                </td>
+                
+                <td>
+                    [% IF attempt.type == "targ" %] 
+                        <a href="http://www.sanger.ac.uk/htgt/plate/view?well_id=[% attempt.clone_id %]#[% attempt.clone_id %]">[% attempt.attempt.event.clone.clone_name %]</a>
+                    [% ELSIF attempt.type == "trap" %]
+                        <a href="http://www.sanger.ac.uk/htgt/report/gene_trap_well_page?gene_trap_well=[% attempt.clone_id %]">[% attempt.attempt.event.clone.clone_name %]</a>
+                    [% ELSE %]
+                        [% attempt.attempt.event.clone.clone_name %]
+                    [% END %]
+                </td>
+                
+                <td>
+                    [% IF attempt.project_id AND attempt.type == "targ" %]
+                        <a href="http://www.sanger.ac.uk/htgt/report/gene_report?project_id=[% attempt.project_id %]">Details</a>
+                    [% ELSIF attempt.type == "trap" %]
+                        <a href="http://www.sanger.ac.uk/htgt/report/gene_trap_well_page?gene_trap_well=[% attempt.clone_id %]">Details</a>
+                    [% END %]
+                </td>
+                
+                <td>
+                    <a class="button" href="http://www.emmanet.org/mutant_types.php?keyword=[% attempt.attempt.event.clone.clone_name %]" target="popup" onclick="return(this.href, this.target)">Inquire&nbsp;at&nbsp;EMMA</a>
+                </td>
+            </tr>
+        [% END %]
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    function pop(url, target){
+      var w = window.open(url, target, 'width=600,height=200,resizable=1');
+      w.focus();
+      return false;
+    }
+
+    var glt_table = new TableKit('glt_mice_table',{ editable: false });
+</script>

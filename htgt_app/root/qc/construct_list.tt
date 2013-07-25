@@ -1,0 +1,251 @@
+<h1>QC Construct List ([% qctest_run.clone_plate %])</h1>
+
+<table>
+    <tr class="nocol">
+        <td>Display:</td>
+        <td>
+            <select name="show_hide_designs" id="show_hide_designs">
+                <option value="all" selected="yes">All Designs</option>
+                <option value="best">Best Designs</option>
+                <option value="chosen">Chosen Designs</option>
+            </select>
+        </td>
+    </tr>
+</table>
+
+<table>
+    <tr class="nocol">
+        <td><a class="button sort" onClick="sortByCol('qcresults',2)">Sort by Column</a></td>
+        <td><a href="?qcrun_id=[% qctest_run.qctest_run_id %]&view=csvdl&file=[% qctest_run.clone_plate %]_construct_list.csv" class="button csv">Download CSV</a></td>
+        <td>
+            [% IF c.check_user_roles("edit") %]
+            <a id="constructs_toggle" class="button pencil_go" onClick="chooseConstructsToggle()">Choose Constructs</a>
+            [% END %]
+        </td>
+        <td>
+            <form action="[% c.uri_for('/qc/update/save_chosen_constructs') %]" method="post" accept-charset="utf-8">
+                <input type="hidden" name="construct_data" value="" id="construct_data" />
+                <input type="hidden" name="qctest_run_id" value="[% qctest_run.qctest_run_id %]" />
+                <input type="submit" class="button save" id="save_changes" style="display:none;" value="Save Changes" />
+            </form>
+        </td>
+    </tr>
+</table>
+
+<table id="qcresults" class="report_table tksort">
+    <thead>
+        <tr>
+            <th class="row">Row</th>
+            <th class="clone">Clone</th>
+            <th class="384name">384 Name</th>
+            <th class="expDesign">Expected Design</th>
+            <th class="obsDesign">Observed Design</th>
+            <th class="genomic_hit">GenomicHit?</th>
+            <th class="gene">Marker Symbol</th>
+            <th class="ens_vega">Ens/Vega ID</th>
+            <th class="best">Best for Design</th>
+            <th class="chosen">Chosen for Design</th>
+            <th class="chosen_edit" style="display:none;">Choose for Design?</th>
+            <th class="pass">Pass</th>
+            <th class="chosen_status_edit" style="display:none;">Override Pass Status</th>
+            <th class="match">Exp/Obs Match</th>
+            <th class="primers">Valid Primers</th>
+            <th class="comment">Comment</th>
+            <th class="comment_edit" style="display:none;">Edit Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        [% SET row = 0 %]
+        [% FOR key IN keys %]
+            [% row = row + 1 %]
+            [% IF results.${key}.chosen || results.${key}.design %]
+            <tr id="[% key %]">
+            [% ELSE %]
+            <tr id="[% key %]" class="rowodd">
+            [% END %]
+                <td>[% row %]</td>
+                <td id="[% key %]_clone">[% results.${key}.clone %]</td>
+                <td>[% results.${key}.three_eight_four %]</td>
+                <td><a href="[% c.uri_for('/design/designedit/refresh_design') _ "?design_id=" _ results.${key}.exp_design_id %]">[% results.${key}.exp_design %]</a></td>
+                <td><a href="[% c.uri_for('/design/designedit/refresh_design') _ "?design_id=" _ results.${key}.obs_design_id %]">[% results.${key}.obs_design %]</a></td>
+                <td>[% results.${key}.genomic_hit %]</td>
+                <td>[% results.${key}.gene FILTER link_ensembl() %]</td>
+                <td>[% results.${key}.ens_vega_id FILTER link_ensembl() %]</td>
+                <td>[% results.${key}.best %]</td>
+                <td>[% UNLESS results.${key}.auto_chosen %][% results.${key}.chosen %][% END %]</td>
+                <td [% IF results.${key}.auto_chosen %]class="warning"[% END %] style="display:none;">
+                    <input id="[% key %]_chosen_edit" class="chosen_edit" type="text" size="15" name="chosen" value="[% results.${key}.chosen %]" />
+                </td>
+                <td>
+                    [% IF results.${key}.chosen_status %]
+                        <a href="[% c.uri_for('/qc/qctest_result_view', { qctest_result_id => key }) %]">[% results.${key}.chosen_status %]</a>
+                    [% ELSE %]
+                        <a href="[% c.uri_for('/qc/qctest_result_view', { qctest_result_id => key }) %]">[% results.${key}.pass_level %]</a>
+                    [% END %]
+                </td>
+                <td style="display:none;">
+                    <input id="[% key %]_chosen_status_edit" class="chosen_status_edit" type="text" size="10" name="chosen_status" value="[% results.${key}.chosen_status %]" />
+                </td>
+                <td>[% results.${key}.exp_obs_match %]</td>
+                <td>[% results.${key}.primers %]</td>
+                <td>[% results.${key}.comment %]</td>
+                <td style="display:none;">
+                    <input id="[% key %]_comment_edit" class="comment_edit" type="text" name="comment" value="[% results.${key}.comment %]" />
+                    <input id="[% key %]_row_updated" type="hidden" name="row_updated" value="[% IF results.${key}.auto_chosen %]yes[% END %]" />
+                </td>
+            </tr>
+        [% END %]
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+
+    // Observe the show/hide designs selector
+    Element.observe( 'show_hide_designs', 'change', function () {
+        if ( $F('show_hide_designs') == 'all' ) { showAllDesigns(); } 
+        else                                    { showDesigns( $F('show_hide_designs') ); }
+    });
+
+    // Apply some tablekit goodness to the table.
+    var construct_list_table = new TableKit(
+        'qcresults', 
+        {
+            editable: false,
+            stripe: false,
+            sortFirstAscendingClass: 'clone'
+        }
+    );
+
+    // Function to show/hide the form elements for editing the qc details.
+    function chooseConstructsToggle () {
+        if ( $('constructs_toggle').hasClassName('pencil_go') ) {
+            $('constructs_toggle').removeClassName('pencil_go');
+            $('constructs_toggle').addClassName('pencil_delete');
+        } else {
+            $('constructs_toggle').removeClassName('pencil_delete');
+            $('constructs_toggle').addClassName('pencil_go');
+        }
+        
+        var positions = [];
+        var ths = $$('table#qcresults thead tr th');
+        
+        $(ths).each(
+            function (s, index) {
+                if (    s.hasClassName('chosen') 
+                     || s.hasClassName('chosen_edit')
+                     || s.hasClassName('chosen_status_edit')
+                     || s.hasClassName('comment')
+                     || s.hasClassName('comment_edit')
+                    ) {
+                    positions.push(index);
+                }
+            }
+        );
+        
+        $('save_changes').toggle();
+        toggleColumns(positions);
+    }
+
+    // Return the table back to normal (show all rows).
+    function showAllDesigns () {
+        var trs = $$('table#qcresults tbody tr');
+        $(trs).each(
+            function (s, index) {
+                if (s.style.display == 'none') {
+                    s.toggle();
+                }
+            }
+        );
+    }
+    
+    // Hide everything except 'best/chosen' designs.
+    function showDesigns (class_name) {
+        showAllDesigns();
+        
+        // Find the given column...
+        var pos;
+        var ths = $$('table#qcresults thead tr th');
+        $(ths).each(function (s, index) {
+            if ( s.hasClassName(class_name) ) {
+                pos = index;
+            };
+        });
+        
+        // Hide the row...
+        hideRows(pos);
+    }
+
+    // Helper function for hiding table rows.
+    // If there is something in the defined column, the row will be visible.
+    function hideRows (column) {
+        var trs = $$('table#qcresults tbody tr');
+        $(trs).each(function (s, index) {
+            var tds = s.getElementsByTagName('td');
+            if ( $(tds[column]).innerHTML ) {
+                // do nothing - (we want to keep these)
+            } else {
+                if (s.style.display == 'none') {
+                    // already hidden - move along
+                } else {
+                    s.toggle();
+                };
+            };
+        });
+    }
+
+    // Helper function to hide/show a column on the table.
+    // Does not check for contents etc, just hides the defined column.
+    function toggleColumns (column_list) {
+        var trs = $$('table#qcresults tr');
+        $(trs).each(
+            function (s, index) {
+                var ths = s.getElementsByTagName('th');
+                var tds = s.getElementsByTagName('td');
+                $(column_list).each(
+                    function (num, index) {
+                        if (ths[num]) { $(ths[num]).toggle(); }
+                        if (tds[num]) { $(tds[num]).toggle(); }
+                    }
+                );
+            }
+        );
+    }
+    
+    // Observers... Lots of observers... >:-s
+    // These are needed to tell if things have been updated (by the user)- without them
+    // we would have to do a lot of database checks in the backend to see if we need 
+    // to do any updates.
+    [% FOR key IN keys %]
+    Element.observe('[% key %]_chosen_edit', 'change', function() { $('[% key %]_row_updated').value='yes'; });
+    Element.observe('[% key %]_chosen_status_edit', 'change', function() { $('[% key %]_row_updated').value='yes'; });
+    Element.observe('[% key %]_comment_edit', 'change', function() { $('[% key %]_row_updated').value='yes'; });
+    [% END %]
+    
+    // Function to be ran before form submit.  This gets all of the rows that have been updated
+    // and dumps them into an array of hashes.
+    function get_chosen_constructs () {
+        var ids = $$('table#qcresults tbody tr').map( function(e) { return e.id; } );
+        var updates = $A();
+        
+        for (var i = ids.length - 1; i >= 0; i--){
+            if ( $(ids[i]+'_row_updated').getValue() == 'yes') {
+                updates.push(
+                    $H({
+                        id:              ids[i],
+                        clone:           $(ids[i] + '_clone').innerHTML,
+                        chosen:          $F(ids[i] + '_chosen_edit'),
+                        chosen_status:   $F(ids[i] + '_chosen_status_edit'),
+                        comment:         $F(ids[i] + '_comment_edit')
+                    })
+                );
+            }
+        }
+        
+        return updates.compact();
+    }
+    
+    // Observer to trigger the above function - on form submit it will get all of the
+    // rows that have been updated and put them into a Json string to be sent to the controller.
+    $('save_changes').observe( 'click', function () { $('construct_data').value=get_chosen_constructs().toJSON(); } );
+    
+</script>

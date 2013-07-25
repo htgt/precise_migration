@@ -1,0 +1,92 @@
+[% META title = 'Get TaqMan Design Information' -%]
+
+<form name="get_taqman_design_info" method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td>
+                Input File:
+            </td>
+            <td>
+                <input type="file" name="datafile" size="40" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Target:
+            </td>
+            <td>
+                <select name="target">
+                  [% FOR target = targets %]
+                  <option value="[% target.value %]" [% IF target.value == current_target %]selected="selected"[% END %]>[% target.name %]</option>
+                  [% END %]
+                </select> 
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Output Type:
+            </td>
+            <td>
+                <select name="output_type">
+                  [% FOR output = output_types %]
+                  <option value="[% output.value %]" [% IF output.value == output_type %]selected="selected"[% END %]>[% output.name %]</option>
+                  [% END %]
+                </select> 
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Include duplicates:
+            </td>
+            <td>
+                 <input name="duplicates"  type="checkbox" value="true" [%IF duplicates %]checked="checker"[% END %]  />
+            </td>
+        </tr>
+
+    </table>
+    <input type="submit" name="get_taqman_design_info" value="Get TaqMan Design Info" />
+</form>
+<br>
+<fieldset id="form_instructions" class="toggleable">
+  <legend>Instructions</legend>
+  <div>
+    <p>
+        This form is used to get the information needed ( genomic coordinates or sequences ) to create taqman primers for specific designs / genes.
+    </p>
+
+    <div>
+      <h2>INPUT FORMAT</h2>
+      <h3>Input File</h3>
+      A file with a list of targets, one per line. A target can be a gene marker symbol, MGI accession id or design id.<br/>
+
+      Example file:
+      <pre>
+        178585
+        Cbx1
+        115075
+        MGI:105369
+      </pre>
+
+      <h3>Target</h3>
+         Specify the target region for the primers, either deleted or critical region.
+         <ul>
+         <li>deleted: between the U oligoes and between the D oligoes</li>
+         <li>critical: between the U3 and D5 oligoes</li>
+         </ul>
+      <h3>Output Type</h3>
+         Specify the type of output data you require, the zip file will contain:
+         <ul>
+         <li>coordinates: a csv file containing the target coordinates</li>
+         <li>sequence: a csv and a fasta file containing the sequence</li>
+         </ul>
+      <h3>Include Duplicates</h3>
+         By default no information will be output for designs which already have a taqman assay for that target.
+         To ignore this check select this option.
+
+    </div>
+    <div>
+    <h2>NOTE</h2>
+        An error message will appear if any information is entered incorrectly.<br>
+    </div>    
+  </div>
+</fieldset>

@@ -1,0 +1,45 @@
+<h3>Progress Summary</h3>
+<p>Number of genes with EUCOMM products available:</p>
+<table id="summary_table" width="100%">
+    <thead>
+        <tr>
+            <th>Conditional Product Type</th>
+            <th>No. of Genes</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="rowodd">
+            <td>Mice</td>
+            <td><a href="[% c.uri_for('/microinjection/glt_mice_report') %]">[% mice_count %]</a></td>
+        </tr>
+        <tr class="roweven">
+            <td>Targeted ES Cells</td>
+            <td>
+                <a href="[% c.uri_for('/report/project_reports', { is_eucomm='yes', status='ES Cells - Targeting Confirmed', generate_report='true', 'is_latest_for_gene'='yes', 'better_project_status_id'='on' }) %]">
+                    [% total_es_cell_counts.EUCOMM %]
+                </a>
+            </td>
+        </tr>
+        <tr class="rowodd">
+            <td>Targeting Vectors</td>
+            <td>
+                <a href="[% c.uri_for('/report/project_reports', { is_eucomm='yes', status='Vector Complete', generate_report='true', 'is_latest_for_gene'='yes', 'better_project_status_id'='on' }) %]">
+                    [% total_vector_counts.EUCOMM %]
+                </a>
+            </td>
+        </tr>
+        <tr class="roweven">
+            <td>Gene Trap ES Cells</td>
+            <td><a href="[% c.uri_for('/report/gene_traps') %]">5724</a></td>
+        </tr>
+    </tbody>
+</table>
+
+[% BLOCK show_number %]
+    [% IF ! count %]
+        0
+    [% ELSE %]
+        [% count %]
+    [% END %]
+[% END %]
+

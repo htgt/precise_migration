@@ -1,0 +1,12 @@
+<style type="text/css" media="screen, projector">
+  /*<![CDATA[*/
+    @import "[% c.uri_for('/htgt/static/css/common.css') %]";
+    @import "[% c.uri_for('/htgt/static/css/htgt.css') %]";
+  /*]]>*/
+</style>
+        
+[% IF vector_seq_features %]
+    [% PROCESS 'report/_construct_image.tt' image_seq_features= vector_seq_features %]
+[% END %]
+
+

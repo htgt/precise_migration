@@ -1,0 +1,40 @@
+[% USE CSV -%]
+[% CSV.data( [
+"Clone",
+"384 Name",
+"Expected Design",
+"Observed Design",
+"GenomicHit?",
+"Gene",
+"Best for Design",
+"Chosen for Design",
+"Pass",
+"Exp/Obs Match",
+"Valid Primers",
+"Comment"]
+) %]
+[% FOR key IN keys -%]
+[% SET data = [];
+data.push(results.${key}.clone);
+data.push(results.${key}.three_eight_four);
+data.push(results.${key}.exp_design);
+data.push(results.${key}.obs_design);
+data.push(results.${key}.genomic_hit);
+data.push(results.${key}.gene);
+data.push(results.${key}.best);
+UNLESS results.${key}.auto_chosen;
+data.push(results.${key}.chosen);
+ELSE;
+data.push('');
+END;
+IF results.${key}.chosen_status;
+data.push(results.${key}.chosen_status);
+ELSE;
+data.push(results.${key}.pass_level);
+END;
+data.push(results.${key}.exp_obs_match);
+data.push(results.${key}.primers);
+data.push(results.${key}.comment);
+-%]
+[% CSV.data(data) %]
+[% END -%]

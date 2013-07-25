@@ -1,0 +1,6 @@
+Child Plate, Well,Parent Plate
+
+[% FOR clone IN clones -%] 
+    child_plate,[% clone.design_well %],[% clone.clone_name %] 
+[% END -%]
+       

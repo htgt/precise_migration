@@ -1,0 +1,23 @@
+[% META title => "Show Alignment" -%]
+
+[% IF alignments.size %]
+    [% FOR a IN alignments.keys -%]
+        <h2>[% a %]</h2>
+        <p>
+          Matched [% alignments.$a.match_count %] of [% alignments.$a.length %] bases.
+        </p>
+        <pre>
+[% alignments.$a.alignment_str %]
+        </pre>
+        [% IF features.size %]
+        Features:
+        <ul>
+            [% FOR f IN features %]
+                <li>[% f %]</li>
+            [% END %]
+        </ul>
+        [% END %]
+    [% END -%]
+[% ELSE %]
+    <h4>Error: Couldn't find any alignments.</h4>
+[% END %]

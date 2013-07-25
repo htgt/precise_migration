@@ -1,0 +1,4 @@
+Observed ID,Symbol,PGD Plate,PGD Well,EP Well
+[% FOR well IN wells -%]
+[% well_data.${well}.obs_design %],[% well_data.${well}.symbol %],[% well_data.${well}.parent_plate %],[% well_data.${well}.parent_well %],[% well %]
+[% END -%]

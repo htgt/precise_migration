@@ -1,0 +1,48 @@
+<h1>Sanger Team87: View a QC test</h1>
+<p>
+Sequencing reads for Clone: [% qctest_result.construct_clone_name %] (
+<a href="[% c.uri_for('/qc/view/cloneseq', {id => qctest_result.construct_clone_id, format => 'Fasta'}) %]">fasta</a>,
+<a href="[% c.uri_for('/qc/view/cloneseq', {id => qctest_result.construct_clone_id, format => 'GenBank'}) %]">genbank</a>,
+<a href="[% c.uri_for('/qc/view/cloneseq', {id => qctest_result.construct_clone_id, format => 'GCG'}) %]">gcg</a>
+)<br>
+[% qctest_result.stage _ ': ' _ qctest_result.engineered_sequence_name %] (
+<a href="[% c.uri_for('/qc/seq_view_file', {engineered_seq_id => qctest_result.engineered_sequence_id, format => 'Fasta'}) %]">fasta</a>,
+<a href="[% c.uri_for('/qc/seq_view_file', {engineered_seq_id => qctest_result.engineered_sequence_id, format => 'GenBank'}) %]">genbank</a>,
+<a href="[% c.uri_for('/qc/seq_view_file', {engineered_seq_id => qctest_result.engineered_sequence_id, format => 'GCG'}) %]">gcg</a>
+)<br>
+
+Pass Status: <a href="http://www.sanger.ac.uk/Teams/Team87/qc/pass_fail_logic.html">[% qctest_result.pass_status %]</a><br>
+</p>
+
+<table class="report_table">
+     <thead>
+       <tr>
+         <th>primer</th><th>status</th><th>read_length</th><th>align_length</th><th>cmatch</th><th>mscore</th>
+         <th>% ident</th><th>synvec_loc</th><th>seqread_loc</th><th>alignment</th><th>features</th><th>trace</th>
+       </tr>
+     </thead>
+     <tbody>
+       [% FOREACH primer IN qctest_result.qctest_primers %]
+         <tr>
+           <td>[% primer.name %]</td>
+           <td>[% primer.status %]</td>
+           <td><a href="[% c.uri_for('/qc/view/seq_read', {id => primer.seqread_id, format => 'Fasta'}) %]">[% primer.read_length %]</a></td>
+           <td>[% primer.align_length %]</td>
+           <td>[% primer.cmatch %]</td>
+           <td>[% primer.mscore %]</td>
+           <td>[% primer.percent_identity %]</td>
+           <td>[% primer.synvec_loc %]</td>
+           <td>[% primer.seqread_loc %]</td>
+           <td><a href="[% c.uri_for('/qc/qctest_result_view', { qctest_result_id => qctest_result.qctest_result_id, align_id => primer.alignment }) %]">[% primer.alignment %]</a></td>
+           <td>[% primer.features.sort.join(', ') %]</td>
+           <td><a href="http://trace.ensembl.org/perl/traceview?traceid=[% primer.trace %]">[% primer.trace %]</a></td>
+         </tr
+       [% END %]
+     </tbody>
+</table>
+
+[% IF seq_align_feature %]
+   <p>
+      <pre>[% seq_align_feature.alignment %]</pre>
+   </p>
+[% END %]

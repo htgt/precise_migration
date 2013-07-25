@@ -1,0 +1,1540 @@
+=head2 Mon Jul 22 14:36:02 2013: C<Module> L<String::CamelCase|String::CamelCase>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.02>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:36:19 2013: C<Module> L<Lingua::PT::Stemmer|Lingua::PT::Stemmer>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.01>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:36:21 2013: C<Module> L<Lingua::Stem::It|Lingua::Stem::It>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.02>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:36:38 2013: C<Module> L<Text::German|Text::German>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.06>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:36:58 2013: C<Module> L<Lingua::Stem::Fr|Lingua::Stem::Fr>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.02>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:37:02 2013: C<Module> L<Lingua::Stem::Snowball::Da|Lingua::Stem::Snowball::Da>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.01>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:37:06 2013: C<Module> L<Lingua::Stem::Ru|Lingua::Stem::Ru>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.01>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:37:11 2013: C<Module> L<Memoize::ExpireLRU|Memoize::ExpireLRU>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.55>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:37:17 2013: C<Module> L<Lingua::EN::Tagger|Lingua::EN::Tagger>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.24>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:37:23 2013: C<Module> L<Lingua::EN::Words2Nums|Lingua::EN::Words2Nums>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.18>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:37:24 2013: C<Module> L<Lingua::EN::FindNumber|Lingua::EN::FindNumber>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.2>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:37:26 2013: C<Module> L<Lingua::EN::Number::IsOrdinal|Lingua::EN::Number::IsOrdinal>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.04>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:37:30 2013: C<Module> L<Lingua::EN::Inflect::Phrase|Lingua::EN::Inflect::Phrase>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.18>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:37:36 2013: C<Module> L<Text::Unidecode|Text::Unidecode>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.04>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:37:40 2013: C<Module> L<String::ToIdentifier::EN|String::ToIdentifier::EN>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.10>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:37:44 2013: C<Module> L<DBIx::Class::IntrospectableM2M|DBIx::Class::IntrospectableM2M>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.001001>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 14:39:59 2013: C<Module> L<DBIx::Class::Schema::Loader|DBIx::Class::Schema::Loader>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.07036>
+
+=item *
+
+C<EXE_FILES: script/dbicdump>
+
+=back
+
+=head2 Mon Jul 22 15:24:31 2013: C<Module> L<Lingua::EN::Inflect::Number|Lingua::EN::Inflect::Number>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.1>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 22 15:25:10 2013: C<Module> L<Class::Unload|Class::Unload>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.08>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Jul 24 16:10:29 2013: C<Module> L<MooseX::Role::WithOverloading|MooseX::Role::WithOverloading>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.13>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Jul 24 16:20:42 2013: C<Module> L<Catalyst::Plugin::Cache|Catalyst::Plugin::Cache>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.12>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Jul 24 16:21:45 2013: C<Module> L<Catalyst::Plugin::Prototype|Catalyst::Plugin::Prototype>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.33>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Jul 24 16:22:51 2013: C<Module> L<Test::WWW::Mechanize::PSGI|Test::WWW::Mechanize::PSGI>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.35>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Jul 24 16:22:54 2013: C<Module> L<Object::Signature|Object::Signature>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.07>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Jul 24 16:22:58 2013: C<Module> L<Catalyst::Plugin::Session|Catalyst::Plugin::Session>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.37>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Jul 24 16:23:11 2013: C<Module> L<Catalyst::Plugin::Authentication|Catalyst::Plugin::Authentication>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.10023>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Jul 24 16:23:14 2013: C<Module> L<Catalyst::Plugin::Authorization::Roles|Catalyst::Plugin::Authorization::Roles>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.09>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Jul 24 16:23:59 2013: C<Module> L<Catalyst::Plugin::Session::Store::DBI|Catalyst::Plugin::Session::Store::DBI>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.16>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Jul 24 16:24:55 2013: C<Module> L<Catalyst::Plugin::Session::State::Cookie|Catalyst::Plugin::Session::State::Cookie>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.17>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Jul 24 16:25:50 2013: C<Module> L<Catalyst::Plugin::StackTrace|Catalyst::Plugin::StackTrace>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.11>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 13:26:41 2013: C<Module> L<MooseX::Traits::Pluggable|MooseX::Traits::Pluggable>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.10>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 13:26:50 2013: C<Module> L<CatalystX::Component::Traits|CatalystX::Component::Traits>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.16>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 13:26:54 2013: C<Module> L<Catalyst::Component::InstancePerContext|Catalyst::Component::InstancePerContext>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.001001>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 13:27:05 2013: C<Module> L<Catalyst::Model::DBIC::Schema|Catalyst::Model::DBIC::Schema>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.61>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 13:27:20 2013: C<Module> L<Catalyst::Authentication::Store::DBIx::Class|Catalyst::Authentication::Store::DBIx::Class>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.1505>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 13:29:23 2013: C<Module> L<Heap|Heap>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.80>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 13:29:50 2013: C<Module> L<Cache|Cache>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.04>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 15:03:33 2013: C<Module> L<Switch|Switch>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.16>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 15:04:23 2013: C<Module> L<Catalyst::Model::Adaptor|Catalyst::Model::Adaptor>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.10>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 15:06:42 2013: C<Module> L<DIME::Tools|DIME::Tools>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.03>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 15:06:52 2013: C<Module> L<SOAP::Lite|SOAP::Lite>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.0>
+
+=item *
+
+C<EXE_FILES: bin/SOAPsh.pl bin/XMLRPCsh.pl bin/stubmaker.pl>
+
+=back
+
+=head2 Thu Jul 25 15:07:29 2013: C<Module> L<Devel::Caller|Devel::Caller>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.06>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 15:08:17 2013: C<Module> L<Iterator::Simple|Iterator::Simple>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.06>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 15:12:47 2013: C<Module> L<MooseX::ConfigFromFile|MooseX::ConfigFromFile>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.11>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 15:12:53 2013: C<Module> L<MooseX::App::Cmd|MooseX::App::Cmd>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.10>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 15:13:43 2013: C<Module> L<Iterator|Iterator>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.03>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 15:14:14 2013: C<Module> L<Iterator::Util|Iterator::Util>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.02>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 15:15:38 2013: C<Module> L<Data::Pageset|Data::Pageset>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.06>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 16:01:15 2013: C<Module> L<Catalyst::Action::REST|Catalyst::Action::REST>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.11>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 16:51:26 2013: C<Module> L<Text::CSV|Text::CSV>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.32>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:29:37 2013: C<Module> L<IO::All|IO::All>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.46>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:30:38 2013: C<Module> L<Perl6::Slurp|Perl6::Slurp>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.051003>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:31:45 2013: C<Module> L<Catalyst::Model::DBI|Catalyst::Model::DBI>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.32>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:33:11 2013: C<Module> L<URI::FromHash|URI::FromHash>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.04>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:33:13 2013: C<Module> L<MooseX::Types::URI|MooseX::Types::URI>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.03>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:34:19 2013: C<Module> L<MooseX::SimpleConfig|MooseX::SimpleConfig>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.09>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:39:45 2013: C<Module> L<GD::Image::Thumbnail|GD::Image::Thumbnail>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.02>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:42:37 2013: C<Module> L<Test::MockTime|Test::MockTime>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.12>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:43:19 2013: C<Module> L<DateTime::Format::Flexible|DateTime::Format::Flexible>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.25>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:50:10 2013: C<Module> L<Exporter::Lite|Exporter::Lite>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.02>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:50:13 2013: C<Module> L<Time::Duration|Time::Duration>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.1>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:50:16 2013: C<Module> L<Time::Duration::Parse|Time::Duration::Parse>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.06>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:50:23 2013: C<Module> L<boolean|boolean>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.30>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:51:48 2013: C<Module> L<Set::Infinite|Set::Infinite>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.65>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:52:11 2013: C<Module> L<DateTime::Event::Recurrence|DateTime::Event::Recurrence>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.16>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:52:43 2013: C<Module> L<DateTime::Event::ICal|DateTime::Event::ICal>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.11>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:52:51 2013: C<Module> L<DateTimeX::Easy|DateTimeX::Easy>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.089>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:52:58 2013: C<Module> L<Olson::Abbreviations|Olson::Abbreviations>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.04>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:53:02 2013: C<Module> L<MooseX::Types::DateTime::ButMaintained|MooseX::Types::DateTime::ButMaintained>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.16>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Jul 25 17:53:04 2013: C<Module> L<MooseX::Types::DateTimeX|MooseX::Types::DateTimeX>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.10>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+

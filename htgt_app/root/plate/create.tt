@@ -1,0 +1,811 @@
+[% META title = 'Create/Link A Plate' -%]
+[% SET create_page = 1 %]
+
+<style type="text/css" media="screen">
+    .reset {
+        background: transparent url([% c.uri_for('/static/images/reset.png')%]) no-repeat scroll center;
+        height: 13px;
+        width: 13px;
+        right: 0px;
+        top: 3px;
+        opacity: 0.3;
+    }
+    
+    .reset:hover {
+        opacity: 1;
+        cursor: pointer;
+    }
+    
+    #new_plate_table {
+    	float: left;
+    	width: 49%;
+    }
+
+    #new_plate_details {
+        float: left;
+        width: 49%;
+        padding-left: 10px;
+    }
+
+    #new_plate_details #data_div {
+        margin-bottom: 20px;
+    }
+</style>
+
+<table>
+    <tr class="nocol">
+        <td>
+            <div id="plate_search">
+                Parent Plate: 
+                <input autocomplete="off" id="parent_plate_name" name="parent_plate_name" type="text" />
+                <input type="hidden" id="plate_id" name="plate_id" value="" />
+                <span title="reset!" id="plate_name_reset" class="reset">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <div class="auto_complete" id="plate_name_auto_complete"></div>
+                <span id="indicator1" style="display: none">
+                    <img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." />
+                </span>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<h4>Parent Plate <span id="parent_plate_header"></span></h4>
+
+<div id="parent_plate_area"></div>
+
+<p>&nbsp;</p>
+
+<h4>New/Child Plate</h4>
+
+<table>
+    <tr class="nocol">
+        <td>Plate Type:</td>
+        <td>
+            <select name="new_plate_type" id="new_plate_type">
+                <option value="-" selected="yes">-</option>
+                [% FOR type IN plate_types.keys.sort %]
+                    <option value="[% plate_types.$type %]">[% type %]</option>
+                [% END %]
+            </select>
+        </td>
+        <td>Plate Name:</td>
+        <td>
+            <input autocomplete="off" type="text" name="new_plate_name" id="new_plate_name" />
+            <span title="reset!" id="new_plate_name_reset" class="reset">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <input type="hidden" id="new_plate_id" name="new_plate_id" value="" />
+            <div class="auto_complete" id="new_plate_name_auto_complete"></div>
+            <span id="indicator2" style="display: none">
+                <img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." />
+            </span>
+        </td>
+        <td id="piq_location_select" style="display:none;">
+            PIQ Shipping Location: <select name="piq_location" id="piq_location">
+               <option value="-" selected="yes">-</option>
+              [% FOR location IN piq_shipping_locations %]
+                  <option value="[% location %]">[% location %]</option>
+              [% END %]
+            </select>
+        </td>
+    </tr>
+    <tr class="nocol">
+        <td>Order Wells By:</td>
+        <td>
+          <select name="new_plate_order" id="new_plate_order">
+            <option value="column" selected="yes">column</option>
+            <option value="row">row</option>
+          </select>
+        </td>
+        <td>Plate Desc:</td>
+        <td>
+            <input type="text" name="new_plate_desc" id="new_plate_desc" />
+        </td>
+    </tr>
+    <tr class="nocol">
+        <td colspan="2">
+            <a class="button map_plates" onclick="mapChildToParent()" title="Use this button to map the child plate to the parent plate exactly.">Map Parent</a>
+        </td>
+        <td>Lock Plate:</td>
+        <td>
+            <input type="checkbox" name="new_plate_lock" id="new_plate_lock" />
+        </td>
+        <td></td>
+    </tr>
+    <tr class="nocol">
+        <td><a class="button clean" onclick="clearNewPlate()">Clear</a></td>
+        <td><a class="button save" onclick="saveNewPlate()">Save</a></td>
+        <td id="plate_status" colspan="3"></td>
+    </tr>
+</table>
+
+<div id="new_plate"></div>
+
+<script type="text/javascript">
+    /* Function to show/hide the child_well details found in the parent plate info (if we have more than 3 per well) */
+    function show_child_wells (div_id, link_id) {
+      if ($(div_id).style.display == 'none') {
+        $(link_id).update('hide');
+        $(link_id).setAttribute("class", "hide_more");
+        $(link_id).setAttribute("className", "hide_more");
+      } else {
+        $(link_id).update('show all');
+        $(link_id).setAttribute("class", "show_more");
+        $(link_id).setAttribute("className", "show_more");
+      }
+      Effect.toggle(div_id, 'blind', { duration: '0.1' });
+    }
+    
+    /* Observers */
+    Element.observe('new_plate_type', 'change', function() {
+      // If an EP or GR plate - set the default well order to 'rows'
+      if ( $F('new_plate_type').match('EPD|GR') ) {
+        $('new_plate_order').value = 'row';
+      };
+      if ( $F('new_plate_type')=='PIQ' ) {
+        $('piq_location_select').show();
+      }
+      else {
+        $('piq_location_select').hide();
+      }
+      prepNewPlate();
+      checkPlateTypesAndName(); 
+    });
+    Element.observe('new_plate_order', 'change', function() { prepNewPlate(); checkPlateTypesAndName(); });
+    Element.observe('new_plate_name', 'change', function() { checkPlateTypesAndName(); });
+
+    Event.observe('new_plate_name_reset', 'click', function() { clearNewPlate(); });
+    Event.observe('plate_name_reset',     'click', function() {
+      $('parent_plate_name').value = '';
+      $('parent_plate_area').update('');
+      $('parent_plate_header').update('');
+    });
+    
+    /* Autocompleter function for the parent plate_name input */
+    new Ajax.Autocompleter(
+      'parent_plate_name',
+      'plate_name_auto_complete',
+      '[% c.uri_for('/utils/_suggest_plate_names') %]',
+      {
+        indicator: 'indicator1',
+        afterUpdateElement : getPlate
+      }
+    );
+    
+    /* Function to insert the parent plate details upon search */
+    function getPlate(text, li) {
+      $('plate_id').value=li.id;
+      $('parent_plate_area').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+      new Ajax.Updater('parent_plate_area', '[% c.uri_for('/plate/_get_plate_wells/') %]', {
+          asynchronous: true,
+          evalScripts: true,
+          parameters: $H({ plate_id: li.id }),
+          onComplete: function() { checkPlateTypesAndName(); }
+      });
+      $('parent_plate_header').update('('+$F('parent_plate_name')+')');
+    }
+    
+    /* Autocompleter function for the 'new_plate_name' input */
+    new Ajax.Autocompleter(
+      'new_plate_name',
+      'new_plate_name_auto_complete',
+      '[% c.uri_for('/utils/_suggest_plate_names') %]',
+      {
+        indicator: 'indicator2',
+        afterUpdateElement: function(text,li) {
+          
+          // We have to first find out if this plate is locked...
+          new Ajax.Request( '[% c.uri_for('/plate/_is_plate_locked')%]', {
+            method: 'get',
+            parameters: $H({ plate_id: li.id }),
+            onComplete: function(transport1) {
+              // Show a loading icon...
+              $('new_plate').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+              
+              // Is the plate locked?
+              if ( transport1.responseText == 'true' ) {
+                // Yes, refuse to do anymore...
+                $('new_plate').update('<span class="failure">Sorry, this plate is locked and cannot be altered.</span>');
+                new Effect.Highlight('new_plate');
+              }
+              else {
+                // No - this plate is editable...
+                $('new_plate_id').value = li.id; // Set the existing plate id
+                $('new_plate').update(''); // Clear the 'new_plate' area
+                
+                // Get the plate desc
+                new Ajax.Request( '[% c.uri_for('/plate/_get_plate_desc') %]', {
+                  method: 'get',
+                  parameters: $H({ plate_id: li.id }),
+                  onComplete: function(transport2) {
+                    // Check if we got a description back or the plate name
+                    // if we got a desc - update the desc box
+                    if (text.value != transport2.responseText) {
+                      $('new_plate_desc').value = transport2.responseText;
+                    }
+                  }
+                });
+                
+                // Test for the allowed plate types...
+                // Then set the 'new_plate_type' selection & load the new plate.
+                
+                new Ajax.Request( '[% c.uri_for('/plate/_get_plate_type') %]', {
+                  method: 'get',
+                  parameters: $H({ plate_id: li.id }),
+                  onComplete: function(transport3) {
+                    // Check if we got a plate type back or the plate name
+                    // if we got a type - update the desc box
+                    if (text.value != transport3.responseText) {
+                      if ( transport3.responseText.match(/(GRD|GR|EPD|EP|FP|PGG|PGR|PGD|PGS|PCS|RS|PIQ|PIQFP|PIQS|VTP)/) ) {
+                        $('new_plate_type').value = transport3.responseText;
+                        prepNewPlate();
+                        checkPlateTypesAndName();
+                      } else {
+                        $('new_plate').update('<span class="failure">Sorry, this function is currently only available for EP, EPD, RS, GR, GRD, FP, PGG, PGS, PGR, PCS, PIQ, PIQFP, PIQS and VTP plates</span>');
+                      }
+                    }
+                  }
+                });
+              }
+            }
+          });
+        }
+      }
+    );
+    
+    /* Function to reset the whole 'new_plate' area */
+    function clearNewPlate() {
+      $('new_plate_type').value = '-';
+      $('new_plate_order').value = 'column';
+      $('new_plate_id').value = '';
+      $('new_plate_name').value = '';
+      $('new_plate_desc').value = '';
+      $('new_plate').update('');
+      $('plate_status').update('');
+      $('new_plate_lock').checked = false;
+      $('piq_location_select').hide();
+    }
+    
+    /* Function to update the new plate view */
+    function prepNewPlate() {
+      var tstamp = new Date().getTime();
+      new Ajax.Updater('new_plate', '[% c.uri_for('/plate/_prep_new_plate') %]', {
+        asynchronous: true,
+        evalScripts: true,
+        parameters: $H({
+          plate_type: $F('new_plate_type'),
+          plate_id: $F('new_plate_id'),
+          plate_name: $F('new_plate_name'),
+          plate_order: $F('new_plate_order'),
+          plate_desc: $F('new_plate_desc'),
+          timestamp: tstamp
+        })
+      });
+    }
+    
+    /* Function to check that the user is linking the correct plate types and formatting their names correctly */
+    var check_plate_types_and_name_conf = {
+      'PGG': {
+        parent_name_begin:        ['PGS','PRPGS','GRD','PGR'],
+        child_name_begin:         ['PGG','PGQ','DPGQ','EPGQ','GRQ'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   false
+      },
+      'EP': {
+        parent_name_begin:        ['PGS','PRPGS','GRD','PGR','PGG'],
+        child_name_begin:         ['EP','HEP'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   false
+      },
+      'EPD': {
+        parent_name_begin:        ['EP'],
+        child_name_begin:         ['EPD','HEPD'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   true
+      },
+      'REPD': {
+        parent_name_begin:        ['EPD','HEPD'],
+        child_name_begin:         ['REPD'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   true
+      },
+      'FP': {
+        parent_name_begin:        ['EPD','HEPD'],
+        child_name_begin:         ['FP'],
+        plate_num_length:         4,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   false
+      },
+      'PCS': {
+        parent_name_begin:        ['\\d+','PCS'],
+        child_name_begin:         ['PCS','PRPCS'],
+        plate_num_length:         5,
+        check_lettered_suffix:    true,
+        check_numerical_suffix:   false
+      },
+      'PGD': {
+        parent_name_begin:        ['PCS','PGS','PRPGS'],
+        child_name_begin:         ['PGS','PRPGS','RSPGS','RSPRPGS','PGRDS'],
+        plate_num_length:         5,
+        check_lettered_suffix:    true,
+        check_numerical_suffix:   false
+      },
+      'PGR': {
+        parent_name_begin:        ['PCS'],
+        child_name_begin:         ['PGR'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   false
+      },
+      'RS': {
+        parent_name_begin:        ['PCS'],
+        child_name_begin:         ['RS'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   false
+      },
+      'GR': {
+        parent_name_begin:        ['RS'],
+        child_name_begin:         ['GR'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   false
+      },
+      'GRD': {
+        parent_name_begin:        ['GR'],
+        child_name_begin:         ['GRD'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   false
+      },
+      'PIQ': {
+        parent_name_begin:        ['FP'],
+        child_name_begin:         ['PIQ'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   false
+      },
+      'PIQFP': {
+        parent_name_begin:        ['PIQ'],
+        child_name_begin:         ['PIQFP'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   false
+      },
+      'PIQS': {
+        parent_name_begin:        ['PIQFP'],
+        child_name_begin:         ['PIQS'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   false
+      },
+      'VTP': {
+        parent_name_begin:        ['\\w+'],
+        child_name_begin:         ['VTP'],
+        plate_num_length:         5,
+        check_lettered_suffix:    false,
+        check_numerical_suffix:   false
+      }
+    };
+    
+    function checkPlateTypesAndName() {
+      var warn_start = '<span style="color:red;font-size:0.9em;"><strong>WARNING:</strong><ul>';
+      var warn = [];
+      var warn_stop = '</ul></span>';
+      var no_warn = true;
+      
+      var new_plate_checks = check_plate_types_and_name_conf[$F('new_plate_type')];
+      $('plate_status').update('');
+      
+      // Check the parent first...
+      var parent_name_check = new RegExp( '^' + new_plate_checks['parent_name_begin'].join('|') + '\\d+' );
+      if ( parent_check = parent_name_check.exec($F('parent_plate_name')) ) {}
+      else {
+        warn.push( $F('new_plate_type') + ' plates are normally made up from the following types: ' + new_plate_checks['parent_name_begin'].join(', ') + '.' );
+        no_warn = false;
+      }
+      
+      // Now check the child name...
+      if ( $F('new_plate_name') != null ) {
+        var child_name_check = new RegExp( '^' + new_plate_checks['child_name_begin'].join('|') + '\\d+' );
+        
+        if ( child_check = child_name_check.exec($F('new_plate_name')) ) {
+          
+          // Check the length of the number in the plate name
+          var number_length_check = $F('new_plate_name').match(/^(\D+)(\d+)/);
+          if ( number_length_check[2].length != new_plate_checks['plate_num_length'] ) {
+            warn.push('Your plate name does not have '+new_plate_checks['plate_num_length']+' numerical digits'); no_warn = false;
+          }
+          
+          // Check for a lettered suffix if required
+          if ( new_plate_checks['check_lettered_suffix'] ) {
+            var lettered_suffix_check = $F('new_plate_name').match(/.+(_\D+)$/);
+            if ( lettered_suffix_check == null ) {
+              warn.push('Your plate name does not have a suffix'); no_warn = false;
+            }
+          }
+          
+          // Check for a numerical suffix if required
+          if ( new_plate_checks['check_numerical_suffix'] ) {
+            var lettered_suffix_check = $F('new_plate_name').match(/.+(_\d+)$/);
+            if ( lettered_suffix_check == null ) {
+              warn.push('Your plate name does not have a suffix'); no_warn = false;
+            }
+          }
+          
+        }
+        else {
+          warn.push( 'Your plate name does not begin with: ' + new_plate_checks['child_name_begin'].join(', ') + '.' );
+          no_warn = false;
+        }
+      }
+      
+      if (no_warn) { /* do nothing */ }
+      else {
+        var warning = warn_start;
+        for (var index = 0, len = warn.length; index < len; ++index) {
+          warning += '<li style="color:red;">' + warn[index] + '</li>';
+        }
+        warning += warn_stop;
+        
+        $('plate_status').update( warning );
+        new Effect.Highlight('plate_status');
+      }
+      
+    }
+    
+    /* Adds a single entry to the new plate */
+    function addSingleToPlate(plate_name,plate_id,well_name,well_id) {
+      var t = $$('table#new_plate_table tbody tr');
+      var t2 = t.findAll(function(r) {
+        return r.getElementsByTagName("td")[2].innerHTML == "";
+      });
+      
+      if (t2.size() > 0) {
+        var tds = t2.first().getElementsByTagName('td');
+        
+        // Get the 'new_plate_name'...
+        if ($F('new_plate_name')) {
+          if ( $F('new_plate_type').match('PG[DGR]') || $F('new_plate_type')=='PCS' || $F('new_plate_type').match('PIQ(S|FP)') ) {
+            $(tds[1]).update(tds[0].innerHTML);
+          } else {
+            $(tds[1]).update($F('new_plate_name') + '_' + tds[0].innerHTML);
+          }
+          $(tds[2]).update(plate_name);
+          $(tds[2]).id = plate_id;
+          $(tds[3]).update(well_name);
+          $(tds[3]).id = well_id;
+        } else {
+          alert("ERROR: Please enter a name for your new plate.");
+        }
+      } else {
+        alert("ERROR: Your new plate is full.");
+      }
+    }
+    
+    /* Adds a column of entries to the new plate */
+    function addColumnToPlate(plate_name,plate_id,well_name,well_id) {
+      // TODO: Need to look for next empty plate column before populating really (not just next empty cell)...
+      var no_cells;
+      if ($F('new_plate_type') == 'EP') { no_cells = 5; }
+      else                              { no_cells = 8; }
+      
+      var t = $$('table#new_plate_table tbody tr');
+      var t2 = t.findAll(function(r) {
+        return r.getElementsByTagName("td")[2].innerHTML == "";
+      });
+      
+      // Check that there is sufficient space left on the plate for this insert
+      if (t2.size() >= no_cells) {
+        
+        // Also check that we have the 'new_plate_name'
+        if ($F('new_plate_name')) {
+            for (var i=1; i<=no_cells; i++) { 
+                addSingleToPlate(plate_name,plate_id,well_name,well_id);
+            }
+        } else {
+            alert("ERROR: Please enter a name for your new plate.");
+        }
+        
+      } else {
+        alert("ERROR: There is not enough space on the plate for this insert.");
+      }
+    }
+    
+    /* Allow a user to insert a blank well */
+    function makeWellABlank ( row_id ) {
+      var tds = $(row_id).getElementsByTagName('td');
+      $(tds[2]).update('-');
+      $(tds[2]).id = '';
+      $(tds[3]).update('-');
+      $(tds[3]).id = '';
+      
+      $(row_id).setAttribute("class", "blank_well");
+      $(row_id).setAttribute("className", "blank_well");
+      
+      // Get the 'new_plate_name' and insert the well name...
+      if ($F('new_plate_name')) {
+        if($F('new_plate_type')=='PGD' || $F('new_plate_type')=='PGS' || $F('new_plate_type')=='PCS' || $F('new_plate_type')=='PGG' || $F('new_plate_type').match('PIQ(S|FP)') ) {
+          $(tds[1]).update(tds[0].innerHTML);
+        } else {
+          $(tds[1]).update($F('new_plate_name') + '_' + tds[0].innerHTML);
+        }
+      } else {
+        alert("ERROR: Please enter a name for your new plate.");
+      }
+    }
+    
+    /* Allows the user to delete an erroneous entry from the 'new_plate' table */
+    function deleteSingleFromPlate( row_id ) {
+      var tds = $(row_id).getElementsByTagName('td');
+      $(tds[1]).update('');
+      $(tds[2]).update('');
+      $(tds[2]).id = '';
+      $(tds[3]).update('');
+      $(tds[3]).id = '';
+      
+      $(row_id).setAttribute("class", "");
+      $(row_id).setAttribute("className", "");
+    }
+    
+    /* Map the child plate wells directly to the parents wells */
+    function mapChildToParent() {
+        
+        // Indicate that we are working... (this doesn't show though!)
+        $('plate_status').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Mapping Wells...');
+        
+        // Parse the child_plate table
+        var child_tr = $$('table#new_plate_table tbody tr');
+        var child_tr_non_blank = child_tr.findAll( function(r) {
+            return r.getElementsByTagName("td")[2].innerHTML != "";
+        });
+        
+        // First we need to check that we have a 'new_plate' table
+        if (child_tr.size() > 0) {
+            
+            // Then we need to check that the child plate is empty...
+            if (child_tr_non_blank.size() == 0) {
+                
+                // We also need to check that the parent plate has some entries too...
+                var parent_tr = $$('div#parent_plate_area table tbody tr');
+                if (parent_tr.size() > 0) {
+                    
+                    // Final check - do we have a new_plate name?
+                    if ($F('new_plate_name')) {
+                        
+                        // Okay - we need to loop through the child well names
+                        // and try to match them to their corresponding parent wells...
+                        
+                        var plate_name = $F('parent_plate_name');
+                        var plate_id = $F('plate_id');
+                        
+                        for (var i=0; i<child_tr.size(); i++) {
+                            
+                            var found_match = false;
+                            var child_test = child_tr[i].getElementsByTagName('td')[0].innerHTML + '$';
+                            
+                            for (var j=0; j<parent_tr.size(); j++) {
+                                
+                                if (found_match) {
+                                    // we've found a match for this child well - move on!
+                                    j = parent_tr.size();
+                                } else {
+                                    
+                                    // Compare the potential parent against the child
+                                    var parent_test = parent_tr[j].getElementsByTagName('td')[0].innerHTML;
+                                    
+                                    if ( parent_test.match(child_test) ) {
+                                        // If we have a match...
+                                        
+                                        // Load the data into the child plate
+                                        var child_cols = child_tr[i].getElementsByTagName('td');
+                                        if($F('new_plate_type')=='PGD' || $F('new_plate_type')=='PGS' || $F('new_plate_type')=='PCS' || $F('new_plate_type')=='PGG'){
+                                          $(child_cols[1]).update(child_cols[0].innerHTML);
+                                        }else{
+                                          $(child_cols[1]).update($F('new_plate_name') + '_' + child_cols[0].innerHTML);
+                                        }
+                                        $(child_cols[2]).update(plate_name);
+                                        $(child_cols[2]).id = plate_id;
+                                        $(child_cols[3]).update(parent_test);
+                                        $(child_cols[3]).id = parent_tr[j].id;
+                                        
+                                        // Stop wasting clock cycles - move to the next child
+                                        found_match = true;
+                                    }
+                                    
+                                }
+                                
+                            }
+                        }
+                        
+                    } else {
+                        alert("ERROR: Please enter a name for your new plate.");
+                    }
+                } else {
+                    alert("ERROR: You need to have selected a parent plate.");
+                }
+            } else {
+                alert("ERROR: This operation can only be performed on an empty plate.");
+            }
+        } else {
+            alert("ERROR: You need to have selected a 'new' plate type.");
+        }
+        
+        // Finished!
+        $('plate_status').update("This plate is <strong>NOT</strong> saved yet - you must click 'Save'");
+        new Effect.Highlight('plate_status');
+    }
+    
+    /* Save the new plate layout to the database */
+    function saveNewPlate() {
+        // First retrieve the new plate table
+        var r = $$('table#new_plate_table tbody tr');
+        
+        // Now loop through the table and save the contents into a hash
+        var wells_hash = new Hash();
+        for (var i=0; i<r.size(); i++) {
+            var td = r[i].getElementsByTagName("td");
+            
+            // Catch empty wells...
+            if (td[1].innerHTML == "") {
+                var well_name = '';
+                if ($F('new_plate_type')=='PGD' || $F('new_plate_type')=='PGS' || $F('new_plate_type')=='PCS' || $F('new_plate_type')=='PGG' || $F('new_plate_type').match('PIQ(S|FP)') ){
+                    well_name = td[0].innerHTML;
+                } else {
+                    well_name = $F('new_plate_name') + '_' + td[0].innerHTML;
+                }
+                
+                wells_hash.set(
+                    well_name,
+                    $H({
+                        parent_plate:       '',
+                        parent_plate_id:    '',
+                        parent_well:        '',
+                        parent_well_id:     ''
+                    })
+                );
+            } else {
+                
+                // Catch blanked wells...
+                if (td[2].innerHTML == "-") {
+                    wells_hash.set(
+                        td[1].innerHTML,
+                        $H({
+                            parent_plate:       '',
+                            parent_plate_id:    '',
+                            parent_well:        '',
+                            parent_well_id:     ''
+                        })
+                    );
+                } else {
+                    wells_hash.set(
+                        td[1].innerHTML,
+                        $H({
+                            parent_plate:       td[2].innerHTML,
+                            parent_plate_id:    td[2].id,
+                            parent_well:        td[3].innerHTML,
+                            parent_well_id:     td[3].id
+                        })
+                    );
+                }
+            }
+        }
+        
+        // Check that we have a plate name!!!
+        // Then, check that we have some entries in the table - otherwise, don't save!!!
+        if ( $F('new_plate_name') == '' ) {
+            $('plate_status').update('<span style="color: red;">Not saved. Plate name is empty</span>');
+            new Effect.Highlight('plate_status');
+        } else if ( wells_hash.keys().size() == 0 ) {
+            $('plate_status').update('<span style="color: red;">Not saved. Plate is empty</span>');
+            new Effect.Highlight('plate_status');
+        } else {
+            // Now use an Ajax.Updater to save the plate to the database and let the user
+            // know it's done...
+            $('plate_status').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Saving...');
+            
+            new Ajax.Updater(
+                'plate_status', 
+                '[% c.uri_for('/plate/update/_save_new_plate') %]',
+                {
+                    method: 'post',
+                    asynchronous: true,
+                    parameters: $H({
+                        plate_data: wells_hash.toJSON(),
+                        plate_name: $F('new_plate_name'),
+                        plate_type: $F('new_plate_type'),
+                        plate_desc: $F('new_plate_desc'),
+                        plate_lock: $F('new_plate_lock'),
+                        piq_location: $F('piq_location')
+                    }),
+                    onComplete: function() {
+                        new Effect.Highlight('plate_status');
+                        prepNewPlate();
+                    }
+                }
+            );
+        }
+    }
+    
+    /* Addition of add and delete functions for the plate_data and plate_comments tables */
+    
+    // Function to add a plate_data entry to the table and refresh the table
+    function addData(plate_id) {
+        var timestamp = new Date().getTime();
+        var new_table = 'data' + timestamp;
+        var url = '[% c.uri_for('/plate/update/_plate_data_new/') %]?plate_id=' + plate_id + '&timestamp=' + timestamp;
+        new Ajax.Updater( 'data_div', url, { 
+            asynchronous: true,
+            onComplete: function() {
+                new TableKit( new_table, {
+                    editAjaxURI: '[% c.uri_for('/plate/update/_plate_data_update/') %]?plate_id=[% plate.plate_id %]'
+                })
+            }
+        });
+    }
+
+    // Function to delete a comment from the table and refresh the table
+    function deleteData(data_id) {
+        var timestamp = new Date().getTime();
+        var new_table = 'data' + timestamp;
+        var url = '[% c.uri_for('/plate/update/_plate_data_delete/') %]?plate_data_id=' + data_id + '&timestamp=' + timestamp;
+        var answer = confirm('Are you sure you want to delete this data line?');
+        if (answer) {
+            new Ajax.Updater( 'data_div', url, { 
+                asynchronous: true,
+                onComplete: function() {
+                    new TableKit( new_table, {
+                        editAjaxURI: '[% c.uri_for('/plate/update/_plate_data_update/') %]?plate_id=[% plate.plate_id %]'
+                    })
+                }
+            });
+
+            $('alerts').update('<div class="message">Data Entry Deleted</div>');
+            $('alerts').innerHTML;
+
+            return false;
+        }
+    }
+    
+    // Function to add a comment to the table and refresh the table
+    function addComment(plate_id) {
+        var timestamp = new Date().getTime();
+        var new_table = 'comments' + timestamp;
+        var url = '[% c.uri_for('/plate/update/_plate_comment_new/') %]?plate_id=' + plate_id + '&timestamp=' + timestamp;
+        new Ajax.Updater( 'comments_div', url, { 
+            asynchronous: true,
+            onComplete: function() {
+                new TableKit( new_table, {
+                    editAjaxURI: '[% c.uri_for('/plate/update/_plate_comment_update/') %]?plate_id=[% plate.plate_id %]'
+                })
+            }
+        });
+    }
+
+    // Function to delete a comment from the table and refresh the table
+    function deleteComment(comment_id) {
+        var timestamp = new Date().getTime();
+        var new_table = 'comments' + timestamp;
+        var url = '[% c.uri_for('/plate/update/_plate_comment_delete/') %]?plate_comment_id=' + comment_id + '&timestamp=' + timestamp;
+        var answer = confirm('Are you sure you want to delete this comment?');
+        if (answer) {
+            new Ajax.Updater( 'comments_div', url, { 
+                asynchronous: true,
+                onComplete: function() {
+                    new TableKit( new_table, {
+                        editAjaxURI: '[% c.uri_for('/plate/update/_plate_comment_update/') %]?plate_id=[% plate.plate_id %]'
+                    })
+                }
+            });
+
+            $('alerts').update('<div class="message">Comment Deleted</div>');
+            $('alerts').innerHTML;
+
+            return false;
+        }
+    }
+</script>
+
+<h2><a href="[% c.uri_for( '/plate/upload' ) %]">Create plate from CSV upload</a></h2>

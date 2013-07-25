@@ -1,0 +1,33 @@
+[% META title = 'Komp Summary'-%]
+
+<p>
+    Download this report as a CSV file: <a href="[%c.req.uri_with({view='csvdl',file='Komp_Summary.csv'})%]" class="button csv">CSV</a>
+</p>
+
+
+<table id="komp_summary_table" class="report_table tksort">
+<thead>
+  <tr>
+[% FOR name IN columns -%]
+    <th>[% name %]</th>
+[% END %]
+  </tr> 
+</thead>
+<tbody>
+[% FOR row IN rows %]
+  <tr>
+  [%- FOR name IN columns %]
+    <td class="[% name %]">
+    [%- IF name == 'Marker_Symbol' %]
+      <a href="[%c.uri_for('/report/gene_report', { gene_name => row.Marker_Symbol } ) %]">
+        [% row.Marker_Symbol %]
+      </a>
+    [%- ELSE %]
+      [% row.$name %]
+    [%- END %] 
+    </td>
+  [% END %]
+  </tr>
+[% END %]
+</tbody>
+</table>

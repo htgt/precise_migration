@@ -1,0 +1,5 @@
+[% USE CSV -%]
+[% CSV.data( columns ) %]
+[% FOR d IN data -%]
+[% CSV.data( d ) %]
+[% END -%]

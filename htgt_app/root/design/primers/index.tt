@@ -1,0 +1,48 @@
+[% META title = 'Primers' -%]
+[% SET pages = [
+   {
+        name => 'Short Range LoxP Primers',
+        path => '/design/primers/short_range_loxp_primers',
+   },
+   {
+        name => 'List TaqMan Assay Plates',
+        path => '/design/primers/list_taqman_plates'
+   },
+   {
+        name => 'View TaqMan Assay Plate',
+        path => '/design/primers/view_taqman_assay_plate',
+   },
+   {
+        name => 'Upload TaqMan Assay Plate',
+        path => '/design/primers/upload_taqman_assay_data'
+   },
+   {
+        name => 'Get TaqMan IDs',
+        path => '/design/primers/get_taqman_ids'
+   },
+   {
+        name => 'Get TaqMan Design Information',
+        path => '/design/primers/get_taqman_design_info'
+   }
+]
+%]
+<table id="reports_available" class="report_table tksort">
+  <thead>
+    <tr>
+      <th>Links</th>
+    </tr> 
+  </thead>
+  <tbody>
+[%- FOR p IN pages %]
+    <tr>
+      <td>
+        <a href="[% c.uri_for( p.path) %]">[% p.name %]</a>
+      </td>
+    </tr>
+[%- END %]    
+  </tbody>
+</table>
+<script type="text/javascript" charset="utf-8">
+      var reports_available_table = new TableKit( 'reports_available', { editable: false } );
+</script>
+

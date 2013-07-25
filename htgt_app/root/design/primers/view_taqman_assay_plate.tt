@@ -1,0 +1,45 @@
+[% META title = 'View TaqMan Plate' -%]
+
+<form id="taqman_plate_form" method="post">
+    Plate Name: <input type="text"i name="plate_name" value="[% plate_name %]" />
+    <input type="submit" name="get_taqman_plate" value="Get TaqMan Plate" />
+</form>
+
+[% IF taqman_plate %]
+<h2>[% plate_name %]</h2>
+<p>
+    Download this report as a CSV file: <a href="[%c.req.uri_with({view='csvdl',file='Taqman_Plate.csv',plate_name=plate_name})%]" class="button csv">CSV</a>
+</p>
+<table id="taqman_plate" class="report_table tksort" >
+  <thead>
+      <tr>
+          [% FOR name IN columns %]
+            <th>[% name %]</th>
+          [% END %]
+      </tr>
+  </thead>
+  <tbody>
+      [% SET row = 0 -%]
+      [% FOR well IN taqman_plate %]
+        [% row = row + 1 -%]
+        <tr class="[% IF row % 2 %]rowodd[% ELSE %]roweven[% END %]">
+            [% FOR name IN columns %]
+                [% IF name == 'design_id' %]
+                    <td><a href="[% c.uri_for('/design/designedit/refresh_design',{ design_id = well.design_id }) %]">
+                        [% well.design_id %]</a>
+                    </td>
+                [% ELSE %]
+                    <td>[% well.$name %]</td>
+                [% END %]
+            [% END %]
+        </tr>
+      [% END %]
+  </tbody>
+</table>
+[% END %]
+
+<script type="text/javascript" charset="utf-8">
+
+new TableKit('taqman_plate',  {editable: false } );
+
+</script>

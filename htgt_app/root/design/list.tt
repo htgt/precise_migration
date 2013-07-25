@@ -1,0 +1,151 @@
+[% META title = 'Browse Designs' -%]
+
+<form name="list_design_form" method="post" action='[% c.uri_for('/design/designlist/list_designs') %]'>
+
+<table id='designForm'>
+  <tr>
+     <td>ID:</td>
+      <td>
+        <label>
+          <input type='text' id='design_autocomplete_field' name='design_id' value='[% filter_info.design_id %]'/>
+            <div class="auto_complete" id='design_autocomplete_menu'></div>
+
+        </label>
+      </td>
+
+      <td>Gene:</td>
+      <td>
+        <label>
+          <input type='text' id='gene_autocomplete_field' name='gene' value='[% filter_info.gene%]'/>
+          <div class='auto_complete' id='gene_autocomplete_menu'></div>
+
+        </label>
+      </td>
+  </tr>
+  
+  <tr>  
+     <td>Exon:</td>
+     <td>
+       <label>
+         <input type=text id='exon_autocomplete_field' name='exon' value='[% filter_info.exon %]'/>
+         <div class='auto_complete' id='exon_autocomplete_menu'></div>
+
+       </label>
+     </td>
+     
+     <td>Design Plate:</td>
+     <td>
+       <label>
+         <input type=text id='design_plate_autocomplete_field' name='design_plate' value='[% filter_info.design_plate %]'/>
+         <div class='auto_complete' id='design_plate_autocomplete_menu'></div>
+
+       </label>
+      </td>    
+  </tr>
+ 
+  <tr>
+ 
+    <td>Instance Plate:</td>
+    <td>
+        <label>
+          <input type=text id='instance_plate_autocomplete_field' name='instance_plate' value= '[% filter_info.instance_plate %]'/>
+          <div class='auto_complete' id='instance_plate_autocomplete_menu'></div>
+
+        </label>
+    </td>
+     
+     <td>Comment</td>
+     <td>
+        <label>
+          <input type=text id='comment_autocomplete_field' name='comment' value= '[% filter_info.comment %]'/>
+          <div class='auto_complete' id='comment_autocomplete_menu'></div>
+
+        </label>
+     </td>
+          
+  </tr>
+  <tr> 
+      <td class='nocol' colspan=2><input type=submit value="Get designs" name=submit_search></td>
+  </tr>
+
+</table>
+
+<!-- <table id="design_list" class="columnhide sortable zebra"> -->
+  <table id="design_list">
+<thead>
+  <tr>
+    <th class='Comment' >Comment</th>
+    <th class='oracle-date'>Date</th>
+    <th class='ID'>ID</th>
+    <th class='Gene'>Gene</th>
+    <th class='Gbgene'>Gbgene</th>
+    <th class='Target'>Target</th>
+    <th class='Name'>Name</th>
+    <th class='Design_plate'>Desn Plate</th>
+    <th class='Well'>Well</th>
+    <th class='InstPlate'>Inst Plate</th>
+    <th class='well'>Well</th>
+    <th>Phase</th>
+    <th>Status</th>
+  </tr>
+</thead>
+<tbody>
+[% FOREACH design IN designs %]
+  <tr>
+    <td>[% design.COMMENT %]</td>
+    <td>[% design.CREATED_DATE %]</td>
+    <td> <a href=[% c.uri_for('/design/designedit/refresh_design')%]?design_id=[% design.DESIGN_ID %]>[% design.DESIGN_ID %]</a></td>
+    <td>[% design.MGI_ACCESSION_ID FILTER link_mgi() %]</td>
+    <td>[% design.GBGENE FILTER link_ensembl() %]</td>
+    <td>[% design.TARGET_STRING %]</td>
+    <td>[% design.DESIGN_NAME %]</td>
+    <td>[% design.FINAL_PLATE FILTER link_plate_name() %] </td> 
+    <td>[% design.WELL_LOC %] </td>
+    <td>[% design.PLATE FILTER link_plate_name() %] </td>     
+    <td>[% design.WELL %] </td>
+    <td>[% design.PHASE %]</td>
+    <td>[% design.STATUS %]</td>
+  </tr>
+[% END %]
+</tbody>
+</table>
+
+</form>
+
+<script type="text/javascript" charset="utf-8">
+
+[% IF designs.size() > 0 %]
+  var report_table = new TableKit(
+    'design_list',
+    { 
+      editable: false,
+    }
+  );
+[% END %]
+
+
+[% input_ids = ['design', 'gene', 'exon', 'design_plate', 'instance_plate']   %]
+
+[% FOR id IN input_ids %]
+
+new Ajax.Autocompleter(
+    '[%id%]_autocomplete_field',
+    '[%id%]_autocomplete_menu',
+		'[% c.uri_for('/design/_search_suggestions') %]', //temp hack out		
+		{
+			callback: function () { return 'text='+$F('[%id%]_autocomplete_field')+'&field=[%id%]' }, 
+			evalScripts: true,
+			afterUpdateElement: function () { $('[%id%]_autocomplete_field').focus }
+		}
+);
+
+[% END %]
+
+</script>
+
+
+
+
+
+
+

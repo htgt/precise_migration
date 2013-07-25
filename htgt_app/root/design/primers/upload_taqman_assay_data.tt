@@ -1,0 +1,61 @@
+[% META title = 'Upload TaqMan Assay Data' -%]
+
+<form name="upload_taqman_data" method="post" enctype="multipart/form-data">
+  <p>  
+    File name: <input type="file" name="datafile" size="40" />
+  </p>
+  <p>
+    Plate name: <input name="plate_name"  type="text" value="[% plate_name %]" />
+  </p>
+  <p>
+    <input type="submit" name="upload_taqman_data" value="Upload TaqMan Data" />
+  </p>
+</form>
+
+<fieldset id="upload_taqman_data" class="toggleable">
+  <legend>How to use this upload facility</legend>
+  <div>
+    <p>
+        This form is used to upload TaqMan assay data into our database 
+    </p>
+
+    <div>
+      <h2>INPUT FORMAT</h2>
+      <h3>Input File</h3>
+      A CSV file with the following fields:
+      <pre>
+          Well
+          Assay_ID
+          design_id
+          design_region
+      </pre>
+
+      There can also be the following optionally fields:
+      <pre>
+          forward_primer_seq
+          reverse_primer_seq
+          reporter_probe_seq
+      </pre>
+      The columns names must match exactly to the names above
+      <br/>
+      Example csv:
+      <pre>
+        Well,Assay_ID,marker_symbol,design_region,design_id,forward_primer_seq,reverse_primer_seq,reporter_probe_seq
+        A01,17_K19_U_CC6RM30,1700021K19Rik,u,258111,TGACTTTCGATTCCACGTGCAT,ACATGGGAACAGGCATACAAACAT,ACCACACATAAATACATATCAAAAATT
+        B01,Adcy5_U_CC89JF6,Adcy5,u,178585,CTAGGAGGGACCTGGATGTCA,AGAAGCCAGCAACAGTTCCT,ACTACAAGCTGGAGTCTGAATCC
+        C01,Cabp1_U_CCGJPG3,Cabp1,u,115075
+      </pre>
+
+      <h3>Plate Name</h3>
+      Name of plate where TaqMan assays exist
+    </div>
+    <div>
+    <h2>NOTE</h2>
+    <p>
+        An error message will appear if any information is entered incorrectly.<br>
+        If this happens none of the results will be updated<br>
+        All errors need to be fixed before any information will be added to the database.
+    </p>
+    </div>    
+  </div>
+</fieldset>

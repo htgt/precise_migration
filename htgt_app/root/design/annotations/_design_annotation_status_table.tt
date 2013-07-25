@@ -1,0 +1,35 @@
+[% IF design_annotations.size > 0 %]
+  <table id="design_annotations[% timestamp %]" class="report_table" [% IF called_elsewhere %]width="100%"[% END %]>
+      <thead>
+          <tr>
+              <th>Design ID</th>
+              <th>Oligo Status</th>
+              <th>Design Quality Status</th>
+              <th>Target Region Status</th>
+              <th>Artificial Intron Status</th>
+              <th>Final Status</th>
+          </tr>
+      </thead>
+      <tbody>
+          [% SET row = 0 -%]
+          [% FOR da IN design_annotations %]
+            [% row = row + 1 -%]
+            <tr class="[% IF row % 2 %]rowodd[% ELSE %]roweven[% END %]">
+                 <td>
+                   <a href="[% c.uri_for('/design/annotations/view_design_annotation',
+                    { design_id = da.design_id, 'assembly_id' = assembly_id , 'build_id' = build_id  }) %]">
+                     [% da.design_id %]
+                   </a>
+                </td>
+                <td> [% da.oligo_status_id %] </td>
+                <td> [% da.design_quality_status_id %] </td>
+                <td> [% da.target_region_status_id %] </td>
+                <td> [% da.artificial_intron_status_id %] </td>
+                <td> [% da.final_status_id %] </td>
+            </tr>
+          [% END %]
+      </tbody>
+  </table>
+[% ELSE %]
+  <small><em>no designs</em></small>
+[% END %]

@@ -1,0 +1,51 @@
+[% IF alleles.size > 0 %]
+    [% SET stage = 'es cells' %]
+    <table id="es_cells" class="report_table tksort">
+        <thead>
+            <tr>
+                <th class="noedit">ES Cell Clone ID</th>
+                <th class="noedit">ES Cell Strain</th>
+                <th class="noedit">ES Cell Line</th>
+                <th class="noedit">Allele</th>
+                <th class="sortfirstasc noedit">Mutant Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            [% SET row = 0 %]
+            [% FOR entry IN alleles %]
+            [% IF entry.design_instance.design.is_deletion %]
+                [% row = row + 1 -%]
+                <tr class="[% IF row % 2 %]rowodd[% ELSE %]roweven[% END %]">
+                    <td>
+                        [% SET link_url = c.uri_for('/plate/view',{ well_id=entry.epd_well_id }) _ '#' _ entry.epd_well_id %]
+                        [% IF style == 'EUCOMM' %][% link_url = 'http://www.sanger.ac.uk/htgt/plate/view?well_id=' _ entry.epd_well_id _ '#' _ entry.epd_well_id %][% END %]
+                        <a href="[% link_url %]">[% entry.epd_well_name %]</a>
+                    </td>
+                    <td>[%# this logic is also in lib/HTGTDB/Allele.pm %]
+                        [% IF entry.es_cell_line.search('JM8') %]  C57BL/6N
+                        [% ELSIF entry.es_cell_line.search('C2') %]  C57BL/6N
+                        [% ELSIF entry.es_cell_line.search('AB2.2') %]  129S7
+                        [% END %] 
+                    </td>
+                    <td>
+                        [% entry.es_cell_line # we always want to see tis detailed cell line info%]
+                    </td>
+                    <td>
+                        [% entry.allele_name %]
+                        [%# IF entry.epd_well_name.search('HEPD'); 'HZM'; ELSE; 'WTSI'; END %]
+                    </td>
+                    <td><strong>Deletion</strong></td>
+                </tr>
+            [% END %]
+            [% END %]
+        </tbody>
+    </table>
+    
+    <script type="text/javascript" charset="utf-8">
+        var escell_clone_table = new TableKit('es_cells',{
+          editable: false
+        });
+    </script>
+[% ELSE %]
+    <p><em>None Available</em></p>
+[% END %]

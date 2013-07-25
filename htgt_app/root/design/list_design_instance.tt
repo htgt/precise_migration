@@ -1,0 +1,29 @@
+[% META title = 'Design Instance' -%]
+
+<p><a href=[% c.uri_for('/design/design/list') %] align="centre">Allocate Design to Plate</a></p>
+
+<p>Total number of records: [% number_of_instance %]
+</p>
+
+<table id="design_instance_list" class="sortable zebra">
+  <thead>
+    <tr>
+      <th class="noedit">Design ID</th>
+      <th class="noedit">Design Name</th>
+      <th class="noedit">Gene</th>
+      <th class="noedit">Plate</th>
+      <th class="noedit">Well</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH design_instance IN design_instances %]
+    <tr id="[% design_instance.design_id %]"> 
+      <td>[% design_instance.design_id %]</td>
+      <td>[% design_instance.design_name %]</td>
+      <td>[% design_instance.gene %]</td>
+      <td>[% design_instance.plate %]</td>
+      <td>[% design_instance.well %]</td>
+    </tr>
+    [% END %]
+  </tbody>
+</table>

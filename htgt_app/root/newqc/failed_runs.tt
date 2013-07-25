@@ -1,0 +1,27 @@
+<div style="margin-top:20px">
+<h1>Failed QC Runs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>QC Run ID</th>
+      <th>Run Inititated</th>
+      <th>Profile</th>
+      <th>Sequencing Projects</th>
+      <th>Template Plate</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH f IN failed -%]
+    <tr>
+      <td>[% f.qc_run_id %]</td>
+      <td>[% f.created %]</td>
+      <td>[% f.profile %]</td>
+      <td>[% f.seq_projects %]</td>
+      <td>[% f.template_plate %]</td>
+    </tr>
+    [% END -%]
+  </tbody>
+</table>
+
+</div> 

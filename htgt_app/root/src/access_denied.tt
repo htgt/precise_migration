@@ -1,0 +1,6 @@
+<h5>Access Denied</h5>
+<p>
+  Sorry, the page you were trying to view is only available to authorised users.<br>
+  Our publicly reported data is available at <a href="http://www.knockoutmouse.org">www.knockoutmouse.org</a>.<br><br>
+  Other sections of this <a href="[% c.uri_for('/welcome') %]">website</a> are publicly available.
+</p>

@@ -1,0 +1,17 @@
+[% META title = "Recently Submitted QC jobs" %]
+<table id="qc_jobs" class="sortable">
+  <tr>
+     <th>Sequencing Project</th>
+     <th>Plate</th>
+     <th>Submited Date</th>
+     <th>Status</th>
+  </tr>
+  [% FOREACH job IN submited_qc_jobs %]
+     <tr>
+        <td>[% job.tsproj %]</td>
+        <td><a href="[% c.uri_for('/plate/view', { plate_name => job.plate }) %]">[% job.plate %]</a></td>
+        <td>[% job.subdate %]</td>
+        <td>[% job.status %]</td>
+     </tr>
+  [% END %]
+</table>

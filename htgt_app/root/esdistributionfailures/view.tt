@@ -1,0 +1,9 @@
+<h1>Distributable ES Cell QC Failures</h1>
+
+This report details those clones that have failed QC in the distribution stage or a subsequent stage.
+<br/><br/>
+Summary counts are given in addition to details of each failing clone.
+<br/><br/>
+This report is generated daily.
+<br/><br/><br/>
+<a href="http://www.sanger.ac.uk/htgt/static/misc/distributable-escell-qc-fails.csv" class="button excel">Download CSV Report</a></td>

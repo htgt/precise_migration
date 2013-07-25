@@ -1,0 +1,65 @@
+{
+   "abstract" : "A flexible engine for running FCGI-based applications",
+   "author" : [
+      "Stevan Little <stevan@iinteractive.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Install version 1.06, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "FCGI-Engine",
+   "no_index" : {
+      "directory" : [
+         "inc",
+         "t"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Cwd" : "0",
+            "ExtUtils::MakeMaker" : "6.36",
+            "File::Spec" : "0",
+            "FindBin" : "0",
+            "Test::Exception" : "0",
+            "Test::More" : "0.88",
+            "Test::WWW::Mechanize" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.36"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "CGI::Simple" : "0",
+            "Config::Any" : "0",
+            "Declare::Constraints::Simple" : "0",
+            "FCGI" : "0",
+            "Moose" : "0.93",
+            "MooseX::Daemonize" : "0.09",
+            "MooseX::Getopt" : "0.26",
+            "MooseX::NonMoose" : "0",
+            "MooseX::Types::Path::Class" : "0",
+            "POSIX" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/bobtfish/fcgi-engine.git"
+      }
+   },
+   "version" : "0.21"
+}

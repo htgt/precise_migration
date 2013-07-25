@@ -1,0 +1,181 @@
+[% META title = 'Project/Construct Reporting'-%]
+
+<form id="project_reports_form" action="[% c.uri_for('/report/_project_report_table') %]" method="get">
+    <fieldset class="noborder">
+        <table>
+            <tr id="project_row" class="nocol">
+                <th>Program</th>
+                <td>
+                    <input type="checkbox" name="is_eucomm" id="is_eucomm" [% IF c.req.params.is_eucomm %]checked="checked"[% END %] /> EUCOMM 
+                    <input type="checkbox" name="is_komp_csd" id="is_komp_csd" [% IF c.req.params.is_komp_csd %]checked="checked"[% END %] /> KOMP-CSD 
+                    [% IF c.check_user_roles("edit") %]
+                    <input type="checkbox" name="is_mgp" id="is_mgp" [% IF c.req.params.is_mgp %]checked="checked"[% END %] /> MGP 
+                    [% END %]
+                    <input type="checkbox" name="is_norcomm" id="is_norcomm" [% IF c.req.params.is_norcomm %]checked="checked"[% END %] /> NorCOMM 
+                    <input type="checkbox" name="is_eutracc" id="is_eutracc" [% IF c.req.params.is_eutracc %]checked="checked"[% END %] /> EuTRACC 
+                    <input type="checkbox" name="is_komp_regeneron" id="is_komp_regeneron" [% IF c.req.params.is_komp_regeneron %]checked="checked"[% END %] /> KOMP-Regeneron 
+                    <input type="checkbox" name="is_eucomm_tools" id="is_eucomm_tools" [% IF c.req.params.is_eucomm_tools %]checked="checked"[% END %] /> EUCOMM-Tools
+                    <input type="checkbox" name="is_eucomm_tools_cre" id="is_eucomm_tools_cre" [% IF c.req.params.is_eucomm_tools_cre %]checked="checked"[% END %] /> EUCOMM-Tools-Cre
+                    <input type="checkbox" name="is_switch" id="is_switch" [% IF c.req.params.is_switch %]checked="checked"[% END %] /> SWITCH                     
+                    <input type="checkbox" name="is_tpp" id="is_tpp" [% IF c.req.params.is_tpp %]checked="checked"[% END %] /> TPP                     
+                    <input type="checkbox" name="is_mgp_bespoke" id="is_mgp_bespoke" [% IF c.req.params.is_mgp_bespoke %]checked="checked"[% END %] /> MGP-Bespoke                     
+                </td>
+            </tr>
+            <tr id="project_status_id_row" class="nocol">
+                <th>Status</th>
+                <td>
+                    <select name="project_status_id" id="project_status_id">
+                        <option value="-">-</option>
+                        [% FOR status IN project_statuses %]
+                            <option value="[% status.project_status_id %]" [% IF status.name == c.req.params.status %]selected="selected"[% END %]>[% status.name %]</option>
+                        [% END %]
+                    </select>
+                    <br />
+                    <input type="checkbox" name="better_project_status_id" id="better_project_status_id" [% IF c.req.params.better_project_status_id %]checked="checked"[% END %] value="on"/> Also find projects/constructs <strong>more advanced</strong> than this status
+                </td>
+            </tr>
+            <tr id="is_latest_for_gene_row" class="nocol">
+                <th>Most Advanced<br />For Gene?</th>
+                <td>
+                    <input type="radio" name="is_latest_for_gene" id="is_latest_for_gene_yes" value="yes" [% IF c.req.params.is_latest_for_gene %]checked="checked"[% END %]> Yes - find <strong>the most advanced</strong> construct per gene<br />
+                    <input type="radio" name="is_latest_for_gene" id="is_latest_for_gene_no" value="no" [% UNLESS c.req.params.is_latest_for_gene %]checked="checked"[% END %]> No - find <strong>all</strong> constructs per gene
+                </td>
+            </tr>
+            <!--
+            <tr id="targeted_only_row" class="nocol">
+                <th>Show Targeted<br />Constructs Only?</th>
+                <td>
+                    <input type="radio" name="targeted_only" id="targeted_only_yes" value="yes" [% IF c.req.params.targeted_only %]checked="checked"[% END %]> Yes - show <strong>only targeted</strong> constructs<br />
+                    <input type="radio" name="targeted_only" id="targeted_only_no" value="no" [% UNLESS c.req.params.targeted_only %]checked="checked"[% END %]> No - show <strong>both targeted and trapped</strong> constructs
+                </td>
+            </tr>
+            -->
+            <tr id="marker_symbol_row" class="nocol">
+                <th>MGI Symbol</th>
+                <td><input type="text" name="marker_symbol" id="marker_symbol" value="[% IF c.req.params.marker_symbol; c.req.params.marker_symbol; END; %]" /></td>
+            </tr>
+            <tr id="mgi_accession_id_row" class="nocol">
+                <th>MGI Accession</th>
+                <td><input type="text" name="mgi_accession_id" id="mgi_accession_id" value="[% IF c.req.params.mgi_accession_id; c.req.params.mgi_accession_id; END; %]" /></td>
+            </tr>
+            <tr id="ensembl_gene_id_row" class="nocol">
+                <th>Ensembl ID</th>
+                <td><input type="text" name="ensembl_gene_id" id="ensembl_gene_id" value="[% IF c.req.params.ensembl_gene_id; c.req.params.ensembl_gene_id; END; %]" /></td>
+            </tr>
+            <tr id="vega_gene_id_row" class="nocol">
+                <th>Vega ID</th>
+                <td><input type="text" name="vega_gene_id" id="vega_gene_id" value="[% IF c.req.params.vega_gene_id; c.req.params.vega_gene_id; END; %]" /></td>
+            </tr>
+        </table>
+    
+        <input type="hidden" name="query" id="query" value="" />
+        <input type="hidden" name="view" id="view" value="" />
+        <input type="hidden" name="file" id="file" value="" />
+    
+        <a id="clear_form" class="button clean">Reset</a>
+        <a id="generate_report" class="button load">Get Report</a>
+        <a id="generate_csv_report" class="button csv">Download Full Report as CSV</a>
+    </fieldset>
+</form>
+
+<div id="more">
+    <div id="search_options">
+        Show/hide search options:<br />
+        <span class="options_toggle">
+            <a id="marker_symbol_toggle" class="delete">mgi&nbsp;symbol</a> 
+            <a id="mgi_accession_id_toggle" class="delete">mgi&nbsp;accession</a> 
+            <a id="ensembl_gene_id_toggle" class="delete">ensembl&nbsp;id</a> 
+            <a id="vega_gene_id_toggle" class="delete">vega&nbsp;id</a> 
+        </span>
+    </div>
+    <div id="information">
+        Click <a href="[% c.uri_for('/report/pipeline_status_explanations') %]">here</a> to view all pipeline status explanations.
+    </div>
+</div>
+
+<div class="clearbig"></div>
+<div id="report_area"></div>
+
+<script type="text/javascript" charset="utf-8">
+    //<![CDATA[
+    
+    // Observers
+    document.observe( "dom:loaded", function () {
+        showOption('marker_symbol');
+        showOption('mgi_accession_id');
+        showOption('ensembl_gene_id');
+        showOption('vega_gene_id');
+        [% IF c.req.params.generate_report %]generateReport('html',1);[% END %]
+    });
+    
+    $('clear_form').observe( 'click', function () { clearForm(); return false; } );
+    $('generate_report').observe( 'click', function () { generateReport('html',1); return false; } );
+    $('project_reports_form').observe( 'submit', function () { generateReport('html',1); return false; } );
+    $('generate_csv_report').observe( 'click', function () { generateReport('csv'); return false; } );
+    
+    $$('#search_options a').each( function(toggle) {
+        $(toggle).observe( 'click', function (event) {
+            var form_element = Event.element(event).id.replace('_toggle','');
+            showOption(form_element);
+        });
+    });
+
+    function generateReport (mode, page_num) {
+        var query_string = Object.toJSON( $('project_reports_form').serialize(true) );
+        
+        if ( mode == 'csv' ) {
+            $('query').value = query_string;
+            $('view').value = 'csvdl';
+            $('file').value = 'construct_report.csv';
+            $('project_reports_form').submit();
+        } else {
+            $('report_area').update('<img src="[% c.uri_for('/static/images/indicator.gif') %]" alt="Working..." /> Loading...');
+            new Ajax.Updater(
+                'report_area',
+                '[% c.uri_for('/report/_project_report_table') %]',
+                {
+                    asynchronous: true,
+                    evalScripts: true,
+                    parameters: $H({ query: query_string, page: page_num })
+                }
+            );
+        }
+    }
+    
+    function clearForm () {
+        $('report_area').update('');
+        
+        $('is_eucomm').checked = false;
+        $('is_komp_csd').checked = false;
+        [% IF c.check_user_roles("edit") %]$('is_mgp').checked = false;[% END %]
+        $('is_norcomm').checked = false;
+        $('is_komp_regeneron').checked = false;
+        $('is_eucomm_tools').checked = false;
+        $('is_eucomm_tools_cre').checked = false;
+        $('is_switch').checked = false;
+        $('is_tpp').checked = false;
+        $('is_mgp_bespoke').checked = false;
+        
+        $('project_status_id').value = '-';
+        $('better_project_status_id').checked = false;
+        
+        $('is_latest_for_gene_yes').checked = false;
+        $('is_latest_for_gene_no').checked = true;
+        
+        $('marker_symbol').clear();
+        $('mgi_accession_id').clear();
+        $('ensembl_gene_id').clear();
+        $('vega_gene_id').clear();
+    }
+    
+    function showOption (form_element) {
+        $(form_element).clear();
+        var table_row = form_element + '_row';
+        var button = form_element + '_toggle';
+        $(table_row).toggle();
+        new Effect.Highlight(table_row);
+        if ( $(button).hasClassName('add') ) { $(button).removeClassName('add'); $(button).addClassName('delete'); }
+        else                                 { $(button).removeClassName('delete'); $(button).addClassName('add'); }
+    }
+    //]]>
+</script>

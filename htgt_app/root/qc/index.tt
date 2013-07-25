@@ -1,0 +1,13 @@
+<h5><a href="[% c.uri_for('/qc/submit/') %]"> Submit QC jobs</a></h5>
+<h5><a href="[% c.uri_for('/qc/listjobs') %]">List recent QC submissions</a></h5>
+<h5><a href="[% c.uri_for('/qc/update/update_qc_results') %]">Update QC Results</a></h5>
+<h5><a href="[% c.uri_for('/qc/dnaplatesearch') %]">SBDNA / QPCRDNA Plate Search</a></h5>
+<h5>Show QC results</h5>
+<ul>
+<li><a href="[% c.uri_for('/qc/qc_runs', { stage => 'post_cre' }) %]">Post Cre</a></li>
+<li><a href="[% c.uri_for('/qc/qc_runs', { stage => 'post_gateway' } ) %]">Post Gateway<a/></li>
+<li><a href="[% c.uri_for('/qc/qc_runs', { stage => 'allele' }) %]">Allele</a></li>
+<li><a href="[% c.uri_for('/qc/qc_runs', { stage => 'allele_tronly' }) %]">Alelle - Target Region</a></li>
+<li><a href="[% c.uri_for('/qc/qc_runs', { stage => 'allele_tponly' }) %]">Allele - 3 'Region</a></li>
+<li><a href="[% c.uri_for('/qc/qc_runs', { stage => 'allele_fponly' }) %]">Allele - 5' Region</li>
+</ul>

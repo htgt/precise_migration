@@ -1,0 +1,15 @@
+<h5>500: Internal Server Error</h5>
+<p>Sorry, something seems to have gone wrong...</p>
+<p>Please hit the 'back' button on your browser and try what you just did again.</p>
+<p>
+  If the site still breaks (i.e. you get back here again), please copy and paste this error page into an email and send it to <a href="mailto:htgt@sanger.ac.uk">htgt@sanger.ac.uk</a>.
+</p>
+<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>
+<p><strong>Error Message(s):</strong></p>
+<ul>
+  [% FOR error IN errors -%]
+    <li>[% error %]</li>
+  [% END -%]
+</ul>

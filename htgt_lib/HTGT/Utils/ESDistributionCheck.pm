@@ -588,12 +588,12 @@ sub process_gene_info_entry {
 
     $report->{ $gene->{group} }{group} = $gene->{group};
     $report->{ $gene->{group} }{all}++;
-    for my $status qw(
+    for my $status ( qw(
         mirKO_clones     clones_available       clones_elsewhere    no_clones
         on_hold          qc_complete            qc_failed           qc_started_0
         qc_started_1     qc_started_2           qc_started_3        qc_started_4
         qc_started_5     qc_started_more_than_5 all_JM8A1_N3_clones no_valid_clones
-        ) {
+        )) {
         if ( defined $gene->{$status} ){
                 $report->{ $gene->{group} }{$status}++;
                 last;

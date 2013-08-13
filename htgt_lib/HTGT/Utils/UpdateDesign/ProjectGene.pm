@@ -13,11 +13,10 @@ Update the gene linked to a designs projects.
 use Moose;
 use namespace::autoclean;
 use Try::Tiny;
-use Const::Fast;
 
 extends 'HTGT::Utils::UpdateDesign';
 
-const my $MGI_ACCESSION_ID_RX => qr/^MGI:\d+$/;
+my $MGI_ACCESSION_ID_RX = qr/^MGI:\d+$/;
 
 has new_mgi_accession_id => (
     is       => 'ro',

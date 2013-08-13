@@ -8,9 +8,9 @@ use UNIVERSAL;
 
 BEGIN {extends 'Catalyst::Controller'; }
 
-const my $VALID_CLONE_NAME_RX => qr/^\w+$/;
-const my $VALID_FRAG_SIZE_RX  => qr/^\d+$/;
-const my $VALID_TOLERANCE_RX  => qr/^\d{1,2}$/;
+my $VALID_CLONE_NAME_RX = qr/^\w+$/;
+my $VALID_FRAG_SIZE_RX  = qr/^\d+$/;
+my $VALID_TOLERANCE_RX  = qr/^\d{1,2}$/;
 
 const my %VALID_PROBES        => (
     NeoR  => "Probe to Neo",

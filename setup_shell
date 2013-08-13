@@ -18,7 +18,7 @@ export PERL5LIB=$PERL5LIB:${ORACLE_HOME}/lib/perl5
 #export PERL5LIB=$PERL5LIB:${ORACLE_HOME}/lib/perl5:/nfs/WWWdev/SHARED_docs/lib/core
 
 # Sanger authorisation
-#export PERL5LIB=$PERL5LIB:/nfs/WWWdev/SANGER_docs/perl
+export PERL5LIB=$PERL5LIB:/nfs/WWWdev/SHARED_docs/lib/core:/nfs/WWWdev/SANGER_docs/perl:/nfs/WWWdev/SANGER_docs/bin-offline:/nfs/WWWdev/INTWEB_docs/lib/badger:/nfs/WWWdev/CCC_docs/lib/:/software/badger/lib/perl5
 
 export ORA_NLS11=${ORACLE_HOME}/nls/data 
 

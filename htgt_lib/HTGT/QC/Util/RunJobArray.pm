@@ -20,7 +20,7 @@ use HTGT::QC::Util::Which;
 use YAML::Any;
 
 const my @BSUB               => ( which( 'bsub' ), qw( -P team87 -q normal ) );
-const my $JOB_SUBMITTED_RX   => qr/^Job <(\d+)> is submitted to queue <.+>/;
+my $JOB_SUBMITTED_RX   = qr/^Job <(\d+)> is submitted to queue <.+>/;
 #const my $NO_MATCHING_JOB_RX => qr/No matching job found. Job not submitted./;
 
 sub run_job_array {

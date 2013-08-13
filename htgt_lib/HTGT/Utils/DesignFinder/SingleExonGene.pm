@@ -25,7 +25,7 @@ const my $MIN_AA => 100;
 
 # Try to insert at a junctionx AG|G or AG|A
 
-const my $INSERT_SITE_RX => qr/AG[GA]/;
+my $INSERT_SITE_RX = qr/AG[GA]/;
 
 # LoxP goes immediately after the stop codon; the distance between
 # the cassette and LoxP must be <= $MAX_CASS_LOXP_DIST bp

@@ -1444,7 +1444,7 @@ sub format_project_data {
 
 
 {
-    const my %STRAND_FORMATTING => (
+    my %STRAND_FORMATTING = (
         '+' => qr/^1$/,
         '-' => qr/^-1$/,
     );

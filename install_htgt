@@ -43,6 +43,7 @@ svn_file_list=(
     'htgt-utils-southernblot-trunk/lib/'
     'htgt-utils-targrep-trunk/lib/'
     'htgt-utils-mutagenesis-prediction-trunk/lib/'
+    'htgt-biomart-query-trunk/lib/'
 )
 
 git_file_list=(

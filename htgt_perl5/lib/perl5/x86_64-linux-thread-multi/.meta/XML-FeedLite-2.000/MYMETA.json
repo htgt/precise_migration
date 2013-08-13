@@ -1,0 +1,61 @@
+{
+   "abstract" : "XML::FeedLite - A simple RSS & Atom feed processor",
+   "author" : [
+      "Roger M Pettett <rpettett@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Build version 0.4005, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "XML-FeedLite",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Test::Distribution" : "0",
+            "Test::More" : "0.8",
+            "Test::Perl::Critic" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.35"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "HTML::Entities" : "1.35",
+            "HTTP::Headers" : "1.64",
+            "HTTP::Request" : "1.40",
+            "MIME::Base64" : "3.07_01",
+            "Readonly" : "1.03",
+            "WWW::Curl::Simple" : "0.100181"
+         }
+      }
+   },
+   "provides" : {
+      "XML::FeedLite" : {
+         "file" : "lib/XML/FeedLite.pm",
+         "version" : "2.000"
+      },
+      "XML::FeedLite::File" : {
+         "file" : "lib/XML/FeedLite/File.pm",
+         "version" : "1.003"
+      },
+      "XML::FeedLite::Normalised" : {
+         "file" : "lib/XML/FeedLite/Normalised.pm",
+         "version" : "1.004"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "2.000"
+}

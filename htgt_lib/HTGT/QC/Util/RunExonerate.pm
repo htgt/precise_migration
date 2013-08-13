@@ -21,7 +21,7 @@ use HTGT::QC::Util::Which;
 const my $RUN_EXONERATE => which( 'run-exonerate-jobarray.pl' );
 const my @BSUB          => ( which( 'bsub' ), qw( -q normal ) );
 
-const my $JOB_SUBMITTED_RX   => qr/Job <(\d+)> is submitted to queue <.+>/;
+my $JOB_SUBMITTED_RX   = qr/Job <(\d+)> is submitted to queue <.+>/;
 #const my $NO_MATCHING_JOB_RX => qr/No matching job found. Job not submitted./;
 
 sub run_exonerate {

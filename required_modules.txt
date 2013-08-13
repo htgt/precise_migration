@@ -75,3 +75,6 @@ MooseX::Types::DateTimeX ==> had to modify lines 18 and 24 to conform with stric
 CSV::Reader and Writer ==> Ray Miller local
 DateTime::Format::DateParse
 Hash::MoreUtils
+Module::PortablePath
+XML::FeedLite::Normalised
+Caldendar::Simple

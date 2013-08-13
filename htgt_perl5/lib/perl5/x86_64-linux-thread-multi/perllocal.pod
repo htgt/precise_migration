@@ -1538,3 +1538,113 @@ C<EXE_FILES: >
 
 =back
 
+=head2 Tue Aug 13 16:17:23 2013: C<Module> L<WWW::Curl|WWW::Curl>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 4.15>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug 13 16:17:34 2013: C<Module> L<WWW::Curl::Simple|WWW::Curl::Simple>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.100187>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug 13 16:20:53 2013: C<Module> L<FreezeThaw|FreezeThaw>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.5001>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug 13 16:20:57 2013: C<Module> L<Text::vFile::asData|Text::vFile::asData>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.08>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug 13 16:21:04 2013: C<Module> L<iCal::Parser|iCal::Parser>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.20>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+

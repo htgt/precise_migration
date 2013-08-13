@@ -4,11 +4,10 @@ use strict;
 use warnings FATAL => 'all';
 
 use Bio::Seq;
-use Const::Fast;
 
 use base qw( DBIx::Class::Core );
 
-const my $SEQ_READ_ID_RX => qr/^
+my $SEQ_READ_ID_RX = qr/^
                                (.+)          # Plate name
                                (\w+\d\d)     # Well name
                                \.p1k[a-z]?

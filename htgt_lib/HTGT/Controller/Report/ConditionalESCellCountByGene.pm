@@ -7,7 +7,13 @@ BEGIN {extends 'Catalyst::Controller'; }
 
 const my $MAX_GENE_IDS => 500;
 
-const my @GENE_ID_TYPES => (
+#my @GENE_ID_TYPES => (
+#    [ qr/OTT\w+/  => 'vega_gene_id'     ],
+#    [ qr/ENS\w+/  => 'ensembl_gene_id'  ],
+#    [ qr/MGI:\d+/ => 'mgi_accession_id' ],
+#    [ qr/[\w-]+/  => 'marker_symbol'    ]
+#);
+my @GENE_ID_TYPES = (
     [ qr/OTT\w+/  => 'vega_gene_id'     ],
     [ qr/ENS\w+/  => 'ensembl_gene_id'  ],
     [ qr/MGI:\d+/ => 'mgi_accession_id' ],

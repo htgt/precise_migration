@@ -18,9 +18,9 @@ designurl:
 #  as well as the default of all .png .gif .css below root/
 # Should ensure consistent behaviour between a perl server and an apache server 
 #  with a <Location /{htgt/,}static> SetHandler default-handler config
-static:
-  dirs:
-    - static
+#static:
+#  dirs:
+#    - static
 
 banned_hosts:
   - .search.msn.com

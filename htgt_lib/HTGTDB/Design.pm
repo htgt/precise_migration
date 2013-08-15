@@ -194,7 +194,7 @@ __PACKAGE__->add_columns(
   { data_type => "varchar2", is_nullable => 1, size => 10 },
   "edited_date",
   {
-    data_type     => "timestamp",
+    data_type     => "datetime",
     default_value => \"systimestamp",
     is_nullable   => 1,
   },

@@ -1648,3 +1648,91 @@ C<EXE_FILES: >
 
 =back
 
+=head2 Wed Aug 14 12:55:39 2013: C<Module> L<DBD::SQLite|DBD::SQLite>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.40>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Aug 14 14:17:07 2013: C<Module> L<XML::TokeParser|XML::TokeParser>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.05>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Aug 14 14:17:09 2013: C<Module> L<XML::Records|XML::Records>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.12>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 15 16:07:10 2013: C<Module> L<Template::Plugin::JSON|Template::Plugin::JSON>
+
+=over 4
+
+=item *
+
+C<installed into: /nfs/users/nfs_d/dp10/work/htgt_migration/htgt_perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.06>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+

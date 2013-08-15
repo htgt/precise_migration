@@ -142,7 +142,8 @@ const our %BACKBONES => (
     },
 );
 
-const our %CASSETTES => (
+#const our %CASSETTES => (
+our %CASSETTES = (
     Ifitm2_intron_L1L2_Bact_P => {
         full_name => 'Ifitm2_intron_L1L2_Bact_P',
         filename  => '',

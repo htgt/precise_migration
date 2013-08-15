@@ -1,0 +1,1 @@
+{"provides":{"DBD::SQLite::dr":{"file":"DBD/SQLite.pm"},"DBD::SQLite":{"version":"1.40","file":"DBD/SQLite.pm"},"DBD::SQLite::db":{"file":"DBD/SQLite.pm"}},"target":"DBD::SQLite","version":"1.40","name":"DBD::SQLite","dist":"DBD-SQLite-1.40","pathname":"I/IS/ISHIGAKI/DBD-SQLite-1.40.tar.gz"}

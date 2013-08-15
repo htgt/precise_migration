@@ -27,7 +27,7 @@ __PACKAGE__->add_columns(
     size => 200,
   },
   "last_updated",
-  { data_type => "timestamp", is_nullable => 0 },
+  { data_type => "datetime", is_nullable => 0 },
 );
 # End of dbicdump add_columns data
 

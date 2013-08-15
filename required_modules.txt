@@ -78,3 +78,7 @@ Hash::MoreUtils
 Module::PortablePath
 XML::FeedLite::Normalised
 Caldendar::Simple
+iCal::Parser
+DBD::SQLite - # did this really needt to be installed separately?
+XML::Records
+Template::Plugin::JSON

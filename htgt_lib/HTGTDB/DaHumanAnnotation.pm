@@ -66,7 +66,7 @@ __PACKAGE__->add_columns(
   { data_type => "varchar2", is_nullable => 1, size => 30 },
   "created_at",
   {
-    data_type     => "timestamp",
+    data_type     => "datetime",
     default_value => \"systimestamp",
     is_nullable   => 1,
   },

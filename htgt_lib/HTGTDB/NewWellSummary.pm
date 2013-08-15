@@ -288,10 +288,12 @@ __PACKAGE__->add_columns(
   { data_type => "varchar2", is_nullable => 1, size => 100 },
   "primary_key_for_dbix_class",
   {
-    data_type => "numeric",
+      #data_type => "numeric",
+    data_type => "integer",
     is_nullable => 0, # Primary key is not nullable
     original => { data_type => "number" },
     size => [10, 0],
+    is_auto_increment => 1,
   },
 );
 # End of dbicdump add_columns data

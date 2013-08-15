@@ -37,7 +37,7 @@ __PACKAGE__->add_columns(
   "note",
   { data_type => "varchar2", is_nullable => 1, size => 200 },
   "updated",
-  { data_type => "timestamp", is_nullable => 0 },
+  { data_type => "datetime", is_nullable => 0 },
 );
 # End of dbicdump add_columns data
 

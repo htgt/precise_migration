@@ -45,7 +45,6 @@ sub get_floxed_exons {
             grep { $_->start <= $target_region_end }
                 @{ $transcript->get_all_Exons };
     }
-
     return \@floxed_exons;
 }
 

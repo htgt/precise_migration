@@ -26,7 +26,8 @@ __PACKAGE__->table("da_human_annotation");
 __PACKAGE__->add_columns(
   "human_annotation_id",
   {
-    data_type => "numeric",
+#    data_type => "numeric",
+    data_type => "integer",
     is_auto_increment => 1,
     is_nullable => 0,
     original => { data_type => "number" },

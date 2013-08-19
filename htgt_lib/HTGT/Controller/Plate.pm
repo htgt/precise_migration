@@ -1026,9 +1026,6 @@ EOT
             }            
             else {
                 $well_data{ $data_type } = $unprocd_well_data_hash->{ $data_type };
-#                print "\nCroaked...\n";
-#$DB::single=1;
-#                print "\nWhat next?\n";
             }
         }
 

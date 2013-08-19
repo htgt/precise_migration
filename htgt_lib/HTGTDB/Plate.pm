@@ -63,7 +63,8 @@ __PACKAGE__->table('plate');
 __PACKAGE__->add_columns(
   "plate_id",
   {
-    data_type => "numeric",
+#    data_type => "numeric", -- not for SQLite
+    data_type => "integer",
     is_auto_increment => 1,
     is_nullable => 0,
     original => { data_type => "number" },

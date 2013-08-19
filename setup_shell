@@ -5,9 +5,9 @@ export PATH="/software/perl-5.14.4/bin:/nfs/users/nfs_d/dp10/bin:$HTGT_MIGRATION
 export PERL_LOCAL_LIB_ROOT=$HTGT_MIGRATION_ROOT/htgt_perl5;
 export PERL_MB_OPT="--install_base $HTGT_MIGRATION_ROOT/htgt_perl5";
 export PERL_MM_OPT="INSTALL_BASE=$HTGT_MIGRATION_ROOT/htgt_perl5";
-export PERL5LIB="$HTGT_MIGRATION_ROOT/htgt_lib:$HTGT_MIGRATION_ROOT/htgt_perl5/lib/perl5:/software/pubseq/PerlModules/Ensembl/www_71_1/ensembl/modules"
+export PERL5LIB="$HTGT_MIGRATION_ROOT/htgt_lib:$HTGT_MIGRATION_ROOT/htgt_perl5/lib/perl5:/software/pubseq/PerlModules/Ensembl/www_72_1/ensembl/modules:/software/pubseq/PerlModules/Ensembl/www_72_1/ensembl-compara/modules"
 #source /software/oracle-ic-11.2/etc/profile.oracle-ic-11.2
-# Oracle setup copied form the above because I can;t locate append_path function
+# Oracle setup copied from the above because I can't locate append_path function
 export LD_LIBRARY_PATH=
 export CLASSPATH=
 export ORACLE_HOME=/software/oracle-ic-11.2

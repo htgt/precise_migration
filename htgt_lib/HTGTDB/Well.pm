@@ -91,7 +91,8 @@ __PACKAGE__->add_columns(
   { data_type => "varchar2", is_nullable => 1, size => 24 },
   "well_id",
   {
-    data_type => "numeric",
+#    data_type => "numeric", -- not for SQLite
+    data_type => "integer",
     is_auto_increment => 1,
     is_nullable => 0,
     original => { data_type => "number" },

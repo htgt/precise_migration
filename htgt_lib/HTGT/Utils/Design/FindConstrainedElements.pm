@@ -20,7 +20,6 @@ sub find_constrained_elements {
         $chr_strand
     );
     my $method_link_species_set_adaptor = Bio::EnsEMBL::Registry->get_adaptor( 'Multi', 'compara', 'MethodLinkSpeciesSet' );
-
     my $method_link_species_set =
         $method_link_species_set_adaptor->fetch_by_method_link_type_species_set_name( 'GERP_CONSTRAINED_ELEMENT', 'mammals' );
 

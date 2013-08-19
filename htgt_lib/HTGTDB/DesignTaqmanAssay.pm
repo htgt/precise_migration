@@ -28,7 +28,8 @@ __PACKAGE__->sequence('S_DESIGN_TAQMAN_ASSAY');
 __PACKAGE__->add_columns(
   "design_taqman_assay_id",
   {
-    data_type => "numeric",
+#    data_type => "numeric", # not in SQLite
+    data_type => "integer",
     is_auto_increment => 1,
     is_nullable => 0,
     original => { data_type => "number" },

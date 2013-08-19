@@ -234,7 +234,7 @@ sub coordinates_minus {
 
 sub assert_required_features_present {
     my ( $self, $features, $design_type ) = @_;
-
+$DB::single=1;
     if ( $design_type =~ /KO/ ) {
         for my $name ( @REQUIRED_FEATURES ) {
             die "missing required feature $name\n"

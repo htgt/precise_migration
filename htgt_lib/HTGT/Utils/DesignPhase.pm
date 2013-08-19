@@ -13,8 +13,6 @@ use Carp 'confess';
 sub compute_and_set_phase{
     my ( $design , $transcript_id ) = @_;
 
-    $transcript_id = $design->start_exon->transcript->primary_name unless $transcript_id;
-
     defined( my $phase = get_phase_from_design_and_transcript( $design, $transcript_id ) )
         or confess "Failed to compute phase";
 

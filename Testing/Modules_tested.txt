@@ -1,0 +1,30 @@
+Tested OK means all tests ran successfully, almost certainly after adjustments
+
+bio-cigarseq-trunk/                                     No tests available
+catalyst-authentication-credential-sangersso-trunk/     No tests available
+construct-qc-db-trunk/                                  No tests available
+Eng-Seq-Builder-trunk/                                  Tested OK
+htgt-biomart-query-trunk/                               'Create a federated query' appears to hang
+htgt-constants-trunk/                                   No tests available
+htgt-dbconnect-trunk/                                   Tested OK
+htgtdb-trunk/                                           Tested OK
+HTGT-QC-trunk/                                          'Failed to find executable run-exonerate-jobarray.pl'
+htgt-test-class-trunk/                                  No tests available
+htgt-trunk/                                             Tested OK
+HTGT-Utils-BadgerRepository-trunk/                      Tested OK
+htgt-utils-design-check-trunk/                          Tested OK
+htgt-utils-design-qc-reports-trunk/                     Tested OK
+htgt-utils-design-trunk/                                Tested OK
+htgt-utils-engseqparams-trunk/                          No tests available
+htgt-utils-ensembl-trunk/                               Tested OK
+htgt-utils-mutagenesis-prediction-trunk/                Tested OK
+htgt-utils-plate-trunk/                                 No tests available
+htgt-utils-recovery-trunk/                              No tests available
+htgt-utils-report-qc-results-and-primers-trunk/         Tested OK
+htgt-utils-southernblot-trunk/                          Tested OK
+htgt-utils-taqman-trunk/                                Fixtures data needs updating?
+htgt-utils-targrep-trunk/                               Tested OK
+htgt-utils-upload-qc-results-trunk/                     Tested OK
+kermits-db-trunk/                                       No tests available
+TargetedTrap-trunk/                                     Tested OK
+

@@ -1,0 +1,115 @@
+#!/usr/bin/make -rf
+
+TEMPLATE_PLATE      :=
+SEQUENCING_PROJECTS :=
+VECTOR_STAGE        :=
+PROFILE             :=
+PLATE_MAP           :=
+CONFIG              := ${HTGT_QC_CONF}
+BASE_DIR            := /nfs/team87/data/qc/work
+DEBUG               := --debug
+RUN_ID              := $(shell qc generate-run-id)
+WORK_DIR            := $(BASE_DIR)/$(RUN_ID)
+TEMPLATE_PARAMS     := $(WORK_DIR)/template.yaml
+ENG_SEQ_DIR         := $(WORK_DIR)/eng_seqs
+SEQ_READS           := $(WORK_DIR)/reads.fasta
+EXONERATE_OUT       := $(WORK_DIR)/exonerate
+ANALYSIS_OUT        := $(WORK_DIR)/analysis
+PRE_FILTER_OUT      := $(WORK_DIR)/alignments.yaml
+POST_FILTER_OUT     := $(WORK_DIR)/post-filter
+REPORT_CSV          := $(WORK_DIR)/report.csv
+REPORT_ZIP          := $(WORK_DIR)/report.zip
+
+all:
+
+init: $(WORK_DIR)/init
+
+fetch-template-data: $(TEMPLATE_PARAMS)
+
+write-eng-seqs: $(ENG_SEQ_DIR)
+
+fetch-seq-reads: $(SEQ_READS)
+
+align-reads: $(EXONERATE_OUT)
+
+run-analysis: $(ANALYSIS_OUT)
+
+pre-filter: $(PRE_FILTER_OUT)
+
+post-filter: $(POST_FILTER_OUT)
+
+report: $(REPORT_ZIP) $(REPORT_CSV)
+
+persist: $(WORK_DIR)/persist
+
+$(WORK_DIR)/init:
+	test -n "$(RUN_ID)"
+	mkdir -p $(dir $@)
+	touch $@
+
+$(SEQ_READS): $(WORK_DIR)/init
+	test -n "$(PROFILE)"
+	test -n "$(SEQUENCING_PROJECTS)"
+	rm -f $@-t
+	qc fetch-seq-reads-archive --config $(CONFIG) --profile $(PROFILE) $(DEBUG) --output-file $@-t $(SEQUENCING_PROJECTS)
+	mv $@-t $@
+
+$(TEMPLATE_PARAMS): $(WORK_DIR)/init
+	test -n "$(PROFILE)"
+	test -n "$(VECTOR_STAGE)"
+	test -n "$(TEMPLATE_PLATE)"
+	rm -rf $@-t
+	qc fetch-template-data-htgt --config $(CONFIG) --profile $(PROFILE) $(DEBUG) --output-file $@-t --stage $(VECTOR_STAGE) $(TEMPLATE_PLATE)
+	mv $@-t $@
+
+$(ENG_SEQ_DIR): $(TEMPLATE_PARAMS)
+	test -n "$(PROFILE)"
+	rm -rf $@-t
+	qc write-eng-seqs --config $(CONFIG) --profile $(PROFILE) $(DEBUG) --output-dir $@-t $(TEMPLATE_PARAMS)
+	mv $@-t $@
+
+$(EXONERATE_OUT): $(SEQ_READS) $(ENG_SEQ_DIR)
+	test -n "$(PROFILE)"
+	rm -rf $@-t
+	qc align-reads-exonerate --config $(CONFIG) --profile $(PROFILE) $(DEBUG) --reads $(SEQ_READS) --output-dir $@-t $(wildcard $(ENG_SEQ_DIR)/*.fasta)
+	mv $@-t $@
+
+$(PRE_FILTER_OUT): $(EXONERATE_OUT)
+	test -n "$(PROFILE)"
+	rm -rf $@-t
+	qc pre-filter-score --config $(CONFIG) --profile $(PROFILE) $(DEBUG) $(patsubst %,--plate-map %,$(PLATE_MAP)) --output-file $@-t $(wildcard $(EXONERATE_OUT)/*.out)
+	mv $@-t $@
+
+$(ANALYSIS_OUT): $(SEQ_READS) $(ENG_SEQ_DIR) $(PRE_FILTER_OUT) $(TEMPLATE_PARAMS)
+	test -n "$(PROFILE)"
+	rm -rf $@-t
+	qc run-analysis --config $(CONFIG) --profile $(PROFILE) $(DEBUG) --seq-reads $(SEQ_READS) --output-dir $@-t --eng-seqs $(ENG_SEQ_DIR) --template-params $(TEMPLATE_PARAMS) $(PRE_FILTER_OUT)
+	mv $@-t $@
+
+$(POST_FILTER_OUT): $(ANALYSIS_OUT)
+	test -n "$(PROFILE)"
+	rm -rf $@-t
+	qc post-filter-num-primers --config $(CONFIG) --profile $(PROFILE) $(DEBUG) --output-dir $@-t $(ANALYSIS_OUT)
+	mv $@-t $@
+
+$(REPORT_CSV): $(POST_FILTER_OUT)
+	test -n "$(PROFILE)"
+	rm -rf $@-t
+	qc generate-report-full --config $(CONFIG) --profile $(PROFILE) $(DEBUG) --analysis $(POST_FILTER_OUT) --output-file $@-t
+	mv $@-t $@
+
+%.zip: %.csv
+	rm -rf $@-t
+	zip $@-t $<
+	mv $@-t $@
+
+$(WORK_DIR)/persist: $(POST_FILTER_OUT)
+	test -n "$(PROFILE)"
+	test -n "$(TEMPLATE_PLATE)"
+	test -n "$(SEQUENCING_PROJECTS)"
+	test -n "$(VECTOR_STAGE)"
+	qc persist-htgtdb --config $(CONFIG) --profile $(PROFILE) $(DEBUG) \
+		--run-id $(RUN_ID) --template-plate $(TEMPLATE_PLATE) \
+	   $(patsubst %,--sequencing-project %,$(SEQUENCING_PROJECTS)) --seq-reads $(SEQ_READS) \
+	   --analysis-dir $(POST_FILTER_OUT) --eng-seqs $(ENG_SEQ_DIR) --stage $(VECTOR_STAGE) --commit
+	touch $@

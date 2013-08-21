@@ -7,7 +7,7 @@ use MooseX::Types::Path::Class;
 
 extends 'EngSeqBuilder::CLI::Command';
 
-override abstract => sub { 'Replace all the features on the specified sequnce with those in the GenBank file' };
+override abstract => sub {'Replace all the features on the specified sequnce with those in the GenBank file'};
 
 has name => (
     is       => 'ro',
@@ -17,9 +17,9 @@ has name => (
 );
 
 has type => (
-    is       => 'ro',
-    isa      => 'Str',
-    traits   => [ 'Getopt' ],
+    is     => 'ro',
+    isa    => 'Str',
+    traits => [ 'Getopt' ],
 );
 
 has genbank_file => (
@@ -33,18 +33,18 @@ has genbank_file => (
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    
+
     my $eng_seq;
     if ( $self->type ) {
-        $eng_seq = $self->eng_seq_builder->_fetch_seq( $self->name, $self->type );
+        $eng_seq = $self->eng_seq_builder->_fetch_seq( $self->name, $self->type ); ## no critic(ProtectPrivateSubs)
     }
     else {
-        $eng_seq = $self->eng_seq_builder->_fetch_seq( $self->name );
+        $eng_seq = $self->eng_seq_builder->_fetch_seq( $self->name ); ## no critic(ProtectPrivateSubs)
     }
 
     die "Features can only be replaced on simple sequences\n"
-        unless $eng_seq->class eq 'simple';    
-    
+        unless $eng_seq->class eq 'simple';
+
     my $seq_io = Bio::SeqIO->new( -fh => $self->genbank_file->openr, -format => 'genbank' );
     my $bio_seq = $seq_io->next_seq
         or die "Failed to read sequence from " . $self->genbank_file;
@@ -53,14 +53,15 @@ sub execute {
         unless $bio_seq->seq eq $eng_seq->simple_eng_seq->seq;
 
     $self->eng_seq_builder->txn_do(
-        sub {    
+        sub {
             $eng_seq->delete_seq_features;
             my @features = $bio_seq->get_SeqFeatures;
             $eng_seq->add_features( \@features );
         }
     );
-}
 
+    return;
+}
 
 __PACKAGE__->meta->make_immutable;
 

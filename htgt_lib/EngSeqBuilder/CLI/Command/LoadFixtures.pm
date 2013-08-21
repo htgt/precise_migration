@@ -10,7 +10,7 @@ use namespace::autoclean;
 
 extends 'EngSeqBuilder::CLI::Command';
 
-override abstract => sub { 'Load fixture data into the database (development only)' };
+override abstract => sub {'Load fixture data into the database (development only)'};
 
 has fixtures_dir => (
     is       => 'ro',
@@ -41,78 +41,91 @@ sub execute {
             $self->eng_seq_builder->txn_rollback unless $self->commit;
         }
     );
+
+    return;
 }
 
 sub load_component_fixtures {
     my ( $self, $fixture_file ) = @_;
 
     my $spec_array = YAML::Any::LoadFile( $fixture_file );
-    
+
     for my $spec ( @{ $spec_array } ) {
-        if ( exists $spec->{source} ) {
-            $self->_load_simple_sequence($spec);
+        if ( exists $spec->{ source } ) {
+            $self->_load_simple_sequence( $spec );
         }
-        elsif ( exists $spec->{components} ) {
-            $self->_load_compound_sequence($spec);
+        elsif ( exists $spec->{ components } ) {
+            $self->_load_compound_sequence( $spec );
         }
     }
+
+    return;
 }
 
 sub _load_compound_sequence {
     my ( $self, $spec ) = @_;
-    
+
     $self->eng_seq_builder->create_compound_seq(
-        name       => $spec->{name},
-        type       => $spec->{type},
-        components => $spec->{components},
+        name       => $spec->{ name },
+        type       => $spec->{ type },
+        components => $spec->{ components },
     );
+
+    return;
 }
 
 sub _load_simple_sequence {
     my ( $self, $spec ) = @_;
-    
-    my $seq_io = Bio::SeqIO->new( -file => $self->fixtures_dir->file( $spec->{source} ) );
-    my $seq    = $seq_io->next_seq; # error check
+
+    my $seq_io            = Bio::SeqIO->new( -file => $self->fixtures_dir->file( $spec->{ source } ) );
+    my $seq               = $seq_io->next_seq;                                                            # error check
     my @this_seq_features = grep { is_exact_feature( $_ ) } $seq->get_SeqFeatures;
-    
-    if (@this_seq_features) {
+
+    if ( @this_seq_features ) {
         $self->eng_seq_builder->create_simple_seq(
-            name     => $spec->{name},
-            type     => $spec->{type},
+            name     => $spec->{ name },
+            type     => $spec->{ type },
             seq      => $seq->seq,
             features => \@this_seq_features,
         );
     }
     else {
         $self->eng_seq_builder->create_simple_seq(
-            name     => $spec->{name},
-            type     => $spec->{type},
-            seq      => $seq->seq,
-        );        
+            name => $spec->{ name },
+            type => $spec->{ type },
+            seq  => $seq->seq,
+        );
     }
+
+    return;
 }
 
 sub load_mutant_sequences {
     my ( $self, $function, $fixture_file ) = @_;
-    
+
     my $spec_array = YAML::Any::LoadFile( $fixture_file );
-    
+
     for my $spec ( @{ $spec_array } ) {
-        my $seq_io = Bio::SeqIO->new( -file => $self->mutant_sequence_fixtures_dir->file( $spec->{source} ), -format => 'genbank' );
-        my $seq    = $seq_io->next_seq; # error check
-        
+        my $seq_io = Bio::SeqIO->new(
+            -file   => $self->mutant_sequence_fixtures_dir->file( $spec->{ source } ),
+            -format => 'genbank'
+        );
+        my $seq = $seq_io->next_seq;    # error check
+
         my @optional_args;
-        push @optional_args, ( description => $spec->{description} ) if $spec->{description};
-        push @optional_args, ( append => $spec->{append} ) if $spec->{append};
+        push @optional_args, ( description => $spec->{ description } ) if $spec->{ description };
+        push @optional_args, ( append      => $spec->{ append } )      if $spec->{ append };
 
         $self->eng_seq_builder->$function(
             seq  => $seq,
-            name => $spec->{name},
-            type => $spec->{type},
+            name => $spec->{ name },
+            type => $spec->{ type },
             @optional_args
-        );            
+        );
 
     }
+
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;

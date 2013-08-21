@@ -8,7 +8,7 @@ use Data::Dump qw( pp );
 
 extends 'EngSeqBuilder::CLI::Command';
 
-override abstract => sub { 'Add a new feature to a sequence in the database' };
+override abstract => sub {'Add a new feature to a sequence in the database'};
 
 has name => (
     is       => 'ro',
@@ -18,9 +18,9 @@ has name => (
 );
 
 has type => (
-    is       => 'ro',
-    isa      => 'Str',
-    traits   => [ 'Getopt' ],
+    is     => 'ro',
+    isa    => 'Str',
+    traits => [ 'Getopt' ],
 );
 
 has start => (
@@ -54,10 +54,10 @@ has tags => (
 );
 
 has strand => (
-    is       => 'ro',
-    isa      => 'Int',
-    traits   => [ 'Getopt' ],
-    default  => 1,
+    is      => 'ro',
+    isa     => 'Int',
+    traits  => [ 'Getopt' ],
+    default => 1,
 );
 
 has whole_seq_feature => (
@@ -91,7 +91,7 @@ sub _build_end {
     if ( $self->whole_seq_feature ) {
         return $self->seq->length;
     }
-    
+
     confess "--end or --whole-seq-feature must be specified";
 }
 
@@ -99,32 +99,33 @@ sub _build_seq {
     my $self = shift;
 
     if ( $self->type ) {
-        return $self->eng_seq_builder->_fetch_seq( $self->name, $self->type );
+        return $self->eng_seq_builder->_fetch_seq( $self->name, $self->type ); ## no critic(ProtectPrivateSubs)
     }
     else {
-        return $self->eng_seq_builder->_fetch_seq( $self->name );
+        return $self->eng_seq_builder->_fetch_seq( $self->name ); ## no critic(ProtectPrivateSubs)
     }
 }
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    
-    my $feature = Bio::SeqFeature::Generic->new(        
-        -start   => $self->start,        
-        -end     => $self->end,        
+
+    my $feature = Bio::SeqFeature::Generic->new(
+        -start   => $self->start,
+        -end     => $self->end,
         -primary => $self->primary_tag,
-        -strand  => $self->strand, 
+        -strand  => $self->strand,
         -tag     => $self->tags,
     );
-    $self->log->info('Adding ' . $self->primary_tag . ' with tags ' . pp( $self->tags ) );
+    $self->log->info( 'Adding ' . $self->primary_tag . ' with tags ' . pp( $self->tags ) );
     $self->eng_seq_builder->txn_do(
         sub {
-            $self->seq->add_features( [$feature] );
+            $self->seq->add_features( [ $feature ] );
             $self->eng_seq_builder->txn_rollback unless $self->commit;
         }
     );
-}
 
+    return;
+}
 
 __PACKAGE__->meta->make_immutable;
 

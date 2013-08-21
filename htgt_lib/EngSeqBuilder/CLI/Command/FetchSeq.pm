@@ -6,7 +6,7 @@ use namespace::autoclean;
 
 extends 'EngSeqBuilder::CLI::Command';
 
-override abstract => sub { 'Fetch the specified sequence (in any format supported by Bio::SeqIO)' };
+override abstract => sub {'Fetch the specified sequence (in any format supported by Bio::SeqIO)'};
 
 has name => (
     is       => 'ro',
@@ -16,9 +16,9 @@ has name => (
 );
 
 has type => (
-    is       => 'ro',
-    isa      => 'Str',
-    traits   => [ 'Getopt' ],
+    is     => 'ro',
+    isa    => 'Str',
+    traits => [ 'Getopt' ],
 );
 
 has format => (
@@ -37,10 +37,12 @@ sub execute {
     else {
         $seq = $self->eng_seq_builder->fetch_seq( name => $self->name );
     }
-    
+
     my $seq_io = Bio::SeqIO->new( -fh => \*STDOUT, -format => $self->format );
 
     $seq_io->write_seq( $seq );
+
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;

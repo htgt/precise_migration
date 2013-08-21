@@ -15,16 +15,21 @@ HTGT-Utils-BadgerRepository-trunk/                      Tested OK
 htgt-utils-design-check-trunk/                          Tested OK
 htgt-utils-design-qc-reports-trunk/                     Tested OK
 htgt-utils-design-trunk/                                Tested OK
-htgt-utils-engseqparams-trunk/                          No tests available
+htgt-utils-engseqparams-trunk/                          No tests available // replace with GitHub version
 htgt-utils-ensembl-trunk/                               Tested OK
 htgt-utils-mutagenesis-prediction-trunk/                Tested OK
 htgt-utils-plate-trunk/                                 No tests available
 htgt-utils-recovery-trunk/                              No tests available
 htgt-utils-report-qc-results-and-primers-trunk/         Tested OK
 htgt-utils-southernblot-trunk/                          Tested OK
-htgt-utils-taqman-trunk/                                Fixtures data needs updating?
+htgt-utils-taqman-trunk/                                Tested OK
 htgt-utils-targrep-trunk/                               Tested OK
 htgt-utils-upload-qc-results-trunk/                     Tested OK
 kermits-db-trunk/                                       No tests available
 TargetedTrap-trunk/                                     Tested OK
 
+git modules
+
+Eng-Seq-Builder                                         Tested OK
+HTGT-QC-Common                                          Tested OK
+LIMS2-REST-Client                                       Tested OK

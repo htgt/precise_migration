@@ -18,26 +18,26 @@ has configfile => (
 );
 
 has [ qw( commit debug verbose ) ] => (
-    is       => 'ro',
-    isa      => 'Bool',
-    traits   => [ 'Getopt' ],
-    default  => 0
+    is      => 'ro',
+    isa     => 'Bool',
+    traits  => [ 'Getopt' ],
+    default => 0
 );
 
 has log_layout => (
-    is        => 'ro',
-    isa       => 'Str',
-    traits    => [ 'Getopt' ],
-    default   => '%p %m%n',
-    cmd_flag  => 'log-layout'
+    is       => 'ro',
+    isa      => 'Str',
+    traits   => [ 'Getopt' ],
+    default  => '%p %m%n',
+    cmd_flag => 'log-layout'
 );
 
 has log_file => (
-    is        => 'ro',
-    isa       => 'Path::Class::File',
-    coerce    => 1,
-    traits    => [ 'Getopt' ],
-    cmd_flag  => 'log-file'
+    is       => 'ro',
+    isa      => 'Path::Class::File',
+    coerce   => 1,
+    traits   => [ 'Getopt' ],
+    cmd_flag => 'log-file'
 );
 
 has eng_seq_builder => (
@@ -51,9 +51,10 @@ has eng_seq_builder => (
 sub BUILD {
     my $self = shift;
 
-    my $log_level = $self->debug   ? $DEBUG
-                  : $self->verbose ? $INFO
-                  :                  $WARN;
+    my $log_level
+        = $self->debug   ? $DEBUG
+        : $self->verbose ? $INFO
+        :                  $WARN;
 
     my %log4p = (
         level  => $log_level,
@@ -61,35 +62,38 @@ sub BUILD {
     );
 
     if ( $self->log_file ) {
-        $log4p{file} = $self->log_file;
+        $log4p{ file } = $self->log_file;
     }
-    
+
     Log::Log4perl->easy_init( \%log4p );
+
+    return;
 }
 
 sub _build_eng_seq_builder {
     my $self = shift;
 
-    if ( $self->configfile ) {        
-        EngSeqBuilder->new( configfile => $self->configfile );
+    if ( $self->configfile ) {
+        return EngSeqBuilder->new( configfile => $self->configfile );
     }
     else {
-        EngSeqBuilder->new();
+        return EngSeqBuilder->new();
     }
 }
 
 override command_names => sub {
+
     # from App::Cmd::Command
-    my ( $name ) = (ref( $_[0] ) || $_[0]) =~ /([^:]+)$/;
+    my ( $name ) = ( ref( $_[ 0 ] ) || $_[ 0 ] ) =~ /([^:]+)$/;
 
     # split camel case into words
     my @parts = $name =~ m/[[:upper:]](?:[[:upper:]]+|[[:lower:]]*)(?=\Z|[[:upper:]])/g;
-    
+
     if ( @parts ) {
-        return join '-', map { lc }  @parts;
+        return join '-', map {lc} @parts;
     }
     else {
-        return lc $name;        
+        return lc $name;
     }
 };
 

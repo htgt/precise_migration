@@ -1,7 +1,7 @@
 #! /bin/bash
 export HTGT_MIGRATION_ROOT=$HOME/work/htgt_migration
 
-export PATH="/software/perl-5.14.4/bin:/nfs/users/nfs_d/dp10/bin:$HTGT_MIGRATION_ROOT/htgt_perl5/bin:/bin:/usr/bin";
+export PATH="/software/perl-5.14.4/bin:/nfs/users/nfs_d/dp10/bin:$HTGT_MIGRATION_ROOT/htgt_perl5/bin:/bin:/usr/bin:$HTGT_MIGRATION_ROOT/htgt_app/bin";
 export PERL_LOCAL_LIB_ROOT=$HTGT_MIGRATION_ROOT/htgt_perl5;
 export PERL_MB_OPT="--install_base $HTGT_MIGRATION_ROOT/htgt_perl5";
 export PERL_MM_OPT="INSTALL_BASE=$HTGT_MIGRATION_ROOT/htgt_perl5";

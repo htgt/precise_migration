@@ -8,7 +8,7 @@ use namespace::autoclean;
 
 extends 'EngSeqBuilder::CLI::Command';
 
-override abstract => sub { 'Delete the specified eng_seq' };
+override abstract => sub {'Delete the specified eng_seq'};
 
 has name => (
     is       => 'ro',
@@ -18,9 +18,9 @@ has name => (
 );
 
 has type => (
-    is       => 'ro',
-    isa      => 'Str',
-    traits   => [ 'Getopt' ],
+    is     => 'ro',
+    isa    => 'Str',
+    traits => [ 'Getopt' ],
 );
 
 sub execute {
@@ -34,10 +34,12 @@ sub execute {
             else {
                 $self->eng_seq_builder->delete_seq( name => $self->name );
             }
-            
+
             $self->eng_seq_builder->txn_rollback unless $self->commit;
         }
     );
+
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;

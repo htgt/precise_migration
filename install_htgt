@@ -7,7 +7,8 @@
 
 printf "==> Welcome to the HTGT installer\n\n"
 HTGT_MIGRATION_ROOT=~/work/htgt_migration
-HTGT_LIB_HOME=~/work/htgt_migration/htgt_lib
+HTGT_LIB_HOME=$HTGT_MIGRATION_ROOT/htgt_lib
+HTGT_APP_HOME=$HTGT_MIGRATION_ROOT/htgt_app
 HTGT_SOURCE_SVN=~/svn-checkout
 HTGT_SOURCE_GIT=~/git-checkout
 
@@ -18,6 +19,7 @@ rm -rf $HTGT_LIB_HOME
 
 # Create a list of files to be copied...
 svn_file_list=(
+# lib files...
     'htgtdb-trunk/lib/'
     'htgt-dbconnect-trunk/lib/'
     'htgt-constants-trunk/lib/'
@@ -39,17 +41,39 @@ svn_file_list=(
     'htgt-utils-design-qc-reports-trunk/lib/'
     'htgt-utils-design-check-trunk/lib/'
     'htgt-utils-engseqparams-trunk/lib/'
-    'Eng-Seq-Builder-trunk/lib/'
+#    'Eng-Seq-Builder-trunk/lib/'
     'htgt-utils-southernblot-trunk/lib/'
     'htgt-utils-targrep-trunk/lib/'
     'htgt-utils-mutagenesis-prediction-trunk/lib/'
     'htgt-biomart-query-trunk/lib/'
     'htgt-test-class-trunk/lib/'
-
 )
 
 git_file_list=(
     'HTGT-QC-Common/lib/'
+    'LIMS2-REST-Client/lib/'
+    'Eng-Seq-Builder/lib/'
+
+)
+
+svn_bin_file_list=(
+    'HTGT-QC-trunk/bin/'
+    'htgt-utils-design-trunk/bin/'
+    'htgt-utils-recovery-trunk/bin/'
+    'htgt-utils-upload-qc-results-trunk/bin/'
+    'htgt-utils-plate-trunk/bin/'
+    'htgt-utils-taqman-trunk/bin/'
+    'htgt-utils-design-check-trunk/bin/'
+    'htgt-utils-southernblot-trunk/bin/'
+    'htgt-utils-targrep-trunk/bin/'
+    'htgt-utils-mutagenesis-prediction-trunk/bin/'
+    'htgt-test-class-trunk/bin/'
+)
+
+git_bin_file_list=(
+    'Eng-Seq-Builder/bin/'
+    'HTGT-QC-Common/bin/'
+    'LIMS2-REST-Client/bin/'
 )
 
 # We don't want hidden files, hence the exclude pattern
@@ -83,14 +107,26 @@ fi
 #printf "++> mod_index = %d\n" $mod_index
 printf "==> %d %s copied to installation directory\n\n" $module_counter ${module_strings[$mod_index]}
 
-printf "==> Clearing out script, root and configuration files\n\n"
+printf "==> Clearing out web app (htgt_app) directory\n\n"
 
 rm -rf $HTGT_MIGRATION_ROOT/htgt_app
 
-printf "==> Copying webapp script, root and configuration files\n\n"
+printf "==> Copying webapp script, root and configuration files to web app\n\n"
 
-rsync -aq --exclude=".*" $HTGT_SOURCE_SVN/htgt-trunk/script $HTGT_MIGRATION_ROOT/htgt_app
-rsync -aq --exclude=".*" $HTGT_SOURCE_SVN/htgt-trunk/root $HTGT_MIGRATION_ROOT/htgt_app
-cp $HTGT_SOURCE_SVN/htgt-trunk/htgt.yml $HTGT_MIGRATION_ROOT/htgt_app
+rsync -aq --exclude=".*" $HTGT_SOURCE_SVN/htgt-trunk/script $HTGT_APP_HOME
+rsync -aq --exclude=".*" $HTGT_SOURCE_SVN/htgt-trunk/root $HTGT_APP_HOME
+cp $HTGT_SOURCE_SVN/htgt-trunk/htgt.yml $HTGT_APP_HOME
+
+printf "==> Copying bin files to web app\n\n"
+
+for source in ${svn_bin_file_list[*]} 
+do
+    rsync -aq --exclude=".*" $HTGT_SOURCE_SVN/$source $HTGT_APP_HOME/bin
+done
+
+for source in ${git_bin_file_list[*]}
+do
+    rsync -aq --exclude=".*" $HTGT_SOURCE_GIT/$source $HTGT_APP_HOME/bin
+done
 
 printf "Done.\n"

@@ -10,7 +10,7 @@ use namespace::autoclean;
 
 extends 'EngSeqBuilder::CLI::Command';
 
-override abstract => sub { 'Load component data into the database' };
+override abstract => sub {'Load component data into the database'};
 
 has name => (
     is       => 'ro',
@@ -42,9 +42,9 @@ has sequence_file => (
 
 sub execute {
     my ( $self, $opts, $args ) = @_;
-    
-    my $seq_io = Bio::SeqIO->new( -fh => $self->sequence_file->openr );
-    my $seq    = $seq_io->next_seq;
+
+    my $seq_io            = Bio::SeqIO->new( -fh => $self->sequence_file->openr );
+    my $seq               = $seq_io->next_seq;
     my @this_seq_features = grep { is_exact_feature( $_ ) } $seq->get_SeqFeatures;
 
     my @optional_args;
@@ -54,14 +54,16 @@ sub execute {
     $self->eng_seq_builder->txn_do(
         sub {
             $self->eng_seq_builder->create_simple_seq(
-                name     => $self->name,
-                type     => $self->type,
-                seq      => $seq->seq,
+                name => $self->name,
+                type => $self->type,
+                seq  => $seq->seq,
                 @optional_args
             );
             $self->eng_seq_builder->txn_rollback unless $self->commit;
         }
     );
+
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;

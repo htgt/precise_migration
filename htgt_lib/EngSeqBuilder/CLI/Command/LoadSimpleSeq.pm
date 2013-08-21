@@ -7,7 +7,7 @@ use namespace::autoclean;
 
 extends 'EngSeqBuilder::CLI::Command';
 
-override abstract => sub { 'Load a simple sequence and its features into the database' };
+override abstract => sub {'Load a simple sequence and its features into the database'};
 
 has name => (
     is       => 'ro',
@@ -24,17 +24,17 @@ has type => (
 );
 
 has description => (
-    is       => 'ro',
-    isa      => 'Str',
-    traits   => [ 'Getopt' ],
-    default  => ''
+    is      => 'ro',
+    isa     => 'Str',
+    traits  => [ 'Getopt' ],
+    default => ''
 );
 
 has format => (
-    is       => 'ro',
-    isa      => 'Str',
-    traits   => [ 'Getopt' ],
-    default  => 'genbank'    
+    is      => 'ro',
+    isa     => 'Str',
+    traits  => [ 'Getopt' ],
+    default => 'genbank'
 );
 
 has include_inexact => (
@@ -48,11 +48,11 @@ sub execute {
     my ( $self, $opt, $args ) = @_;
 
     my $seq_io;
-    if ( @{$args} ) {
-        $seq_io = Bio::SeqIO->new( -file => $args->[0], -format => $self->format );        
+    if ( @{ $args } ) {
+        $seq_io = Bio::SeqIO->new( -file => $args->[ 0 ], -format => $self->format );
     }
     else {
-        $seq_io = Bio::SeqIO->new( -fh => \*STDIN, -format => $self->format );        
+        $seq_io = Bio::SeqIO->new( -fh => \*STDIN, -format => $self->format );
     }
 
     my $seq = $seq_io->next_seq;
@@ -65,22 +65,24 @@ sub execute {
                 type        => $self->type,
                 seq         => $seq->seq,
                 features    => $self->_get_features( $seq ),
-            );            
+            );
             $self->eng_seq_builder->txn_rollback unless $self->commit;
         }
     );
+
+    return;
 }
 
 sub _get_features {
     my ( $self, $seq ) = @_;
 
     my @features;
-    
+
     if ( $self->include_inexact ) {
         @features = $seq->get_SeqFeatures;
     }
     else {
-        @features = grep { is_exact_feature($_) } $seq->get_SeqFeatures;        
+        @features = grep { is_exact_feature( $_ ) } $seq->get_SeqFeatures;
     }
 
     return \@features;

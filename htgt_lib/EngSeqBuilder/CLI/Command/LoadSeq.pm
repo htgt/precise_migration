@@ -11,7 +11,7 @@ use namespace::autoclean;
 
 extends 'EngSeqBuilder::CLI::Command';
 
-override abstract => sub { "Load a sequence file into the database" };
+override abstract => sub {"Load a sequence file into the database"};
 
 has name => (
     is       => 'ro',
@@ -21,10 +21,10 @@ has name => (
 );
 
 has description => (
-    is       => 'ro',
-    isa      => 'Str',
-    traits   => [ 'Getopt' ],
-    default  => ''
+    is      => 'ro',
+    isa     => 'Str',
+    traits  => [ 'Getopt' ],
+    default => ''
 );
 
 has type => (
@@ -46,7 +46,7 @@ sub execute {
     my ( $self, $opt, $args ) = @_;
 
     my $seq_io = Bio::SeqIO->new( -fh => $self->genbank_file->openr, -format => 'genbank' );
-    my $seq    = $seq_io->next_seq;
+    my $seq = $seq_io->next_seq;
 
     $self->eng_seq_builder->txn_do(
         sub {
@@ -60,6 +60,8 @@ sub execute {
             $self->eng_seq_builder->txn_rollback unless $self->commit;
         }
     );
+
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;

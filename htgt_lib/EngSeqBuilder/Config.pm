@@ -7,19 +7,19 @@ use namespace::autoclean;
 with 'MooseX::SimpleConfig';
 
 has pg_database => (
-    is       => 'ro',    
+    is       => 'ro',
     isa      => 'Str',
     required => 1
 );
 
 has pg_host => (
-    is      => 'ro',
-    isa     => 'Str'
+    is  => 'ro',
+    isa => 'Str'
 );
 
 has pg_port => (
-    is      => 'ro',
-    isa     => 'Str',
+    is  => 'ro',
+    isa => 'Str',
 );
 
 has pg_user => (
@@ -35,15 +35,14 @@ has pg_password => (
 );
 
 has pg_options => (
-    is         => 'ro',
-    isa        => 'HashRef',
-    default    => sub { 
-        +{
-            AutoCommit => 1,
+    is      => 'ro',
+    isa     => 'HashRef',
+    default => sub {
+        +{  AutoCommit => 1,
             RaiseError => 1,
             PrintError => 0
-        }
-    }        
+        };
+    }
 );
 
 has dsn => (
@@ -54,9 +53,9 @@ has dsn => (
 );
 
 has gateway_boundaries => (
-    isa        => 'HashRef',
-    reader     => '_gateway_boundaries',
-    required   => 1,
+    isa      => 'HashRef',
+    reader   => '_gateway_boundaries',
+    required => 1,
 );
 
 has [ qw( max_vector_seq_length max_allele_seq_length ) ] => (
@@ -76,23 +75,21 @@ sub _build_dsn {
         $dsn .= ';port=' . $self->pg_port;
     }
 
-    return $dsn;    
+    return $dsn;
 }
 
 has db_connect_params => (
     isa        => 'ArrayRef',
     init_arg   => undef,
     traits     => [ 'Array' ],
-    handles    => {
-        db_connect_params => 'elements'
-    },
+    handles    => { db_connect_params => 'elements' },
     lazy_build => 1
 );
 
 sub _build_db_connect_params {
     my $self = shift;
 
-    return [ $self->dsn, $self->pg_user, $self->pg_password, $self->pg_options ];    
+    return [ $self->dsn, $self->pg_user, $self->pg_password, $self->pg_options ];
 }
 
 has ensembl_host => (
@@ -121,18 +118,18 @@ has ensembl_registry => (
 
 sub _build_ensembl_registry {
     my $self = shift;
-    
+
     my %args = (
         -host => $self->ensembl_host,
         -user => $self->ensembl_user,
     );
 
     if ( $self->ensembl_port ) {
-        $args{-port} = $self->ensembl_port; 
+        $args{ -port } = $self->ensembl_port;
     }
 
     require Bio::EnsEMBL::Registry;
-    
+
     Bio::EnsEMBL::Registry->load_registry_from_db( %args );
 
     return 'Bio::EnsEMBL::Registry';
@@ -141,9 +138,10 @@ sub _build_ensembl_registry {
 sub gateway_boundaries_for {
     my ( $self, $cassette_or_backbone, $vector_stage ) = @_;
 
-    my $boundaries = $self->_gateway_boundaries->{$cassette_or_backbone}->{$vector_stage}
-        or EngSeqBuilder::Exception->throw( "No gateway boundaries configured for $vector_stage $cassette_or_backbone" );
-    
+    my $boundaries = $self->_gateway_boundaries->{ $cassette_or_backbone }->{ $vector_stage }
+        or
+        EngSeqBuilder::Exception->throw( "No gateway boundaries configured for $vector_stage $cassette_or_backbone" );
+
     return $boundaries;
 }
 

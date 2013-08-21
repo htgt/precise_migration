@@ -6,20 +6,20 @@ use namespace::autoclean;
 
 extends 'EngSeqBuilder::CLI::Command';
 
-override abstract => sub { "Create a compound sequence from the listed components" };
+override abstract => sub {"Create a compound sequence from the listed components"};
 
 has [ qw( name type ) ] => (
     is       => 'ro',
     isa      => 'Str',
     traits   => [ 'Getopt' ],
-    required => 1        
+    required => 1
 );
 
 has description => (
-    is        => 'ro',
-    isa       => 'Str',
-    traits    => [ 'Getopt' ],
-    default   => ''
+    is      => 'ro',
+    isa     => 'Str',
+    traits  => [ 'Getopt' ],
+    default => ''
 );
 
 has primary_tag => (
@@ -41,29 +41,31 @@ sub execute {
     my ( $self, $opts, $args ) = @_;
 
     EngSeqBuilder::Exception->throw( "No components specified" )
-            unless @{$args};
+        unless @{ $args };
 
     my %params = (
         name        => $self->name,
         type        => $self->type,
         description => $self->description,
-        components  => $args        
+        components  => $args
     );
-    
+
     if ( $self->primary_tag ) {
         my $feature = Bio::SeqFeature::Generic->new(
             -primary_tag => $self->primary_tag,
             -tag         => $self->tags
         );
-        $params{whole_seq_feature} = $feature;
+        $params{ whole_seq_feature } = $feature;
     }
-    
+
     $self->eng_seq_builder->txn_do(
         sub {
             $self->eng_seq_builder->create_compound_seq( %params );
             $self->eng_seq_builder->txn_rollback unless $self->commit;
         }
     );
+
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -35,25 +35,25 @@ Catalyst::Log::Log4perl
 Config::Scoped
 Parse::BooleanLogic
 Throwable::Error
-MooseX::Log::Log4perl
+MooseX::Log::Log4perl --- Just use MooseX and that pulls everything in
 Bio::Perl
 DateTime::Format::Oracle
 Math::Base36
-MooseX::Role::WithOverloading
+MooseX::Role::WithOverloading --- This is not necessary with MooseX as above
 Catalyst::Plugin::Cache
 Catalyst::Plugin::Prototype
 Catalyst::Plugin::Authorization::Roles
 Catalyst::Plugin::Session::Store::DBI
 Catalyst::Plugin::Session::State::Cookie
 Catalyst::Plugin::StackTrace
-Catalyst::Plugin::Breadcrumbs ==> needed to --force it
+Catalyst::Plugin::Breadcrumbs ==> needed to --force it --- package could not be found for Pinto
 Catalyst::Authentication::Store::DBIx::Class
 Cache::File
 Bio::Graphics
 Switch ===> --force
 Catalyst::Model::Adaptor
 SOAP::Lite ===> --force because DIME::Tools fails to install
-Devel::Caller
+Devel::Caller -- already installed for pinto
 Iterator::Simple
 MooseX::App::Cmd::Command
 Iterator
@@ -61,7 +61,7 @@ Iterator::Util
 Data::Pageset
 Catalyst::Controller::REST
 Config::Std
-File::Class ==> not on CPAN, use GitHub Ivan Wills
+File::Class ==> not on CPAN, use GitHub Ivan Wills -- can we create a package for Pinto?
 Smart::Comments
 MooseX::Types::IO
 Perl6::Slurp
@@ -77,8 +77,8 @@ DateTime::Format::DateParse
 Hash::MoreUtils
 Module::PortablePath
 XML::FeedLite::Normalised
-Caldendar::Simple
+Caldendar::Simple -- not found for Pinto
 iCal::Parser
-DBD::SQLite - # did this really needt to be installed separately?
+DBD::SQLite - # did this really need to be installed separately? No - Pinton did not need to change the index
 XML::Records
 Template::Plugin::JSON

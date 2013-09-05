@@ -44,7 +44,8 @@ sub run_bsub_and_wait {
     my $jobspec = sprintf 'qc[1-%d]', scalar @{$targets};
 
     my @bsub_job_array = ( @BSUB,
-                           "-R'select[mem>2000] rusage[mem=2000]'", '-M2000000',
+#                           "-R'select[mem>2000] rusage[mem=2000]'", '-M2000000',
+                           "-R'select[mem>2000] rusage[mem=2000]'", '-M2000',
                            '-o', $outdir->file( '%J.%I.out' ),
                            '-J', $jobspec,
                            $RUN_EXONERATE, $model, $query, @{$targets} );

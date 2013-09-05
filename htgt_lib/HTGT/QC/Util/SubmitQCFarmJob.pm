@@ -332,7 +332,8 @@ sub run_bsub_cmd {
     HTGT::QC::Exception->throw( message => "Not enough parameters passed to run_bsub_cmd" ) 
         unless ( $out_file and $err_file and @cmd );
 
-    my $memory_limit = $self->memory_required * 1000; #farm -M is weird and not in MB or GB.
+#    my $memory_limit = $self->memory_required * 1000; #farm -M is weird and not in MB or GB.
+    my $memory_limit = $self->memory_required; # no factors required for farm3
 
     my @bsub = (
         'bsub',

@@ -17,6 +17,11 @@ export PATH=$PATH:${ORACLE_HOME}
 export PERL5LIB=$PERL5LIB:${ORACLE_HOME}/lib/perl5
 #export PERL5LIB=$PERL5LIB:${ORACLE_HOME}/lib/perl5:/nfs/WWWdev/SHARED_docs/lib/core
 
+# QC Farm Job submission path
+export PATH=$PATH:/usr/local/lsf/9.1/linux2.6-glibc2.3-x86_64/bin
+
+source /usr/local/lsf/conf/profile.lsf
+
 # Sanger authorisation
 export PERL5LIB=$PERL5LIB:/nfs/WWWdev/SHARED_docs/lib/core:/nfs/WWWdev/SANGER_docs/perl:/nfs/WWWdev/SANGER_docs/bin-offline:/nfs/WWWdev/INTWEB_docs/lib/badger:/nfs/WWWdev/CCC_docs/lib/:/software/badger/lib/perl5
 
@@ -28,6 +33,13 @@ then
 fi
 
 export HTGT_HOME=$HTGT_MIGRATION_ROOT/htgt_app
+export EDITOR=/usr/bin/vim
+export VISUAL=$EDITOR
+
+#
+# Setup pinto
+source ~/opt//local/pinto/etc/bashrc
+export PINTO_REPOSITORY_ROOT=~/repo
 #
 # Set the prompt so that it is obvious we are ni the correct environment
 #
